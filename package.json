@@ -1,0 +1,37 @@
+{
+  "name": "react-band",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "better-npm-run test",
+    "compile": "better-npm-run compile"
+  },
+  "betterScripts": {
+    "test": {
+      "command": "karma start",
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    "compile": {
+      "command": "webpack",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hcl1687/react-band.git"
+  },
+  "keywords": [],
+  "author": "hcl1687",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hcl1687/react-band/issues"
+  },
+  "homepage": "https://github.com/hcl1687/react-band#readme",
+  "dependencies": {},
+  "devDependencies": {}
+}
