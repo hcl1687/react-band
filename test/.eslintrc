@@ -1,0 +1,16 @@
+{
+  "extends": "../.eslintrc",
+  "env": {
+    "mocha": true
+  },
+  "globals": {
+    "beforeAll": false,
+    "page": false,
+    "expect": false,
+    "console": false,
+    "PATH": false
+  },
+  "rules": {
+    "no-console": "off"
+  }
+}

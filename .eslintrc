@@ -1,0 +1,47 @@
+{
+  "root": true,
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "jsx": true,
+      "legacyDecorators": true
+    },
+    "sourceType": "module"
+  },
+  "plugins": [
+    "babel",
+    "react",
+    "jsx-control-statements"
+  ],
+  "extends": [
+    "standard",
+    "standard-react",
+    "plugin:jsx-control-statements/recommended"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "mocha": true,
+    "jsx-control-statements/jsx-control-statements": true
+  },
+  "globals": {
+  },
+  "rules": {
+    "camelcase": 0,
+    "no-debugger": 0,
+    "prefer-const": 2,
+    "space-before-function-paren": 2,
+    "jsx-control-statements/jsx-use-if-tag": "off",
+    "react/jsx-no-undef": [2, { "allowGlobals": true }],
+    "standard/no-callback-literal": 0,
+    "sort-imports": ["error", {
+      "ignoreCase": false,
+      "ignoreDeclarationSort": false,
+      "ignoreMemberSort": false,
+      "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+    }]
+  }
+}
