@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { handleActions } from 'redux-actions'
 
 export default async ({ getComponent }) => {
   const utils = await getComponent('utils') || {}
@@ -14,36 +15,29 @@ export default async ({ getComponent }) => {
         }
 
         this.actions = {}
+        this.reducer = handleActions(reducers, state)
         Object.keys(actions).forEach(key => {
           const fun = promisify(actions[key])
           this.actions[key] = (...args) => {
             return fun(...args).then(data => {
               const action = {
+                type: key,
                 payload: data
               }
-              const reducder = reducers[key]
-              if (reducder) {
-                let state = this.state
-                if (typeof reducder === 'function') {
-                  state = reducder(this.state, action)
-                } else if (reducder['next']) {
-                  state = reducder['next'](this.state, action)
-                }
-                this.setState(state)
-              }
+              const newState = this.reducer(this.state, action)
+              this.setState(newState)
 
-              return data
+              return action
             }).catch(err => {
               const action = {
+                type: key,
+                error: true,
                 payload: err
               }
-              const reducder = reducers[key]
-              if (reducder && reducder['throw']) {
-                const state = reducder['throw'](this.state, action)
-                this.setState(state)
-              }
+              const newState = this.reducer(this.state, action)
+              this.setState(newState)
 
-              throw err
+              return Promise.reject(err)
             })
           }
         })
