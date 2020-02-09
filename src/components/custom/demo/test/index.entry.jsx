@@ -48,8 +48,8 @@ export default () => {
           {this.createList()}
         </div>
         <div>
-          <button onClick={this.handleAdd}>add</button>
-          <button onClick={this.toogleMenu}>Toogle Menu</button>
+          <button onClick={this.handleAdd}>{__('add')}</button>
+          <button onClick={this.toogleMenu}>{__('toggle')}</button>
         </div>
       </div>
     }

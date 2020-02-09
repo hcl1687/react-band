@@ -15,7 +15,7 @@ const DEFAULT_OPTIONS = {
 
 export default class RBCore {
   constructor (options = {}) {
-    this._options = Object.assign(options, DEFAULT_OPTIONS)
+    this._options = Object.assign({}, DEFAULT_OPTIONS, options)
     this._comps = {}
     this._i18ns = {}
     this._themes = {}
@@ -46,7 +46,7 @@ export default class RBCore {
     const { locale } = this._options
     return this.fetchI18n(path, locale).then(i18n => {
       this._i18ns[name] = this._i18ns[name] || {}
-      this._i18ns[name][locale] = i18n
+      this._i18ns[name][locale] = i18n['default']
       return i18n
     }).catch(() => {
       this._i18ns[name] = this._i18ns[name] || {}

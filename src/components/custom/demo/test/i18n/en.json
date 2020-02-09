@@ -1,3 +1,5 @@
 {
-  "test": "Test"
+  "test": "Test",
+  "add": "Add",
+  "toggle": "Toogle Menu"
 }

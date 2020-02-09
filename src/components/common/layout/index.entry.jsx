@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 export default () => {
-  return class BasicLayout extends Component {
+  return class Layout extends Component {
     static propTypes = {
       theme: PropTypes.object.isRequired,
       children: PropTypes.object.isRequired
