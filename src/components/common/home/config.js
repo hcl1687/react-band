@@ -7,6 +7,6 @@ export default (config) => {
     },
     lazy: false,
     // auth: {},
-    decorators: ['i18n', 'theme', 'layout']
+    decorators: ['@i18n', '@theme', '@layout']
   }
 }

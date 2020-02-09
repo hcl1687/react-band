@@ -1,7 +1,8 @@
 export default () => {
   return {
-    name: 'layout',
+    name: '@layout',
     type: 'decorator',
-    lazy: false
+    lazy: false,
+    component: 'layout'
   }
 }

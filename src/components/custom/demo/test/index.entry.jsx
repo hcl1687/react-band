@@ -9,8 +9,8 @@ export default () => {
       addItem: PropTypes.func.isRequired,
       deleteItem: PropTypes.func.isRequired,
       items: PropTypes.array.isRequired,
-      showMenu: PropTypes.func.isRequired,
-      MENU_STATUS: PropTypes.bool.isRequired
+      showLeft: PropTypes.func.isRequired,
+      LEFT_STATUS: PropTypes.bool.isRequired
     }
 
     handleDelete = (i) => {
@@ -24,8 +24,8 @@ export default () => {
     }
 
     toogleMenu = () => {
-      const { MENU_STATUS, showMenu } = this.props
-      showMenu(!MENU_STATUS)
+      const { LEFT_STATUS, showLeft } = this.props
+      showLeft(!LEFT_STATUS)
     }
 
     createList () {

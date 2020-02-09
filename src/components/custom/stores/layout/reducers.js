@@ -1,17 +1,17 @@
 export default {
-  showMenu: {
+  showLeft: {
     next (state, action) {
       return {
         ...state,
-        MENU_STATUS: action.payload
+        LEFT_STATUS: action.payload
       }
     }
   },
-  enableMenu: {
+  showHead: {
     next (state, action) {
       return {
         ...state,
-        MENU_ENABLED: action.payload
+        HEAD_STATUS: action.payload
       }
     }
   }

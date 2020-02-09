@@ -1,6 +1,6 @@
 export default () => {
   return {
-    name: 'theme',
+    name: '@theme',
     type: 'decorator',
     lazy: false
   }

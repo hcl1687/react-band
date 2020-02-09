@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { createAction, handleActions } from 'redux-actions'
 import { connect } from 'react-redux'
+import get from 'lodash/get'
 
 export default async ({ getComponent, getStore }) => {
   const utils = await getComponent('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
 
-  return ({ decoratorsConfig: { store: storeConfig = {} } }) => async WrappedComponent => {
+  return ({ decoratorsConfig }) => async WrappedComponent => {
+    const storeConfig = get(decoratorsConfig, '@store') || {}
     // fetch store component
     const { injectReducer } = getStore()
     const keys = Object.keys(storeConfig)

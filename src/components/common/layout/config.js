@@ -1,7 +1,7 @@
 export default () => {
   return {
     name: 'layout',
-    type: 'decorator',
-    lazy: false
+    lazy: false,
+    decorators: ['@i18n', '@theme']
   }
 }

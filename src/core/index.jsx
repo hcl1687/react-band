@@ -111,10 +111,10 @@ export default class RBCore {
     const themeObj = this._themes[name][theme]
     const RB_CONTEXT = this.getContext()
 
-    // get decorators from config
     const config = this._compsConfig[name]
-    const { decorators = [] } = config
-    if (decorators.length > 0) {
+    if (config.type !== 'decorator') {
+      // get decorators from config
+      const { decorators = [] } = config
       for (let i = 0; i < decorators.length; i++) {
         const deco = decorators[i]
         const decoComp = await this.getComponent(deco)
@@ -134,7 +134,6 @@ export default class RBCore {
         }
       }
     }
-    // get stores form config
 
     this._packedComps[name] = comp
 

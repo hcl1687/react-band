@@ -7,8 +7,7 @@ export default () => {
   return class Menu extends Component {
     static propTypes = {
       __: PropTypes.func.isRequired,
-      theme: PropTypes.object.isRequired,
-      MENU_STATUS: PropTypes.bool.isRequired
+      theme: PropTypes.object.isRequired
     }
 
     createMenus () {
@@ -26,8 +25,8 @@ export default () => {
     }
 
     render () {
-      const { theme, MENU_STATUS } = this.props
-      return <div className={theme.menus} style={{ display: MENU_STATUS ? 'block' : 'none' }}>
+      const { theme } = this.props
+      return <div className={theme.menus}>
         <div>
           {this.createMenus()}
         </div>

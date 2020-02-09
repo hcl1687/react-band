@@ -1,6 +1,6 @@
 export default () => {
   return {
-    name: 'localStore',
+    name: '@localStore',
     type: 'decorator',
     lazy: false
   }
