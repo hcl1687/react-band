@@ -7,7 +7,7 @@ export default async ({ getComponent }) => {
   return ({ i18n }) => WrappedComponent => {
     class i18nDeco extends Component {
       __ = (key) => {
-        return i18n[key]
+        return i18n[key] || key
       }
 
       render () {

@@ -10,7 +10,9 @@ export default async ({ getComponent }) => {
       theme: PropTypes.object.isRequired,
       LEFT_STATUS: PropTypes.bool.isRequired,
       HEAD_STATUS: PropTypes.bool.isRequired,
-      children: PropTypes.object.isRequired
+      children: PropTypes.object.isRequired,
+      getNotification: PropTypes.func.isRequired,
+      notify: PropTypes.func.isRequired
     }
 
     handleTheme = (e) => {
@@ -27,8 +29,13 @@ export default async ({ getComponent }) => {
       location.search = queryString.stringify(parsed)
     }
 
+    handleToggleMenu = () => {
+      const { notify } = this.props
+      notify('menu', 'toggleMenu')
+    }
+
     render () {
-      const { LEFT_STATUS, HEAD_STATUS, theme, __, children } = this.props
+      const { LEFT_STATUS, HEAD_STATUS, theme, __, getNotification, children } = this.props
       const headDisplay = HEAD_STATUS ? 'block' : 'none'
       const leftDisplay = LEFT_STATUS ? 'block' : 'none'
       const parsed = queryString.parse(location.search)
@@ -37,7 +44,9 @@ export default async ({ getComponent }) => {
 
       return <div className={theme.layout}>
         <div className='header' style={{ display: headDisplay }}>
-          <span>{__('head')}</span><br />
+          <span>{__('head')}</span>
+          <button onClick={this.handleToggleMenu}>{__('toggleMenu')}</button>
+          <br />
           <span>{__('theme')}</span>
           <select value={themeName} onChange={this.handleTheme}>
             <option value='default'>{__('default')}</option>
@@ -51,7 +60,7 @@ export default async ({ getComponent }) => {
         </div>
         <div className='content'>
           <div className='left' style={{ display: leftDisplay }}>
-            <Menu />
+            <Menu {...getNotification('menu')} />
           </div>
           <div className='right'>
             {children}

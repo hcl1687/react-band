@@ -8,6 +8,6 @@ export default () => {
         }
       }
     },
-    decorators: ['@i18n', '@theme', '@store']
+    decorators: ['@notice', '@i18n', '@theme', '@store']
   }
 }
