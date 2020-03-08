@@ -10,7 +10,7 @@ const runFlow = flowFactory(Promise)
 const DEFAULT_OPTIONS = {
   locale: 'en',
   theme: 'default',
-  container: '#app'
+  container: '#container'
 }
 
 export default class RBCore {
