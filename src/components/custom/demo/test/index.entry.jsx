@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 export default async ({ getComponent }) => {
-  console.log(getComponent)
   const antd = await getComponent('antd')
   const { Button } = antd
   return class Test extends Component {
