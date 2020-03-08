@@ -34,7 +34,10 @@ export default function getConfig (options) {
       if (CONFIGS[id]) {
         ret = CONFIGS[id](options)
       }
-      config = Object.assign(obj, ret)
+      // id !== key is parent, id === key is tail
+      // parent config has lower priority
+      config = id !== key ? Object.assign({}, ret, obj)
+        : Object.assign({}, obj, ret)
       id = id.replace(`/${item}`, '')
       parentKeys[id] = 1
       return config
@@ -55,7 +58,7 @@ export default function getConfig (options) {
     const config = MERGED_CONFIGS[key]
     config.key = key
     const name = config.name
-    if (name) {
+    if (name && !config.disabled) {
       NAME_BASED_CONFIG[name] = MERGED_CONFIGS[key]
     }
   })

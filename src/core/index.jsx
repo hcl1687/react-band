@@ -57,7 +57,17 @@ export default class RBCore {
 
   fetchI18n (path, locale) {
     path = path.replace(/^\.\//, '')
+    return this.fetchI18nJSON(path, locale).catch(() => {
+      return this.fetchI18nJS(path, locale)
+    })
+  }
+
+  fetchI18nJSON (path, locale) {
     return import(`~/components/${path}/i18n/${locale}.json`)
+  }
+
+  fetchI18nJS (path, locale) {
+    return import(`~/components/${path}/i18n/${locale}.js`)
   }
 
   loadTheme (path, name) {
@@ -208,8 +218,9 @@ export default class RBCore {
     const routes = this._routes
     await this.loadSyncComponent()
     const Loading = this._packedComps['loading']
+    const App = this._packedComps['app']
     const store = getStore()
-    const App = () => {
+    const Comp = () => {
       return (
         <Provider store={store}>
           <Router>
@@ -226,8 +237,13 @@ export default class RBCore {
         </Provider>
       )
     }
+    const Container = () => {
+      return App ? <App>
+        <Comp />
+      </App> : <Comp />
+    }
 
-    ReactDOM.render(<App />, typeof container === 'string' ? document.querySelector(container) : container)
+    ReactDOM.render(<Container />, typeof container === 'string' ? document.querySelector(container) : container)
   }
 
   asyncRoute (config) {

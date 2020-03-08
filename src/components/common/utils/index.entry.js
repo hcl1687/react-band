@@ -42,12 +42,21 @@ function promisify (fun) {
   }
 }
 
+function getUrlParameter (name) {
+  // eslint-disable-next-line
+  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]')
+  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)')
+  var results = regex.exec(location.search)
+  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '))
+}
+
 export default () => {
   return {
     setStatic,
     setDisplayName,
     getDisplayName,
     wrapDisplayName,
-    promisify
+    promisify,
+    getUrlParameter
   }
 }
