@@ -27,7 +27,7 @@ const cssLoaders = [{
       require('postcss-import')(),
       require('postcss-url')(),
       require('postcss-nesting')(),
-      require('postcss-cssnext')
+      require('postcss-preset-env')
     ]
   }
 }]
