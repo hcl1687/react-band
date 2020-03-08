@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-export default () => {
+export default async ({ getComponent }) => {
+  console.log(getComponent)
+  const antd = await getComponent('antd')
+  const { Button } = antd
   return class Test extends Component {
     static propTypes = {
       __: PropTypes.func.isRequired,
@@ -33,7 +36,7 @@ export default () => {
       return items.map((item, i) => {
         return <div key={i}>
           {item.name}
-          <button onClick={() => { this.handleDelete(i) }}>delete</button>
+          <Button onClick={() => { this.handleDelete(i) }}>delete</Button>
         </div>
       })
     }
@@ -48,8 +51,8 @@ export default () => {
           {this.createList()}
         </div>
         <div>
-          <button onClick={this.handleAdd}>{__('add')}</button>
-          <button onClick={this.toogleMenu}>{__('toggle')}</button>
+          <Button onClick={this.handleAdd}>{__('add')}</Button>
+          <Button onClick={this.toogleMenu}>{__('toggle')}</Button>
         </div>
       </div>
     }
