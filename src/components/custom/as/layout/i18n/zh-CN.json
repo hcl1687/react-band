@@ -1,0 +1,10 @@
+{
+  "default": "默认",
+  "darkgray": "黑灰",
+  "en": "英文",
+  "zh-CN": "简体中文",
+  "head": "头部",
+  "theme": "主题：",
+  "locale": "语言：",
+  "toggleMenu": "切换菜单"
+}
