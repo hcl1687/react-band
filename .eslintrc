@@ -28,7 +28,8 @@
     "jsx-control-statements/jsx-control-statements": true
   },
   "globals": {
-    "expect": false
+    "expect": false,
+    "jest": false
   },
   "rules": {
     "camelcase": 0,
