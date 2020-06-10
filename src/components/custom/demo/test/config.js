@@ -10,7 +10,7 @@ export default (config) => {
     lazy: true,
     // auth: {},
     decoratorsConfig: {
-      '@store': {
+      '@reduxStore': {
         layoutStore: {
           actions: ['showLeft'],
           state: ['LEFT_STATUS']
@@ -18,6 +18,6 @@ export default (config) => {
       },
       '@localStore': localStore
     },
-    decorators: ['@i18n', '@theme', '@localStore', '@store', '@layout']
+    decorators: ['@i18n', '@theme', '@localStore', '@reduxStore', '@layout']
   }
 }

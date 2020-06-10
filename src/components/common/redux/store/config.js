@@ -1,6 +1,6 @@
 export default () => {
   return {
-    name: '@store',
+    name: '@reduxStore',
     type: 'decorator'
   }
 }

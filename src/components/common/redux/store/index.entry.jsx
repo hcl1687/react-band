@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import { createAction, handleActions } from 'redux-actions'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
+import getStore from '../getStore'
 
-export default async ({ getComponent, getStore }) => {
+export default async ({ getComponent }) => {
   const utils = await getComponent('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
 
   return ({ decoratorsConfig }) => async WrappedComponent => {
-    const storeConfig = get(decoratorsConfig, '@store') || {}
+    const storeConfig = get(decoratorsConfig, '@reduxStore') || {}
     // fetch store component
     const { injectReducer } = getStore()
     const keys = Object.keys(storeConfig)
@@ -57,7 +58,7 @@ export default async ({ getComponent, getStore }) => {
       return selectedState
     }
 
-    class storeDeco extends Component {
+    class reduxStoreDeco extends Component {
       constructor (props, context) {
         super(props, context)
 
@@ -71,9 +72,9 @@ export default async ({ getComponent, getStore }) => {
     }
 
     if (process.env.NODE_ENV !== 'production') {
-      return setDisplayName(wrapDisplayName(WrappedComponent, 'storeDeco'))(storeDeco)
+      return setDisplayName(wrapDisplayName(WrappedComponent, 'reduxStoreDeco'))(reduxStoreDeco)
     }
 
-    return storeDeco
+    return reduxStoreDeco
   }
 }

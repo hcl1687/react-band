@@ -1,5 +1,5 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux'
-import middlewares from '../config/middleware'
+import middlewares from './middleware'
 
 const staticReducers = {
   // fix error:

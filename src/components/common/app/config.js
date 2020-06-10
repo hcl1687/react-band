@@ -1,6 +1,7 @@
 export default (config) => {
   return {
     name: 'app',
-    lazy: false
+    lazy: false,
+    decorators: ['@reduxProvider']
   }
 }

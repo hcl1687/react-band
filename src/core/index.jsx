@@ -1,10 +1,8 @@
 import React, { Suspense } from 'react'
 import { Route, HashRouter as Router, Switch } from 'react-router-dom'
-import { Provider } from 'react-redux'
 import ReactDOM from 'react-dom'
 import flowFactory from 'promiseflow'
 import getConfig from './getConfig'
-import getStore from './getStore'
 
 const runFlow = flowFactory(Promise)
 const DEFAULT_OPTIONS = {
@@ -37,8 +35,7 @@ export default class RBCore {
       packedComps: this._packedComps,
       compsConfig: this._compsConfig,
       routes: this._routes,
-      getComponent: this.getComponent,
-      getStore
+      getComponent: this.getComponent
     }
   }
 
@@ -219,22 +216,19 @@ export default class RBCore {
     await this.loadSyncComponent()
     const Loading = this._packedComps['loading']
     const App = this._packedComps['app']
-    const store = getStore()
     const Comp = () => {
       return (
-        <Provider store={store}>
-          <Router>
-            <Suspense fallback={<Loading />}>
-              <Switch>
-                {
-                  routes.map(config => {
-                    return this.asyncRoute(config)
-                  })
-                }
-              </Switch>
-            </Suspense>
-          </Router>
-        </Provider>
+        <Router>
+          <Suspense fallback={<Loading />}>
+            <Switch>
+              {
+                routes.map(config => {
+                  return this.asyncRoute(config)
+                })
+              }
+            </Switch>
+          </Suspense>
+        </Router>
       )
     }
     const Container = () => {
