@@ -242,19 +242,17 @@ export default class RBCore {
 
   asyncRoute (config) {
     const { name, route = {}, lazy, key } = config
+    let component
     if (!lazy) {
-      const component = this._packedComps[name]
-      return <Route key={name} {...route} component={component} />
+      component = this._packedComps[name]
+    } else {
+      component = (
+        React.lazy(() => (
+          this.loadComponent(key, name)
+        ), 'default')
+      )
     }
 
-    const COMP = (
-      React.lazy(() => (
-        this.loadComponent(key, name)
-      ), 'default')
-    )
-
-    return <Route key={name} {...route}>
-      <COMP />
-    </Route>
+    return <Route key={name} {...route} component={component} />
   }
 }

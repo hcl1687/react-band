@@ -1,5 +1,5 @@
 export default (config) => {
   return {
-    disabled: true
+    disabled: false
   }
 }

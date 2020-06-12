@@ -2,12 +2,14 @@ import React, { Component } from 'react'
 import get from 'lodash/get'
 import { handleActions } from 'redux-actions'
 
-export default async ({ getComponent }) => {
+export default async (RB_CONTEXT) => {
+  const { getComponent } = RB_CONTEXT
   const utils = await getComponent('utils') || {}
   const { promisify, setDisplayName, wrapDisplayName } = utils
 
   return ({ decoratorsConfig }) => WrappedComponent => {
-    const localStore = get(decoratorsConfig, '@localStore')
+    const localStoreFactory = get(decoratorsConfig, '@localStore')
+    const localStore = localStoreFactory(RB_CONTEXT)
     const { actions = {}, state = {}, reducers = {} } = localStore
     class localStoreDeco extends Component {
       constructor (props, context) {

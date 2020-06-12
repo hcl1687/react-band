@@ -1,0 +1,10 @@
+{
+  "default": "Default",
+  "darkgray": "Dark Gray",
+  "en": "en",
+  "zh-CN": "zh-CN",
+  "head": "Head",
+  "theme": "Theme:",
+  "locale": "Locale:",
+  "toggleMenu": "Toggle Menu"
+}

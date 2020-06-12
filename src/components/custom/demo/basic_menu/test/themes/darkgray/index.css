@@ -1,0 +1,6 @@
+.test {
+  background-color: white;
+  & div {
+    color: blue;
+  }
+}
