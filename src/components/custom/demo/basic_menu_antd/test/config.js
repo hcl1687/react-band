@@ -7,7 +7,6 @@ export default (config) => {
     route: {
       path: '/test'
     },
-    lazy: false,
     // auth: {},
     decoratorsConfig: {
       '@localStore': localStore

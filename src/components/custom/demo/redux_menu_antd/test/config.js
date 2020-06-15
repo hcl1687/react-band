@@ -5,7 +5,6 @@ export default (config) => {
     route: {
       path: '/test'
     },
-    lazy: true,
     // auth: {},
     decoratorsConfig: {
       '@reduxStore': {

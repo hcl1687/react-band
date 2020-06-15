@@ -202,11 +202,9 @@ export default class RBCore {
     const compsConfig = this._compsConfig
     // load not lazy components
     await runFlow(compsConfig, undefined, (value, key) => {
-      if (value.lazy) {
-        return
+      if (value.lazy === false) {
+        return this.loadComponent(value.key, value.name)
       }
-
-      return this.loadComponent(value.key, value.name)
     })
   }
 
@@ -243,7 +241,7 @@ export default class RBCore {
   asyncRoute (config) {
     const { name, route = {}, lazy, key } = config
     let component
-    if (!lazy) {
+    if (lazy === false) {
       component = this._packedComps[name]
     } else {
       component = (

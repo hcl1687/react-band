@@ -1,6 +1,5 @@
 export default (config) => {
   return {
-    name: 'antd',
-    lazy: true
+    name: 'antd'
   }
 }
