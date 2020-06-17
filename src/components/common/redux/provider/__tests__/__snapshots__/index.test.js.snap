@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`common/redux/provider should render correctly 1`] = `
+<div>
+  @ini
+</div>
+`;
+
+exports[`common/redux/provider/production should render correctly in production env 1`] = `
+<div>
+  @ini
+</div>
+`;

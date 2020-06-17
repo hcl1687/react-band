@@ -13,7 +13,7 @@ export default async ({ getComponent }) => {
       theme: PropTypes.object.isRequired,
       LEFT_STATUS: PropTypes.bool.isRequired,
       HEAD_STATUS: PropTypes.bool.isRequired,
-      children: PropTypes.object.isRequired,
+      children: PropTypes.any,
       getNotification: PropTypes.func.isRequired,
       notify: PropTypes.func.isRequired
     }

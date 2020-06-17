@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`common/decorators/localStore/config should render correctly 1`] = `
+Object {
+  "name": "@localStore",
+  "type": "decorator",
+}
+`;

@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`common/decorators/layout/production should render correctly 1`] = `
+<div>
+  test
+</div>
+`;
+
+exports[`common/decorators/localStore should render correctly 1`] = `
+<div>
+  test
+</div>
+`;

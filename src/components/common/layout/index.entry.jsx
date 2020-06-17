@@ -5,7 +5,7 @@ export default () => {
   return class Layout extends Component {
     static propTypes = {
       theme: PropTypes.object.isRequired,
-      children: PropTypes.object.isRequired
+      children: PropTypes.any
     }
 
     render () {

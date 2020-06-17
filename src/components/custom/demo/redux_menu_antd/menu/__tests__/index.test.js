@@ -1,5 +1,5 @@
 describe('menu test suite', () => {
-  it('create menu', () => {
+  it('demo/redux_menu_antd/menu', () => {
     expect(true).toEqual(true)
   })
 })

@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`common/decorators/notice should render correctly 1`] = `<div />`;
+
+exports[`common/decorators/notice/production should render correctly in production env 1`] = `<div />`;

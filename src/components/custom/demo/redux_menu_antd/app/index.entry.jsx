@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 export default () => {
   return class App extends Component {
     static propTypes = {
-      children: PropTypes.object.isRequired
+      children: PropTypes.any
     }
 
     render () {

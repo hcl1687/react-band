@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`common/home should render correctly 1`] = `
+exports[`common/home/config should render correctly 1`] = `
 Object {
   "decorators": Array [
     "@i18n",

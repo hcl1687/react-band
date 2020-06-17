@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`common/constants should render correctly 1`] = `
+Object {
+  "en-GB": "en-GB",
+  "en-US": "en-US",
+  "es-MX": "es-MX",
+  "id": "id",
+  "zh-CN": "zh-CN",
+}
+`;

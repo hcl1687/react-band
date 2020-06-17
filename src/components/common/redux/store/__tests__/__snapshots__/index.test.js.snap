@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`common/redux/store should render correctly 1`] = `
+<div
+  class="test"
+>
+  0
+</div>
+`;
+
+exports[`common/redux/store/production should render correctly 1`] = `
+<div
+  class="test"
+>
+  1
+</div>
+`;

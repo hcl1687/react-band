@@ -11,7 +11,7 @@ export default async ({ getComponent }) => {
     static propTypes = {
       __: PropTypes.func.isRequired,
       theme: PropTypes.object.isRequired,
-      children: PropTypes.object.isRequired,
+      children: PropTypes.any,
       getNotification: PropTypes.func.isRequired,
       notify: PropTypes.func.isRequired
     }

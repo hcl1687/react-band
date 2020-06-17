@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { ReactReduxContext } from 'react-redux'
 
 export default async ({ getComponent }) => {
   const antd = await getComponent('antd')
@@ -13,6 +14,13 @@ export default async ({ getComponent }) => {
       items: PropTypes.array.isRequired,
       showLeft: PropTypes.func.isRequired,
       LEFT_STATUS: PropTypes.bool.isRequired
+    }
+
+    static contextType = ReactReduxContext
+
+    componentDidMount () {
+      const storeState = this.context.store.getState()
+      console.log(storeState)
     }
 
     handleDelete = (i) => {

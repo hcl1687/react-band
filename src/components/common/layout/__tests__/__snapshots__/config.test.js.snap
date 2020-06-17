@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`common/layout/config should render correctly 1`] = `
+Object {
+  "decorators": Array [
+    "@i18n",
+    "@theme",
+  ],
+  "name": "layout",
+}
+`;

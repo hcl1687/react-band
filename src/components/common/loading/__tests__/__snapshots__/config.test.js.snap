@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`common/loading/config should render correctly 1`] = `
+Object {
+  "decorators": Array [
+    "@i18n",
+    "@theme",
+  ],
+  "lazy": false,
+  "name": "loading",
+}
+`;

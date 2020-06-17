@@ -1,4 +1,4 @@
-describe('menu test suite', () => {
+describe('custom/as/menu', () => {
   it('create menu', () => {
     expect(true).toEqual(true)
   })

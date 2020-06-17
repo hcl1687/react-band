@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`common/layout should render correctly 1`] = `
+<div
+  class="test"
+>
+  hello
+</div>
+`;

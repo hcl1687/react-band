@@ -1,4 +1,4 @@
-import { mount, render } from 'enzyme'
+import { render, shallow } from 'enzyme'
 import React from 'react'
 import homeFactory from '../index.entry'
 
@@ -13,7 +13,7 @@ describe('common/home', () => {
 
   it('should invoke i18n translator', () => {
     const __ = jest.fn()
-    const wrapper = mount(
+    const wrapper = shallow(
       <Home __={__} />
     )
     expect(wrapper.find('div').length).toBe(1)

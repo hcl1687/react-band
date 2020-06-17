@@ -29,7 +29,9 @@
   },
   "globals": {
     "expect": false,
-    "jest": false
+    "jest": false,
+    "beforeAll": false,
+    "afterAll": false
   },
   "rules": {
     "camelcase": 0,

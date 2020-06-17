@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`common/decorators/i18n should render correctly 1`] = `
+<div>
+  Test
+</div>
+`;
+
+exports[`common/decorators/i18n/production should render correctly in production env 1`] = `
+<div>
+  Test
+</div>
+`;

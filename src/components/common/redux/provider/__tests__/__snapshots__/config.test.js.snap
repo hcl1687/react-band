@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`common/redux/provider/config should render correctly 1`] = `
+Object {
+  "name": "@reduxProvider",
+  "type": "decorator",
+}
+`;
