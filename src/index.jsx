@@ -7,5 +7,6 @@ const locale = parsed.locale || 'en'
 const theme = parsed.theme || 'default'
 RBCore.create({
   locale,
-  theme
+  theme,
+  exclude: /demo\/(basic|basic_menu|basic_menu_antd|default)/
 }).mount()

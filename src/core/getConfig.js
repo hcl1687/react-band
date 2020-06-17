@@ -14,6 +14,21 @@ configReq.keys().forEach(key => {
   CONFIGS[name] = module['default']
 })
 
+function isExclude (key, options = {}) {
+  const { exclude } = options
+  if (!exclude) {
+    return false
+  }
+
+  if (typeof exclude === 'function') {
+    return exclude(key)
+  }
+
+  if (Object.prototype.toString.call(exclude) === '[object RegExp]') {
+    return exclude.test(key)
+  }
+}
+
 export default function getConfig (options) {
   const parentKeys = {}
   // merge configs
@@ -58,7 +73,7 @@ export default function getConfig (options) {
     const config = MERGED_CONFIGS[key]
     config.key = key
     const name = config.name
-    if (name && !config.disabled) {
+    if (name && !config.disabled && !isExclude(key, options)) {
       NAME_BASED_CONFIG[name] = MERGED_CONFIGS[key]
     }
   })
