@@ -11,29 +11,36 @@ const dist = path.resolve(__dirname, './dist')
 const NODE_ENV = process.env.NODE_ENV
 const RB_ENV = process.env.RB_ENV
 
-const cssLoaders = [{
-  loader: 'style-loader'
-},
-{
-  loader: 'css-loader',
-  options: {
-    modules: {
-      mode: 'local',
-      localIdentName: '[local]--[hash:base64:5]'
+const cssLoadersFactory = function (isGlobal) {
+  return [{
+    loader: 'style-loader'
+  },
+  {
+    loader: 'css-loader',
+    options: {
+      modules: isGlobal ? {
+        mode: 'global'
+      } : {
+        mode: 'local',
+        localIdentName: '[local]--[hash:base64:5]'
+      }
     }
-  }
-},
-{
-  loader: 'postcss-loader',
-  options: {
-    plugins: [
-      require('postcss-import')(),
-      require('postcss-url')(),
-      require('postcss-nesting')(),
-      require('postcss-preset-env')
-    ]
-  }
-}]
+  },
+  {
+    loader: 'postcss-loader',
+    options: {
+      plugins: [
+        require('postcss-import')(),
+        require('postcss-url')(),
+        require('postcss-nesting')(),
+        require('postcss-preset-env')
+      ]
+    }
+  }]
+}
+
+const cssLoaders = cssLoadersFactory()
+const cssGlobalLoaders = cssLoadersFactory(true)
 
 module.exports = {
   entry: './src/index.jsx',
@@ -62,17 +69,16 @@ module.exports = {
         loader: 'babel-loader'
       }]
     }, {
-      test: /\.css$/,
+      test: /(?<!\.global)\.css$/,
       use: ExtractTextPlugin.extract({
         fallback: cssLoaders.shift().loader,
         use: cssLoaders
       })
     }, {
-      test: /\.css$/,
-      include: /node_modules\/antd/,
+      test: /\.global.css$/,
       use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: 'style-loader'
+        fallback: cssGlobalLoaders.shift().loader,
+        use: cssGlobalLoaders
       })
     }, {
       test: /\.(png|jpg|gif|svg|woff2?|eot|ttf)(\?.*)?$/,

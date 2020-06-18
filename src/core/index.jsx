@@ -73,16 +73,31 @@ export default class RBCore {
       this._themes[name] = this._themes[name] || {}
       this._themes[name][theme] = themeObj['default']
       return themeObj
-    }).catch(() => {
-      this._themes[name] = this._themes[name] || {}
-      this._themes[name][theme] = {}
-      return {}
     })
   }
 
   fetchTheme (path, theme) {
     path = path.replace(/^\.\//, '')
-    return import(`~/components/${path}/themes/${theme}/index.css`)
+    return Promise.all([
+      this.fetchLocalTheme(path, theme),
+      this.fetchGlobalTheme(path, theme)
+    ]).then(res => {
+      return res && res[0]
+    })
+  }
+
+  fetchLocalTheme (path, theme) {
+    return import(`~/components/${path}/themes/${theme}/index.css`).catch(() => {
+      const res = {}
+      res['default'] = {}
+      return res
+    })
+  }
+
+  fetchGlobalTheme (path, theme) {
+    return import(`~/components/${path}/themes/${theme}/index.global.css`).catch(() => {
+      return {}
+    })
   }
 
   async loadComponent (path, name) {
