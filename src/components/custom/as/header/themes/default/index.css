@@ -1,0 +1,65 @@
+.header {
+  height: 100%;
+  background-color: #15193b;
+  line-height: 88px;
+  overflow: hidden;
+}
+
+.left {
+  display: inline-block;
+  width: 328px;
+  height: 88px;
+  background: url(./images/pic_navbar.png) no-repeat;
+}
+
+.menu {
+  display: inline-block;
+  width: 56px;
+  height: 88px;
+  cursor: pointer;
+  padding-left: 18px;
+}
+
+.menuIcon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+  vertical-align: middle;
+}
+
+.menuShow {
+  background-image: url(./images/icon_sidebar_collapse.png)
+}
+
+.menuHide {
+  background-image: url(./images/icon_sidebar_expand.png)
+}
+
+.logo {
+  display: inline-block;
+  width: 148px;
+  height: 62px;
+  background-image: url(./images/Logo.png);
+  background-size: cover;
+  vertical-align: middle;
+}
+
+.right {
+  float: right;
+  margin-right: 20px;
+}
+
+.themeType {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.locale {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.login {
+  display: inline-block;
+}

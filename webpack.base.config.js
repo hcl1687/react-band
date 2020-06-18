@@ -1,5 +1,6 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const webpack = require('webpack')
 const path = require('path')
 const fs = require('fs')
 const pkgPath = path.resolve(process.cwd(), 'package.json')
@@ -7,6 +8,8 @@ const fileContent = fs.readFileSync(pkgPath, 'utf-8')
 const pkg = JSON.parse(fileContent)
 const src = path.resolve(__dirname, './src')
 const dist = path.resolve(__dirname, './dist')
+const NODE_ENV = process.env.NODE_ENV
+const RB_ENV = process.env.RB_ENV
 
 const cssLoaders = [{
   loader: 'style-loader'
@@ -89,6 +92,10 @@ module.exports = {
     }
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
+      'process.env.RB_ENV': JSON.stringify(RB_ENV)
+    }),
     new ExtractTextPlugin('index.css'),
     new HtmlWebpackPlugin({
       template: './template/index.ejs',
