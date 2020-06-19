@@ -1,7 +1,9 @@
 export default [{
   path: '/',
-  name: 'home'
+  name: 'home',
+  icon: 'iconicon_Main-menu_My-Activities'
 }, {
   path: '/test',
-  name: 'test'
+  name: 'test',
+  icon: 'iconicon_Main-menu_My-Assignments'
 }]

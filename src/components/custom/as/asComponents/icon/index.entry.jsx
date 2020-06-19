@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
+import { createFromIconfontCN } from '@ant-design/icons'
 
-export default async (RB_CONTEXT) => {
-  const { getComponent } = RB_CONTEXT
-  const antd = await getComponent('antd')
-  const { Icon } = antd
-  const IconFont = Icon.createFromIconfontCN({
-    scriptUrl: '//at.alicdn.com/t/font_1447108_jncuh5zb85a.js' // 阿里巴巴图标引用地址
-  })
+const IconFont = createFromIconfontCN({
+  scriptUrl: [
+    '//at.alicdn.com/t/font_1447108_jncuh5zb85a.js'
+  ] // 阿里巴巴图标引用地址
+})
 
+export default (RB_CONTEXT) => {
   return class AsICON extends Component {
     static propTypes = {
       className: PropTypes.string,

@@ -17,9 +17,19 @@
   padding: 10px;
   width: 300px;
   background: lightskyblue;
+  transition: all .3s ease-out;
 }
 
 .right {
   flex: 1;
   padding: 10px;
+  transition: all .3s ease-out;
+}
+
+.collapsed {
+  transform: translate(-100%);
+}
+
+.expand {
+  margin-left: -300px;
 }

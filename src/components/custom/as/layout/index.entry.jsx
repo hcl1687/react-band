@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import classnames from 'classnames'
 
 export default async ({ getComponent }) => {
   const Menu = await getComponent('menu')
@@ -23,17 +24,22 @@ export default async ({ getComponent }) => {
     render () {
       const { LEFT_STATUS, HEAD_STATUS, theme, getNotification, children } = this.props
       const headDisplay = HEAD_STATUS ? 'block' : 'none'
-      const leftDisplay = LEFT_STATUS ? 'block' : 'none'
+      const leftClassName = classnames(theme.left, {
+        [theme.collapsed]: !LEFT_STATUS
+      })
+      const rightClassName = classnames(theme.right, {
+        [theme.expand]: !LEFT_STATUS
+      })
 
       return <div className={theme.layout}>
         <div className={theme.header} style={{ display: headDisplay }}>
           <Header />
         </div>
         <div className={theme.content}>
-          <div className={theme.left} style={{ display: leftDisplay }}>
+          <div className={leftClassName}>
             <Menu {...getNotification('menu')} />
           </div>
-          <div className={theme.right}>
+          <div className={rightClassName}>
             {children}
           </div>
         </div>
