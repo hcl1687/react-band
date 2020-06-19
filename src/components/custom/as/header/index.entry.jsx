@@ -7,6 +7,7 @@ import userFactory from './factories/user'
 export default async (RB_CONTEXT) => {
   const { getComponent, options } = RB_CONTEXT
   const antd = await getComponent('antd')
+  const Login = await getComponent('login')
   const User = await userFactory(RB_CONTEXT)
   const { Button, Dropdown, Menu, Select } = antd
   const { Option } = Select
@@ -16,7 +17,10 @@ export default async (RB_CONTEXT) => {
       theme: PropTypes.object.isRequired,
       showLeft: PropTypes.func.isRequired,
       LEFT_STATUS: PropTypes.bool.isRequired,
-      AUTH: PropTypes.object
+      AUTH: PropTypes.object,
+      logout: PropTypes.func.isRequired,
+      getNotification: PropTypes.func.isRequired,
+      notify: PropTypes.func.isRequired
     }
 
     static defaultProps = {
@@ -40,11 +44,23 @@ export default async (RB_CONTEXT) => {
       location.search = queryString.stringify(parsed)
     }
 
+    handleLogin = () => {
+      const { notify } = this.props
+      notify('loginModal', 'show', {
+        visible: true
+      })
+    }
+
+    handleLogout = () => {
+      const { logout } = this.props
+      logout && logout()
+    }
+
     createLogin () {
       const { AUTH = {}, __, theme } = this.props
       if (!AUTH.uid) {
         // not login, show login button
-        return <Button>
+        return <Button onClick={this.handleLogin}>
           {__('login')}
         </Button>
       }
@@ -52,7 +68,7 @@ export default async (RB_CONTEXT) => {
       // show user info
       const menu = <Menu>
         <Menu.Item>
-          <div className={theme.logout}>
+          <div className={theme.logout} onClick={this.handleLogout}>
             <span className={theme.logoutImg} />
             <span className={theme.logoutTxt}>
               {__('logout')}
@@ -62,12 +78,14 @@ export default async (RB_CONTEXT) => {
       </Menu>
 
       return <Dropdown overlay={menu}>
-        <User {...this.props} />
+        <div>
+          <User {...this.props} />
+        </div>
       </Dropdown>
     }
 
     render () {
-      const { theme, LEFT_STATUS, __ } = this.props
+      const { theme, LEFT_STATUS, __, getNotification } = this.props
       const menuIconClass = classnames(theme.menuIcon, {
         [theme.menuShow]: LEFT_STATUS,
         [theme.menuHide]: !LEFT_STATUS
@@ -106,6 +124,7 @@ export default async (RB_CONTEXT) => {
           <div className={theme.login}>
             {this.createLogin()}
           </div>
+          <Login {...getNotification('loginModal')} />
         </div>
       </div>
     }

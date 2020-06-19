@@ -1,0 +1,10 @@
+{
+  "InvalidUserName": "用户名或密码无效!",
+  "InvalidPassword": "用户名或密码无效!",
+  "loginTitle": "欢迎",
+  "userName": "用户名",
+  "nameTip": "请输入你的名字!",
+  "password": "密码",
+  "passwordTip": "请输入你的密码!",
+  "submit": "提交"
+}

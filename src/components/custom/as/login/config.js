@@ -1,15 +1,11 @@
-export default (config) => {
+export default () => {
   return {
-    name: 'header',
+    name: 'login',
     decoratorsConfig: {
       '@reduxStore': {
-        layoutStore: {
-          actions: ['showLeft'],
-          state: ['LEFT_STATUS']
-        },
         authStore: {
           state: ['AUTH'],
-          actions: ['logout']
+          actions: ['login']
         }
       }
     },

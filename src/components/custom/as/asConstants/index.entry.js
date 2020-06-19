@@ -1,5 +1,5 @@
 const ENV = require(`./env/${process.env.RB_ENV}`)
-const LOCAL_STORAGE_PREFIX = 'AB_'
+const LOCAL_STORAGE_PREFIX = 'AS_'
 const ASSETS_PREFIX = {
   image: '/cudos/activity/images/',
   sound: '/cudos/activity/sounds/',

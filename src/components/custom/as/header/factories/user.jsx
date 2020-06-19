@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 export default async function (RB_CONTEXT = {}) {
-  const { getComponent } = RB_CONTEXT
+  const { getComponent, options = {} } = RB_CONTEXT
+  const { theme: themeType } = options
   const asUtils = await getComponent('asUtils')
   const { getUrlByKey } = asUtils
 
@@ -17,7 +18,7 @@ export default async function (RB_CONTEXT = {}) {
     }
 
     handleError = (e) => {
-      e.target.src = this.getDefaultSrc()
+      // e.target.src = this.getDefaultSrc()
     }
 
     getDefaultSrc () {
@@ -28,7 +29,7 @@ export default async function (RB_CONTEXT = {}) {
         src = 'img_Teacher.png'
       }
 
-      return src
+      return `themes/${themeType}/${src}`
     }
 
     render () {

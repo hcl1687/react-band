@@ -1,5 +1,6 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
 const path = require('path')
 const fs = require('fs')
@@ -8,6 +9,7 @@ const fileContent = fs.readFileSync(pkgPath, 'utf-8')
 const pkg = JSON.parse(fileContent)
 const src = path.resolve(__dirname, './src')
 const dist = path.resolve(__dirname, './dist')
+const staticDir = path.resolve(__dirname, './static')
 const NODE_ENV = process.env.NODE_ENV
 const RB_ENV = process.env.RB_ENV
 
@@ -107,6 +109,11 @@ module.exports = {
       template: './template/index.ejs',
       title: `${pkg.name} ${pkg.description}`,
       filename: './index.html'
+    }),
+    new CopyWebpackPlugin({
+      patterns: [{
+        from: staticDir
+      }]
     })
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "InvalidUserName": "Invalid user name or password!",
+  "InvalidPassword": "Invalid user name or password!",
+  "loginTitle": "Welcome",
+  "userName": "User Name",
+  "nameTip": "Please input your username!",
+  "password": "Password",
+  "passwordTip": "Please input your password!",
+  "submit": "Submit"
+}

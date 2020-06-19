@@ -63,3 +63,23 @@
 .login {
   display: inline-block;
 }
+
+.user {
+  height: 88px;
+  cursor: pointer;
+}
+
+.avatar {
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  border-radius: 48px;
+  background-size: contain;
+}
+
+.name {
+  display: inline-block;
+  font-size: 16px;
+  margin: 0 16px 0 10px;
+  color: white;
+}

@@ -40,7 +40,9 @@ export default async ({ getComponent }) => {
     const mapDispatchToProps = dispatch => {
       return Object.keys(selectedActions).reduce((obj, key) => {
         obj[key] = (...args) => {
-          dispatch(selectedActions[key](...args))
+          const action = selectedActions[key](...args)
+          dispatch(action)
+          return Promise.resolve(action.payload)
         }
         return obj
       }, {})
