@@ -46,7 +46,8 @@ export default async ({ getComponent }) => {
 
       this.setState({
         visible: false,
-        loading: false
+        loading: false,
+        errMsg: ''
       })
     }
 

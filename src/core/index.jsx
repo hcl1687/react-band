@@ -54,17 +54,7 @@ export default class RBCore {
 
   fetchI18n (path, locale) {
     path = path.replace(/^\.\//, '')
-    return this.fetchI18nJSON(path, locale).catch(() => {
-      return this.fetchI18nJS(path, locale)
-    })
-  }
-
-  fetchI18nJSON (path, locale) {
     return import(`~/components/${path}/i18n/${locale}.json`)
-  }
-
-  fetchI18nJS (path, locale) {
-    return import(`~/components/${path}/i18n/${locale}.js`)
   }
 
   loadTheme (path, name) {
