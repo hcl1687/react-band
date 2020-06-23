@@ -2,11 +2,13 @@
   & :global(.content) {
     display: flex;
   }
+
   & :global(.left) {
     padding: 10px;
     width: 300px;
     background: lightskyblue;
   }
+
   & :global(.right) {
     flex: 1;
     padding: 10px;

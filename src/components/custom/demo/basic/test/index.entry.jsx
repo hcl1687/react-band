@@ -17,7 +17,7 @@ export default async ({ getComponent }) => {
     render () {
       const { __, theme } = this.props
       return <div className={theme.test}>
-        <div>{__('test')}</div>
+        <div className={theme.content}>{__('test')}</div>
         <button onClick={this.handleClick} >{__('toHome')}</button>
       </div>
     }

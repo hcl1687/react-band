@@ -1,6 +1,7 @@
 .home {
-    background-color: white;
-    & div {
-      color: blue;
-    }
-  }
+  background-color: white;
+}
+
+.content {
+  color: blue;
+}

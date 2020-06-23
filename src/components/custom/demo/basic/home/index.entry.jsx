@@ -5,6 +5,7 @@ export default () => {
   return class Home extends Component {
     static propTypes = {
       __: PropTypes.func.isRequired,
+      theme: PropTypes.object.isRequired,
       history: PropTypes.object.isRequired
     }
 
@@ -14,9 +15,9 @@ export default () => {
     }
 
     render () {
-      const { __ } = this.props
-      return <div>
-        <div>{__('home')}</div>
+      const { __, theme } = this.props
+      return <div className={theme.home}>
+        <div className={theme.content}>{__('home')}</div>
         <button onClick={this.handleClick}>{__('toTest')}</button>
       </div>
     }

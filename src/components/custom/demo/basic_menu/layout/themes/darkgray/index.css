@@ -1,17 +1,18 @@
-.layout {
-  & :global(.header) {
-    height: 50px;
-  }
-  & :global(.content) {
-    display: flex;
-  }
-  & :global(.left) {
-    padding: 10px;
-    width: 300px;
-    background: #f0f0f0;
-  }
-  & :global(.right) {
-    flex: 1;
-    padding: 10px;
-  }
+.header {
+  height: 50px;
+}
+
+.content {
+  display: flex;
+}
+
+.left {
+  padding: 10px;
+  width: 300px;
+  background: #f0f0f0;
+}
+
+.right {
+  flex: 1;
+  padding: 10px;
 }

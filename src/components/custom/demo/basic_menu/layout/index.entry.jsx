@@ -39,7 +39,7 @@ export default async ({ getComponent }) => {
       const locale = parsed.locale || 'en'
 
       return <div className={theme.layout}>
-        <div className='header'>
+        <div className={theme.header}>
           <span>{__('head')}</span>
           <button onClick={this.handleToggleMenu}>{__('toggleMenu')}</button>
           <br />
@@ -54,11 +54,11 @@ export default async ({ getComponent }) => {
             <option value='zh-CN'>{__('zh-CN')}</option>
           </select>
         </div>
-        <div className='content'>
-          <div className='left'>
+        <div className={theme.content}>
+          <div className={theme.left}>
             <Menu {...getNotification('menu')} />
           </div>
-          <div className='right'>
+          <div className={theme.right}>
             {children}
           </div>
         </div>

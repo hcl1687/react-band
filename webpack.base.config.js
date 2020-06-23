@@ -35,8 +35,9 @@ const cssLoadersFactory = function (isGlobal) {
       plugins: [
         require('postcss-import')(),
         require('postcss-url')(),
-        require('postcss-nesting')(),
-        require('postcss-preset-env')
+        require('postcss-preset-env'),
+        require('stylelint')({ failOnError: true }),
+        require('postcss-reporter')({ clearReportedMessages: true })
       ]
     }
   }]
