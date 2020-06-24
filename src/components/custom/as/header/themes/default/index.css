@@ -29,11 +29,11 @@
 }
 
 .menuShow {
-  background-image: url(./images/icon_sidebar_collapse.png)
+  background-image: url(./images/icon_sidebar_collapse.png);
 }
 
 .menuHide {
-  background-image: url(./images/icon_sidebar_expand.png)
+  background-image: url(./images/icon_sidebar_expand.png);
 }
 
 .logo {

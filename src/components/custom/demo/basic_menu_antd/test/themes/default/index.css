@@ -1,6 +1,7 @@
 .test {
   background-color: white;
-  & div {
+
+  div {
     color: red;
   }
 }

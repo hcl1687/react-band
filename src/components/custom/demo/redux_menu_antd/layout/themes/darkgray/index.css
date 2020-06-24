@@ -1,13 +1,15 @@
 .layout {
-  & :global(.content) {
+  :global(.content) {
     display: flex;
   }
-  & :global(.left) {
+
+  :global(.left) {
     padding: 10px;
     width: 300px;
     background: #f0f0f0;
   }
-  & :global(.right) {
+
+  :global(.right) {
     flex: 1;
     padding: 10px;
   }

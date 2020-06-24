@@ -4,12 +4,13 @@ import PropTypes from 'prop-types'
 export default () => {
   return class Home extends Component {
     static propTypes = {
-      __: PropTypes.func.isRequired
+      __: PropTypes.func.isRequired,
+      theme: PropTypes.object.isRequired
     }
 
     render () {
-      const { __ } = this.props
-      return <div>{__('home')}</div>
+      const { __, theme } = this.props
+      return <div className={theme.home}>{__('home')}</div>
     }
   }
 }

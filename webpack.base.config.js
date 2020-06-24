@@ -2,6 +2,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const StyleLintPlugin = require('stylelint-webpack-plugin')
 const webpack = require('webpack')
 const path = require('path')
 const fs = require('fs')
@@ -30,16 +31,7 @@ const cssLoadersFactory = function (isGlobal) {
     }
   },
   {
-    loader: 'postcss-loader',
-    options: {
-      plugins: [
-        require('postcss-import')(),
-        require('postcss-url')(),
-        require('postcss-preset-env'),
-        require('stylelint')({ failOnError: true }),
-        require('postcss-reporter')({ clearReportedMessages: true })
-      ]
-    }
+    loader: 'less-loader'
   }]
 }
 
@@ -111,6 +103,13 @@ module.exports = {
       template: './template/index.ejs',
       title: `${pkg.name} ${pkg.description}`,
       filename: './index.html'
+    }),
+    new StyleLintPlugin({
+      context: src,
+      files: '**/*.css',
+      failOnError: false,
+      quiet: true,
+      syntax: 'less'
     }),
     new ExtractTextPlugin('index.css'),
     new CopyWebpackPlugin({

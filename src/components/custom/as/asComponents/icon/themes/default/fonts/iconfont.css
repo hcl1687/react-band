@@ -1,3 +1,4 @@
+/* stylelint-disable */
 @font-face {font-family: "iconfont";
   src: url('iconfont.eot?t=1589537529704'); /* IE9 */
   src: url('iconfont.eot?t=1589537529704#iefix') format('embedded-opentype'), /* IE6-IE8 */
@@ -522,4 +523,4 @@
 .iconicon_navbar_join-an-activity:before {
   content: "\e619";
 }
-
+/* stylelint-enable */
