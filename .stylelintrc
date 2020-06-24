@@ -1,5 +1,5 @@
 {
-  "extends": ["stylelint-config-standard"],
+  "extends": ["stylelint-config-standard", "stylelint-config-recess-order"],
   "rules": {
     "property-no-unknown": [
       true,

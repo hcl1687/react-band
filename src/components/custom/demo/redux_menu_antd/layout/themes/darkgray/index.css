@@ -4,8 +4,8 @@
   }
 
   :global(.left) {
-    padding: 10px;
     width: 300px;
+    padding: 10px;
     background: #f0f0f0;
   }
 

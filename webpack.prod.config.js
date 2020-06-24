@@ -1,11 +1,16 @@
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const baseConfig = require('./webpack.base.config')
 const merge = require('webpack-merge')
 
-module.exports = merge(baseConfig, {
+const config = merge(baseConfig, {
   mode: 'production',
   optimization: {
     minimizer: [new TerserPlugin()]
     // minimize: false
   }
 })
+
+config.plugins.unshift(new CleanWebpackPlugin())
+
+module.exports = config

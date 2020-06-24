@@ -10,5 +10,9 @@ RBCore.create({
   ...config,
   locale,
   theme,
-  exclude: /demo\//
+  exclude: key => {
+    if (key.includes('/demo')) {
+      return true
+    }
+  }
 }).mount()
