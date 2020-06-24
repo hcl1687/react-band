@@ -1,13 +1,18 @@
 import React, { Component } from 'react'
+import IntlMessageFormat from 'intl-messageformat'
 
-export default async ({ getComponent }) => {
+export default async ({ getComponent, options }) => {
   const utils = await getComponent('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
+  const { locale } = options
 
   return ({ i18n }) => WrappedComponent => {
     class i18nDeco extends Component {
-      __ = (key) => {
-        return i18n[key] || key
+      __ = (key, values) => {
+        if (!i18n[key]) {
+          return key
+        }
+        return new IntlMessageFormat(i18n[key], locale).format(values)
       }
 
       render () {

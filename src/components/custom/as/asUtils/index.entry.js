@@ -1,4 +1,5 @@
 import getRequestProvider from './request'
+import moment from 'moment'
 
 export default async (RB_CONTEXT) => {
   const { getComponent } = RB_CONTEXT
@@ -72,6 +73,15 @@ export default async (RB_CONTEXT) => {
     return user
   }
 
+  function getDateText (datetime) {
+    const d = moment(datetime)
+    if (d.unix() === 0) {
+      return ''
+    }
+
+    return moment(datetime).format('MM/DD/YYYY hh:mm:ss A')
+  }
+
   return {
     getUrlByKey,
     getLocalStorageItem,
@@ -79,6 +89,7 @@ export default async (RB_CONTEXT) => {
     removeLocalStorageItem,
     request,
     safeParse,
-    getUser
+    getUser,
+    getDateText
   }
 }

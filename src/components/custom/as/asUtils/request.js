@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 class RequestClient {
-  constructor (iReqGlobal, iResGlobal, resHandler = ({ data }) => data) {
+  constructor (iReqGlobal, iResGlobal, resHandler = (data) => data) {
     this.iReqGlobal = iReqGlobal
     this.iResGlobal = iResGlobal
     this.resHandler = resHandler

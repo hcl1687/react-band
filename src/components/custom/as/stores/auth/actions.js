@@ -37,8 +37,9 @@ function getFuns (asUtils, asConstants) {
     return request({
       method: 'get',
       url: `${ENV.JSA_API_DOMAIN}/authenticate/${email}`
-    }).then(response => {
-      response = response.info
+    }).then(res => {
+      const data = res.data || {}
+      const response = data.info
       const parser = new DOMParser()
       const doc = parser.parseFromString(response, 'application/xml')
       const status = doc.getElementsByTagName('LoginStatus')[0].textContent
