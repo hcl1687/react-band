@@ -34,30 +34,11 @@ function getFuns (asUtils, asConstants) {
   }
 
   const jsLogin = (email, password) => {
-    const data = `<?xml version="1.0" encoding="utf-8"?>
-    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-      <soap:Body>
-        <Authenticate xmlns="http://api.jumpstart.com/">
-          <apiKey>BDD36F3E-058F-4167-8F7B-77616C1FB3F6</apiKey>
-          <AuthenticationData>
-            <UserName>${email}</UserName>
-            <Password>${password}</Password>
-            <Locale>en-US</Locale>
-          </AuthenticationData>
-        </Authenticate>
-      </soap:Body>
-    </soap:Envelope>`
-
     return request({
-      method: 'post',
-      url: `${ENV.JSA_API_DOMAIN}/common/v5/AuthenticationWebService.asmx?op=Authenticate`,
-      headers: {
-        'content-type': 'text/xml'
-      },
-      data
+      method: 'get',
+      url: `${ENV.JSA_API_DOMAIN}/authenticate/${email}`
     }).then(response => {
+      response = response.info
       const parser = new DOMParser()
       const doc = parser.parseFromString(response, 'application/xml')
       const status = doc.getElementsByTagName('LoginStatus')[0].textContent
@@ -66,21 +47,13 @@ function getFuns (asUtils, asConstants) {
         const apiToken = doc.getElementsByTagName('ApiToken')[0].textContent
         const userName = doc.getElementsByTagName('UserName')[0].textContent
         const expiryDate = doc.getElementsByTagName('ExpiryDate')[0].textContent
-        let cudosToken = doc.getElementsByTagName('CudosToken')[0].textContent
+        const cudosToken = doc.getElementsByTagName('CudosToken')[0].textContent
         const userID = doc.getElementsByTagName('UserID')[0].textContent
         const role = doc.getElementsByTagName('Role')[0].textContent
 
-        // This should come from the response - temp for now
-        if (cudosToken === null || cudosToken === undefined || cudosToken.length === 0) {
-          cudosToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJUZXN0VXNlciIsImp0aSI6IjRmMGVhOWQ0LWNiY2QtNGUyOC1hNWUzLWVhNzYzYzllNTlkMiIsImxvY2FsZSI6ImVuLVVTIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJUZXN0VXNlciIsImFwcGlkIjoiNzc1QkMxRjEtRTA2NC1FQzhFLThBNDMtQzY0NzdERjlEMDU2IiwidXNlcmlkIjoiOWI1YmRlYTQtMjljMi00MmVmLTg5ZjktMTk0MWU2YjQ1YmMxIiwicGlkIjoiYzIwZTRjNDYtZDI0Ni00N2QyLWFmNTUtOGFmNDRkMDdhODg2IiwiZXhwIjoxNTYwMjYwNzkyLCJpc3MiOiJIdHRwczovL0N1RE9TLkp1bXBTdGFydC5jb20iLCJhdWQiOiJIdHRwczovL0N1RE9TLkp1bXBTdGFydC5jb20ifQ.JSVRORmOBYJNmzCkM-cYCFpLgSeZVuT55ggERC8oE28'
-          console.log('CuDOS Token: ' + cudosToken)
-        }
         const req = request({
-          method: 'post',
-          url: `${ENV.SERVER_WEBAPI}/auth/v2/Token/${role}`,
-          headers: {
-            Authorization: `Bearer ${cudosToken}`
-          }
+          method: 'get',
+          url: `${ENV.SERVER_WEBAPI}/${role}/${userID}`
         })
         return req.then((userInfo) => {
           const userType = get(userInfo, 'userType', '')
