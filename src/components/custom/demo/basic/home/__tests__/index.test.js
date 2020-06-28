@@ -10,7 +10,11 @@ describe('demo/basic/home', () => {
     const his = {
       push: key => key
     }
-    const wrapper = render(<Home __={__} history={his} />)
+    const theme = {
+      home: '',
+      content: ''
+    }
+    const wrapper = render(<Home __={__} history={his} theme={theme} />)
     expect(wrapper).toMatchSnapshot()
   })
 
@@ -19,8 +23,12 @@ describe('demo/basic/home', () => {
     const his = {
       push: jest.fn()
     }
+    const theme = {
+      home: '',
+      content: ''
+    }
     const wrapper = mount(
-      <Home __={__} history={his} />
+      <Home __={__} history={his} theme={theme} />
     )
     expect(wrapper.find('div').length).toBe(2)
     expect(wrapper.find('button').length).toBe(1)

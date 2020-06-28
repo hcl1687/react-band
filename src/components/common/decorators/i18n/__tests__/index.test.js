@@ -9,6 +9,9 @@ const context = {
     if (key === 'utils') {
       return utils
     }
+  },
+  options: {
+    locale: 'en'
   }
 }
 function Test ({ __ }) {
@@ -24,6 +27,7 @@ describe('common/decorators/i18n', () => {
     const i18n = {
       test: 'Test'
     }
+
     const TestWithI18nDeco = I18nDeco({ i18n })(Test)
     const wrapper = render(<TestWithI18nDeco />)
     expect(wrapper).toMatchSnapshot()

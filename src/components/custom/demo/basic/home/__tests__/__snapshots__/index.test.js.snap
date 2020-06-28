@@ -1,8 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`demo/basic/home should render correctly 1`] = `
-<div>
-  <div>
+<div
+  class=""
+>
+  <div
+    class=""
+  >
     home
   </div>
   <button>
