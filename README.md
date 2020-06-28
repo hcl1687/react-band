@@ -1,22 +1,36 @@
 # react-band
 A simple react scaffold with webpack, babel, jest, enzyme and puppeteer.
 
-# install
+# Document
+
+[en](./en.md)
+
+[zh-CN](./zh-CN.md)
+
+# Install
 npm install
 
-# lint
+# Lint
 npm run lint
 
-# unit test
+npm run stylelint
+
+# Unit test
 npm run test
 
-# run
+npm run test:update
+
+npm run test:coverage
+
+# Run
 npm run start
+
+npm run start:mock
 
 visit http://localhost:3000
 
-# compile
-npm run compile
+# Build
+npm run build
 
 ## License
 [MIT](https://opensource.org/licenses/mit-license.php)
