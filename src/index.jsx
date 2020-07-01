@@ -9,10 +9,5 @@ const theme = parsed.theme || 'default'
 RBCore.create({
   ...config,
   locale,
-  theme,
-  exclude: key => {
-    if (key.includes('/demo')) {
-      return true
-    }
-  }
+  theme
 }).mount()
