@@ -4,7 +4,6 @@ export default (config) => {
     route: {
       path: '/test'
     },
-    // auth: {},
     decorators: ['@i18n', '@theme', '@layout']
   }
 }

@@ -5,7 +5,6 @@ export default (config) => {
       path: '/',
       exact: true
     },
-    // auth: {},
     decorators: ['@i18n', '@theme', '@layout']
   }
 }

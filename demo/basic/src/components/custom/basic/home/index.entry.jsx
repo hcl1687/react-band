@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-export default () => {
+export default (RB_CONTEXT) => {
   return class Home extends Component {
     static propTypes = {
       __: PropTypes.func.isRequired,
