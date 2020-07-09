@@ -14,11 +14,11 @@ const DEFAULT_OPTIONS = {
 export default class RBCore {
   constructor (options = {}) {
     this._options = Object.assign({}, DEFAULT_OPTIONS, options)
-    this._comps = {}
+    this._modules = {}
     this._i18ns = {}
     this._themes = {}
-    this._packedComps = {}
-    this._compsConfig = getConfig(this._options)
+    this._packedModules = {}
+    this._modulesConfig = getConfig(this._options)
     this._routes = this.createRoute()
   }
 
@@ -29,13 +29,13 @@ export default class RBCore {
   getContext () {
     return {
       options: this._options,
-      comps: this._comps,
+      modules: this._modules,
       i18ns: this._i18ns,
       themes: this._themes,
-      packedComps: this._packedComps,
-      compsConfig: this._compsConfig,
+      packedModules: this._packedModules,
+      modulesConfig: this._modulesConfig,
       routes: this._routes,
-      getComponent: this.getComponent
+      getModule: this.getModule
     }
   }
 
@@ -54,7 +54,7 @@ export default class RBCore {
 
   fetchI18n (path, locale) {
     path = path.replace(/^\.\//, '')
-    return import(`~/components/${path}/i18n/${locale}.json`)
+    return import(`~/modules/${path}/i18n/${locale}.json`)
   }
 
   loadTheme (path, name) {
@@ -77,7 +77,7 @@ export default class RBCore {
   }
 
   fetchLocalTheme (path, theme) {
-    return import(`~/components/${path}/themes/${theme}/index.css`).catch(() => {
+    return import(`~/modules/${path}/themes/${theme}/index.css`).catch(() => {
       const res = {}
       res['default'] = {}
       return res
@@ -85,56 +85,55 @@ export default class RBCore {
   }
 
   fetchGlobalTheme (path, theme) {
-    return import(`~/components/${path}/themes/${theme}/index.global.css`).catch(() => {
+    return import(`~/modules/${path}/themes/${theme}/index.global.css`).catch(() => {
       return {}
     })
   }
 
-  async loadComponent (path, name) {
+  async loadModule (path, name) {
     // load i18n
     const i18nPromise = this.loadI18n(path, name)
     // load theme
     const themePromise = this.loadTheme(path, name)
-    // load component
-    const compPromise = this.fetchComponent(path)
+    // load module
+    const modulePromise = this.fetchModule(path)
 
-    const res = await Promise.all([compPromise, i18nPromise, themePromise])
-    const module = res[0]
-    const comp = module['default']
+    const res = await Promise.all([modulePromise, i18nPromise, themePromise])
+    const moduleFactory = res[0]['default']
     const RB_CONTEXT = this.getContext()
-    this._comps[name] = await comp(RB_CONTEXT)
+    this._modules[name] = await moduleFactory(RB_CONTEXT)
 
     const ret = []
-    ret['default'] = await this.packComponent(name)
+    ret['default'] = await this.packModule(name)
     return ret
   }
 
-  fetchComponent (path) {
+  fetchModule (path) {
     path = path.replace(/^\.\//, '')
     return import(
-      `~/components/${path}/index.entry`
+      `~/modules/${path}/index.entry`
     )
   }
 
-  async packComponent (name) {
+  async packModule (name) {
     const { locale, theme } = this._options
-    let comp = this._comps[name]
+    let module = this._modules[name]
     const i18n = this._i18ns[name][locale]
     const themeObj = this._themes[name][theme]
     const RB_CONTEXT = this.getContext()
 
-    const config = this._compsConfig[name]
+    const config = this._modulesConfig[name]
     if (config.type !== 'decorator') {
       // get decorators from config
       const { decorators = [] } = config
       for (let i = 0; i < decorators.length; i++) {
         const deco = decorators[i]
-        const decoComp = await this.getComponent(deco)
-        const decoConfig = this._compsConfig[deco]
+        const decoModule = await this.getModule(deco)
+        const decoConfig = this._modulesConfig[deco]
         const decoI18n = this._i18ns[deco][locale]
         const decoThemeObj = this._themes[deco][theme]
-        if (decoComp) {
-          comp = await decoComp({
+        if (decoModule) {
+          module = await decoModule({
             ...config,
             i18n,
             theme: themeObj
@@ -142,36 +141,36 @@ export default class RBCore {
             ...decoConfig,
             i18n: decoI18n,
             theme: decoThemeObj
-          }, RB_CONTEXT)(comp)
+          }, RB_CONTEXT)(module)
         }
       }
     }
 
-    this._packedComps[name] = comp
+    this._packedModules[name] = module
 
-    return comp
+    return module
   }
 
-  getComponent = async (name) => {
-    const config = this._compsConfig[name]
+  getModule = async (name) => {
+    const config = this._modulesConfig[name]
     if (!config) {
       return
     }
 
-    if (this._packedComps[name]) {
-      return this._packedComps[name]
+    if (this._packedModules[name]) {
+      return this._packedModules[name]
     }
 
-    await this.loadComponent(config.key, name)
-    return this._packedComps[name]
+    await this.loadModule(config.key, name)
+    return this._packedModules[name]
   }
 
   createRoute () {
-    const compsConfig = this._compsConfig
+    const modulesConfig = this._modulesConfig
     let homeConfig = {}
     let notFoundConfig = {}
-    Object.keys(compsConfig).forEach(name => {
-      const config = compsConfig[name]
+    Object.keys(modulesConfig).forEach(name => {
+      const config = modulesConfig[name]
       const { route } = config
       if (route && route.path === '/') {
         homeConfig = config
@@ -180,7 +179,7 @@ export default class RBCore {
       }
     })
 
-    const routes = Object.keys(compsConfig).map(name => compsConfig[name]).filter(config => {
+    const routes = Object.keys(modulesConfig).map(name => modulesConfig[name]).filter(config => {
       if (!config.route) {
         return false
       }
@@ -203,12 +202,12 @@ export default class RBCore {
     return routes
   }
 
-  async loadSyncComponent () {
-    const compsConfig = this._compsConfig
-    // load not lazy components
-    await runFlow(compsConfig, undefined, (value, key) => {
+  async loadSyncModule () {
+    const modulesConfig = this._modulesConfig
+    // load not lazy modules
+    await runFlow(modulesConfig, undefined, (value, key) => {
       if (value.lazy === false) {
-        return this.loadComponent(value.key, value.name)
+        return this.loadModule(value.key, value.name)
       }
     })
   }
@@ -216,9 +215,9 @@ export default class RBCore {
   async mount () {
     const { container } = this._options
     const routes = this._routes
-    await this.loadSyncComponent()
-    const Loading = this._packedComps['loading']
-    const App = this._packedComps['app']
+    await this.loadSyncModule()
+    const Loading = this._packedModules['loading']
+    const App = this._packedModules['app']
     const Comp = () => {
       return (
         <Router>
@@ -247,11 +246,11 @@ export default class RBCore {
     const { name, route = {}, lazy, key } = config
     let component
     if (lazy === false) {
-      component = this._packedComps[name]
+      component = this._packedModules[name]
     } else {
       component = (
         React.lazy(() => (
-          this.loadComponent(key, name)
+          this.loadModule(key, name)
         ), 'default')
       )
     }

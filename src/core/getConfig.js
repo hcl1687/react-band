@@ -1,6 +1,4 @@
-// const path = require('path')
-// const componentDir = path.resolve(__dirname, '../components')
-const configReq = require.context('../components', true, /^(.*)\/config.js$/)
+const configReq = require.context('../modules', true, /^(.*)\/config.js$/)
 const CONFIGS = {}
 const MERGED_CONFIGS = {}
 
