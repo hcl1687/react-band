@@ -112,6 +112,38 @@ react-band在components目录下提供common和custom目录。其中，common目
 一个模块通常包括js代码、样式和国际化资源。react-band通过webpack的dynamic import实现这三类文件的代码
 分割，并利用React.lazy实现异步加载。
 
+# 项目结构
+
+react-band项目初始目录结构如下所示：
+
+```bash
+|-server/
+|-src
+  |-components
+    |-common/
+    |-custom/
+  |-config/
+  |-core/
+  |-index.jsx
+|-static/
+|-template/
+|-tests/
+```
+
+各目录文件功能如下：
+
+* server: 存放json-server的数据文件，当运行npm run start:mock的时候，将启动json-server并读取该文件。
+* src: 存放代码。
+   * components: 存放业务代码，分为通用组件和非通用组件。
+      * common: 存放通用组件代码。
+      * custom: 存放非通用组件代码。
+   * config: 存放react-band通用配置信息。
+   * core: react-band核心代码，主要负责异步加载components中的组件，并通过React-route创建路由，最终通过React渲染出页面。
+   * index.jsx: 项目入口文件，通过创建RBCore.create方法创建RBCore对象，并调用RBCore对象的mount方法渲染页面。
+* static: 存放静态资源，构建的时候该目录下的资源文件将会被复制到dist目录下。
+* template: 首页模板
+* tests: 存放测试相关配置文件，以及e2e测试用例。
+
 # 模块
 react-band中的模块是指：一个独立的代码和资源的文件集合，这些文件存放在同一个文件夹中，与其他模块没有显式依赖。所有的业务逻辑都由模块承载和实现。react-band负责收集模块，并按照一定的规则组织和运行模块。react-band通过模块来实现代码移植、渐进式组件开发和异步加载的。
 
