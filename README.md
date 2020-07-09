@@ -26,11 +26,11 @@ init test: create test folder in the current directory, and initiate project.
 * default: the simplest demo. Only provides a default home page and a test page.
 * redux_menu_antd: a react+react-router+redux+antd demo with left menu bar.
 
-After the initialization is complete, a basic folder will be added under the src/components/custom directory. The directory structure is similar to this:
+After the initialization is complete, a basic folder will be added under the src/modules/custom directory. The directory structure is similar to this:
 
 ```bash
 |-src
-  |-components
+  |-modules
     |-custom
       |-basic
         |-home
