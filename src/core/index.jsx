@@ -52,9 +52,18 @@ export default class RBCore {
     })
   }
 
+  // support json or js i18n file
   fetchI18n (path, locale) {
     path = path.replace(/^\.\//, '')
     return import(`~/modules/${path}/i18n/${locale}.json`)
+  }
+
+  fetchI18nJSON (path, locale) {
+    return import(`~/components/${path}/i18n/${locale}.json`)
+  }
+
+  fetchI18nJS (path, locale) {
+    return import(`~/components/${path}/i18n/${locale}.js`)
   }
 
   loadTheme (path, name) {
