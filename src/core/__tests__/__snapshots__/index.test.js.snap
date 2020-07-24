@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`core/index should render correctly 1`] = `
+RBCore {
+  "_i18ns": Object {},
+  "_modules": Object {},
+  "_modulesConfig": Object {},
+  "_options": Object {
+    "container": "#container",
+    "locale": "en",
+    "theme": "default",
+  },
+  "_packedModules": Object {},
+  "_routes": Array [],
+  "_themes": Object {},
+  "getModule": [Function],
+}
+`;

@@ -55,15 +55,17 @@ export default class RBCore {
   // support json or js i18n file
   fetchI18n (path, locale) {
     path = path.replace(/^\.\//, '')
-    return import(`~/modules/${path}/i18n/${locale}.json`)
+    return this.fetchI18nJSON(path, locale).catch(() => {
+      return this.fetchI18nJS(path, locale)
+    })
   }
 
   fetchI18nJSON (path, locale) {
-    return import(`~/components/${path}/i18n/${locale}.json`)
+    return import(`~/modules/${path}/i18n/${locale}.json`)
   }
 
   fetchI18nJS (path, locale) {
-    return import(`~/components/${path}/i18n/${locale}.js`)
+    return import(`~/modules/${path}/i18n/${locale}.js`)
   }
 
   loadTheme (path, name) {
@@ -176,8 +178,8 @@ export default class RBCore {
 
   createRoute () {
     const modulesConfig = this._modulesConfig
-    let homeConfig = {}
-    let notFoundConfig = {}
+    let homeConfig
+    let notFoundConfig
     Object.keys(modulesConfig).forEach(name => {
       const config = modulesConfig[name]
       const { route } = config
@@ -203,8 +205,13 @@ export default class RBCore {
 
       return true
     })
-    routes.unshift(homeConfig)
-    routes.push(notFoundConfig)
+
+    if (homeConfig) {
+      routes.unshift(homeConfig)
+    }
+    if (notFoundConfig) {
+      routes.push(notFoundConfig)
+    }
 
     this._routes = routes
 

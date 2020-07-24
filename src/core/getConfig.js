@@ -1,16 +1,29 @@
-const configReq = require.context('../modules', true, /^(.*)\/config.js$/)
-const CONFIGS = {}
-const MERGED_CONFIGS = {}
+let configReq
+if (require && require.context) {
+  configReq = require.context('../modules', true, /^(.*)\/config.js$/)
+}
+let CONFIGS = {}
+let MERGED_CONFIGS = {}
 
-configReq.keys().forEach(key => {
-  const name = key.replace('config.js', '').replace(/\/$/, '')
-  if (!name) {
-    return
-  }
+// for unit test
+export function createCONFIGS (configReq) {
+  CONFIGS = {}
+  MERGED_CONFIGS = {}
+  configReq && configReq.keys().forEach(key => {
+    const name = key.replace('config.js', '').replace(/\/$/, '')
+    if (!name) {
+      return
+    }
 
-  const module = configReq(key)
-  CONFIGS[name] = module['default']
-})
+    const module = configReq(key)
+    CONFIGS[name] = module['default']
+  })
+
+  return CONFIGS
+}
+
+// init
+createCONFIGS(configReq)
 
 function isExclude (key, options = {}) {
   const { exclude } = options
