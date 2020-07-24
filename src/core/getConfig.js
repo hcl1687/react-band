@@ -1,7 +1,5 @@
 let configReq
-if (require && require.context) {
-  configReq = require.context('../modules', true, /^(.*)\/config.js$/)
-}
+configReq = require && require.context('../modules', true, /^(.*)\/config.js$/)
 let CONFIGS = {}
 let MERGED_CONFIGS = {}
 
