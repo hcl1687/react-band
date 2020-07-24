@@ -1,5 +1,9 @@
-let configReq
-configReq = require && require.context('../modules', true, /^(.*)\/config.js$/)
+// mock context in test env
+if (jest) {
+  require.context = () => {}
+}
+
+const configReq = require && require.context('../modules', true, /^(.*)\/config.js$/)
 let CONFIGS = {}
 let MERGED_CONFIGS = {}
 
