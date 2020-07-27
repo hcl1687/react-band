@@ -30,25 +30,29 @@
     "test": {
       "command": "jest",
       "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "test",
+        "RB_ENV": "test"
       }
     },
     "test:watch": {
       "command": "jest --watch",
       "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "test",
+        "RB_ENV": "test"
       }
     },
     "test:coverage": {
       "command": "jest --coverage --colors",
       "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "test",
+        "RB_ENV": "test"
       }
     },
     "test:update": {
       "command": "jest --updateSnapshot",
       "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "test",
+        "RB_ENV": "test"
       }
     },
     "build": {

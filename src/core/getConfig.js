@@ -1,5 +1,5 @@
 // mock context in test env
-if (jest) {
+if (process.env.NODE_ENV === 'test') {
   require.context = () => {}
 }
 

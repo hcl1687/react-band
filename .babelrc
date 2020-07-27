@@ -16,6 +16,22 @@
       ],
       "comments": false
     },
+    "test": {
+      "presets": [
+        "@babel/preset-react",
+        "@babel/preset-env"
+      ],
+      "plugins": [
+        "add-module-exports",
+        "@babel/plugin-proposal-class-properties",
+        ["@babel/plugin-transform-runtime",
+          {
+            "regenerator": true
+          }
+        ]
+      ],
+      "comments": false
+    },
     "production": {
       "presets": [
         "@babel/preset-react",
