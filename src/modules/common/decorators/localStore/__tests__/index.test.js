@@ -13,7 +13,10 @@ const state = {
 }
 const actions = {
   increase: data => ++data,
-  decrease: data => --data
+  decrease: data => {
+    const ret = data--
+    throw new Error('error')
+  }
 }
 const reducers = {
   increase: {
@@ -27,6 +30,22 @@ const reducers = {
     },
     throw (state, action) {
       return state
+    }
+  },
+  decrease: {
+    next (state, action) {
+      const count = action.payload
+
+      return {
+        ...state,
+        count
+      }
+    },
+    throw (state, action) {
+      return {
+        ...state,
+        count: -1
+      }
     }
   }
 }
@@ -98,6 +117,45 @@ describe('common/decorators/localStore', () => {
     return tools.delay(() => {
       expect(inst.state.count).toBe(1)
     }, 100)
+  })
+
+  it('should invoke action correctly when throw error', async () => {
+    const LocalStoreDeco = await localStoreDecoFactory(context)
+    const targetConfig = {
+      decoratorsConfig: {
+        '@localStore': localStoreFactory
+      }
+    }
+
+    const TestWithLocalStoreDeco = await LocalStoreDeco(targetConfig)(Test)
+    const wrapper = mount(
+      <TestWithLocalStoreDeco />
+    )
+    expect(wrapper.state().count).toBe(0)
+    const inst = wrapper.instance()
+    inst.actions.decrease(1).catch((err) => {
+      expect(err.message).toEqual('error')
+    })
+
+    expect(inst.state.count).toBe(0)
+    return tools.delay(() => {
+      expect(inst.state.count).toBe(-1)
+    }, 100)
+  })
+
+  it('should support empty store', async () => {
+    const LocalStoreDeco = await localStoreDecoFactory(context)
+    const targetConfig = {
+      decoratorsConfig: {
+        '@localStore': () => ({})
+      }
+    }
+
+    const TestWithLocalStoreDeco = await LocalStoreDeco(targetConfig)(Test)
+    const wrapper = mount(
+      <TestWithLocalStoreDeco />
+    )
+    expect(wrapper.state()).toEqual({})
   })
 })
 

@@ -114,7 +114,7 @@ export default class RBCore {
     const RB_CONTEXT = this.getContext()
     this._modules[name] = await moduleFactory(RB_CONTEXT)
 
-    const ret = []
+    const ret = {}
     ret['default'] = await this.packModule(name)
     return ret
   }
@@ -256,6 +256,9 @@ export default class RBCore {
     }
 
     ReactDOM.render(<Container />, typeof container === 'string' ? document.querySelector(container) : container)
+
+    // for unit test
+    return Container
   }
 
   asyncRoute (config) {
