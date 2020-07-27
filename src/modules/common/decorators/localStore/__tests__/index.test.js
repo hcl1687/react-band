@@ -14,7 +14,6 @@ const state = {
 const actions = {
   increase: data => ++data,
   decrease: data => {
-    const ret = data--
     throw new Error('error')
   }
 }
