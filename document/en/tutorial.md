@@ -1,28 +1,38 @@
-# 动机
+# Motivation
 
-我们在开发一个新项目的时候，基本上都是通过裁剪别人的项目代码，在这基础上进行开发。这样可以复用已有成熟
-的代码，有利于项目快速成型，降低开发风险。在将别人项目的代码移植到自己的项目中，甚至在将自己上一个项目
-的代码移植到新项目中的时候，我发现移植过程很痛苦。项目中各模块互相依赖，错综复杂，通常需要详细阅读源码
-后，才能决定哪些代码要保留，哪些代码要删除。因此，我希望有一个很简单的方式移植项目代码。
+When we develop a new project, we basically develop on this basis by cutting other people's project code.
+In this way, mature code can be reused, which facilitates rapid project prototyping and reduces development risks.
+When porting the code of other people's projects to my own project, or even porting the code of my 
+previous project to a new project, I found the migration process very painful.
+The modules in the project depend on each other and are complicated. It is usually necessary to read 
+the source code in detail before deciding which codes to keep and which codes to delete.
+Therefore, I hope there is a very simple way to transplant project code.
 
-我们总是强调要抽象出通用组件，以便复用。但在实际开发的时候，抽象是一个渐进的，迭代的过程。这是由于我们
-的业务需求是不断迭代的，导致对组件的抽象也不可能一步到位。因此，我希望能够区分通用组件和非通用组件，
-并且能够较为方便的把非通用组件转为通用组件。同时也要允许把通用组件转为非通用组件，用于满足定制化需求。
+We always emphasize the need to abstract common components for reuse. But in actual development, 
+abstraction is a gradual and iterative process. This is because our business needs are constantly iterative, 
+so the abstraction of components cannot be achieved in one step. Therefore, I want to be able to 
+distinguish between common and non-common components, and it can easily convert non-common components 
+into common components. At the same time, it is also allowed to convert common components to non-common 
+components to meet customized requirements.
 
-随着项目的不断迭代，业务代码越来越多，打包后的js文件也越来越大，导致页面加载慢等问题。因此，我希望能够
-有一个统一的异步加载方案，实现模块代码、样式文件、国际化资源按需加载，提升页面的加载速度。
+With the continuous iteration of the project, there are more and more business codes, and the packaged 
+js files are getting bigger and bigger, causing problems such as slow page loading. Therefore, I hope 
+to have a unified asynchronous loading scheme to realize the on-demand loading of module code, style files, 
+and international resources, and improve the loading speed of the page.
 
-# 核心概念
+# Concept
 
-## 如何实现可移植？
+## How to achieve portability?
 
-可移植的关键是解耦。react-band通过组件化和异步加载实现模块的解耦。
+The key to portability is decoupling. react-band realizes the decoupling of modules through componentization 
+and asynchronous loading.
 
-### 组件化
+### Componentization
 
-一个前端模块，通常会包括业务逻辑，样式和图片，国际化资源等。一般来说，我们习惯于把项目中的业务逻辑、
-样式和国际化资源分开存放。比如：业务逻辑放在js文件夹中，样式放在themes文件夹中，国际化资源放在locale
-文件夹中。类似这样：
+A front-end module usually includes business logic, styles and pictures, internationalized resources, etc. 
+Generally speaking, we are accustomed to store business logic, styles and internationalized resources 
+separately. For example: business logic is placed in the js folder, styles are placed in the themes folder, 
+and internationalized resources are placed in the locale folder. Something like this:
 
 ```bash
 |-src
@@ -39,9 +49,10 @@
     |-module2
 ```
 
-这种文件组织方式不利于模块的移植。想象一下，如果我们要把module1移植到新项目中，我们需要分别操作js、themes
-和locale目录。如果我们把这些文件按照模块划分，则只需要操作module1目录就可以。react-band对应的目录结构
-如下：
+This kind of file organization is not conducive to the migration of modules. Imagine that if we want 
+to port module1 to a new project, we need to operate the js, themes and locale directories separately. 
+If we divide these files into modules, we only need to manipulate the module1 directory. The directory 
+structure is as follows:
 
 ```bash
 |-src
@@ -63,18 +74,20 @@
         |-__test__
 ```
 
-### 异步加载
+### Asynchronous loading
 
-虽然我们按照模块组织文件，提高了模块的内聚性，但是模块与模块间的耦合还存在。比如：module1依赖module2，
-那么在module1的index.js文件中，需要直接引用module2，类似这样：
+Although we organize files according to modules and improve the cohesion of modules, the coupling 
+between modules still exists. For example: module1 depends on module2, then module2 needs to be directly 
+referenced in the index.js file of module1, Something like this:
 
 ```javascript
 // moduel1/index.js
 import Module2 from '../module2/index.js'
 ```
 
-这样的话，在移植module1的时候也要移植module2，同时还要确保module1和module2路径保持一致。react-band通过
-异步加载，去除了module间的路径限制。如下所示：
+In this case, when porting module1, also need to port module2, and at the same time should ensure that 
+the path of module1 and module2 is consistent. react-band removes the path restriction between modules 
+through asynchronous loading. As follows:
 
 ```javascript
 // react-band
@@ -90,29 +103,34 @@ export default async ({ getModule }) => {
 }
 ```
 
-react-band会搜集每个模块下的config.js文件，维护一个当前项目的模块列表。各模块通过getModule函数，
-异步加载其他模块。通过这种方式取消了模块间的路径依赖，并且由于是异步按需加载，也提升了页面的加载速度。
+react-band will collect the config.js file under each module and maintain a list of modules for the 
+current project. Each module uses the getModule function to load other modules asynchronously. In this way, the path dependence between modules is cancelled, and because it is asynchronously loaded on demand, the page loading speed is also improved.
 
-## 如何实现渐进式组件开发？
+## How to achieve progressive component development?
 
-react-band在modules目录下提供common和custom目录。其中，common目录用于存放通用模块，custom目录用于
-存放非通用模块。为了方便两个目录中的模块互相移动，且不影响业务逻辑，common和custom目录中的模块名可以
-重名。如果出现重名，那么react-band的模块列表中，custom中的模块会覆盖common中的同名模块。
+react-band provides common and custom directories under the modules directory. Among them, the common 
+directory is used to store common modules, and the custom directory is used to store non-common modules. 
+In order to facilitate the movement of the modules in the two directories without affecting the business logic, 
+the module names in the common and custom directories can be the same. If there is a duplicate name, 
+then in the module list of react-band, the module in custom will overwrite the module with the same name in common.
 
-### 组件提升
+### Component promotion
 
-如果一个模块通过多次迭代后，觉得可以作为通用模块，那么直接把该模块移动到common中即可。
+If the developer feels that a custom module can be used as a common module after multiple iterations, 
+just move the module directly to common.
 
-### 组件定制
+### Component customization
 
-如果觉得某个通用模块不满足业务需求，需要定制。那么直接把该模块复制到custom中，再进行定制开发。
+If the developer feel that a common module does not meet business needs, he need to customize it. 
+Then copy the module directly to custom, and then customize it.
 
-## 如何实现异步加载？
+## How to implement asynchronous loading?
 
-一个模块通常包括js代码、样式和国际化资源。react-band通过webpack的dynamic import实现这三类文件的代码
-分割，并利用React.lazy实现异步加载。
+A module usually includes js code, styles and internationalized resources. react-band implements code 
+splitting for these three types of files through webpack's dynamic import, and use React.lazy to achieve 
+asynchronous loading.
 
-# 项目结构
+# Project structure
 
 The initial directory structure of the react-band project is as follows:
 
@@ -144,10 +162,17 @@ The functions of each directory file are as follows:
 * template: template of index.html
 * tests: store configuration for testing and e2e test cases。
 
-# 模块
-react-band中的模块是指：一个独立的代码和资源的文件集合，这些文件存放在同一个文件夹中，与其他模块没有显式依赖。所有的业务逻辑都由模块承载和实现。react-band负责收集模块，并按照一定的规则组织和运行模块。react-band通过模块来实现代码移植、渐进式组件开发和异步加载的。
+# Module
+The module in react-band refers to a collection of independent code and resource files. These files are 
+stored in the same folder and have no explicit dependencies with other modules. All business logic is 
+carried and implemented by the module. react-band is responsible for collecting modules, and organizing 
+and running modules according to certain rules. react-band implements code migration, progressive component 
+development and asynchronous loading through modules.
 
-在basic示例中，实现了两个页面：主页和test页。分别点击各页面的按钮可以跳转到另一个页面。在src/modules/custom/basic下有2个模块，分别是home和test。home目录中包含了运行home模块所必须的代码和资源，包括js和css代码，国际化资源等。
+In the basic example, two pages are implemented: the home page and the test page. Click the button on 
+each page to jump to another page. There are 2 modules under src/modules/custom/basic, home and test. 
+The home directory contains the code and resources necessary to run the home module, including js and 
+css code, internationalized resources, etc.
 
 ```bash
 |-src
@@ -169,12 +194,14 @@ react-band中的模块是指：一个独立的代码和资源的文件集合，�
         |-config.js
 ```
 
-react-band中的模块，通常包含配置文件（config.js）、入口文件（index.entry.jsx）、主题文件（themes/）、国际化资源文件（i18n/）、单元测试文件（\_\_test\_\_/）等。
+Modules in react-band usually include configuration files (config.js), entry files (index.entry.jsx), theme files (themes/), internationalized resource files (i18n/), unit test files (\_\_test\_\_/) etc.
 
-## 类型
-react-band中的模块有两种类型：组件型和装饰器型。通过在配置文件中设置type=component|decorator来指定模块的类型， 默认是component类型。下面展示的是react-band中i18n模块的配置文件。其中type字段设置为decorator。
+## Type
+There are two types of modules in react-band: component and decorator. Specify the type of the module 
+by setting type=component|decorator in the configuration file. The default is the component type. Shown 
+below is the configuration file of the i18n module in react-band. The type field is set to decorator.
 
-> ***约定：装饰器类型的模块，其名字必须以'@'开头***
+> ***Convention: The name of the module of the decorator type must start with'@'***
 
 ```javascript
 // src/modules/common/i18n/config.js
@@ -186,14 +213,18 @@ export default () => {
 }
 ```
 
-装饰器模块用于装饰component类型的模块。通过在component类型模块的配置文件中设置decoratorsConfig和decorators字段，来指定需要应用的装饰器。在运行期，react-band负责加载相关模块并组装。
+The decorator type module is used to decorate the component type module. Specify the decorators to be 
+applied by setting the decoratorsConfig and decorators fields in the configuration file of the component 
+type module. During the runtime, react-band is responsible for loading related modules and assembling them.
 
-## 配置文件（config.js）
-每个模块都必须要有一个config.js文件。react-band在构建的时候，会遍历src/modules目录，搜集所有的config.js文件中的配置信息并保存起来。在运行期，react-band通过这些配置信息，动态加载和组装各模块。
+## Configuration file (config.js)
+Each module must have a config.js file. When react-band is building, it will traverse the src/modules directory, 
+collect all the configuration information in the config.js file and save it. During the runtime, react-band 
+dynamically loads and assembles modules through these configuration information.
 
-> ***config.js文件具有继承性质，react-band在搜集config.js后，会将某个目录下的config.js中的配置信息和该目录的父目录中的配置信息合并，构成最终的配置信息。***
+> ***The config.js file is inherited. After react-band collects config.js, it will merge the configuration information in config.js in a directory with the configuration information in the parent directory of the directory to form the final configuration information.***
 
-下面展示的是home模块的配置信息。
+Shown below is the configuration information of the home module.
 
 ```javascript
 // demo: basic
@@ -232,18 +263,18 @@ export default (config) => {
 }
 ```
 
-配置字段说明：
+Configuration field description:
 | field | description | example |
 | -              | -                                          | -                 |
-| name | 模块名称。必填。react-band通过模块名获取模块。模块名可以重复。如果common和custom目录中有同名的模块，那么custom的模块会覆盖common的同名模块。 | { name: 'home' } |
-| lazy | 是否懒加载。选填。默认为true。如果为false, react-band在打开页面时会先同步加载对应的模块。 | { lazy: true } |
-| disabled | 模块是否禁用。选填。默认为false。如果为true，react-band不会收集该模块的信息，运行期也不会加载该模块 | { disabled: true } |
-| route | 路由信息。选填。react-router的配置信息，用于给模块设置路由。 | { route: { path: 'test' }} |
-| decoratorsConfig | 装饰器配置信息。选填。有些装饰器可能需要指定配置信息。装饰器模块的配置文件中，该字段无效。 |  |
-| decorators | 装饰器列表。选填。声明该模块需要应用的装饰器。装饰器模块的配置文件中，该字段无效。 |  |
+| name | Module name. Required. react-band gets the module by the module name. Module name can be duplicated. If there are modules with the same name in the common and custom directories, the custom module will overwrite the common module with the same name. | { name: 'home' } |
+| lazy | Whether lazy loading. Optional. The default is true. If false, react-band will first load the corresponding module synchronously when opening the page. | { lazy: true } |
+| disabled | Whether the module is disabled. Optional. The default is false. If true, react-band will not collect information about the module, and will not load the module during runtime. | { disabled: true } |
+| route | Route information. Optional. The configuration information of react-router. it is used to set up route for the module. | { route: { path: 'test' }} |
+| decoratorsConfig | Decorator configuration information. Optional. Some decorators may need to specify configuration information. In the configuration file of the decorator module, this field is invalid. |  |
+| decorators | List of decorators. Optional. Declare the decorator that the module needs to apply. In the configuration file of the decorator module, this field is invalid. |  |
 
-## 入口文件（index.entry.jsx）
-每个模块都必须有一个index.entry.jsx或index.entry.js文件。react-band通过该文件实现代码按模块分割。
+## Entry file (index.entry.jsx)
+Each module must have an index.entry.jsx or index.entry.js file. react-band uses this file to split the code into modules.
 
 ```javascript
 // demo: basic
@@ -275,20 +306,23 @@ export default (RB_CONTEXT) => {
 }
 ```
 
-react-band在运行期，动态加载模块后，执行index.entry.jsx中的代码，并传入RB_CONTEXT对象，创建模块对应的React Component对象。RB_CONTEXT对象字段如下：
+During the runtime of react-band, after the module is dynamically loaded, the code in index.entry.jsx is 
+executed and the RB_CONTEXT object is passed in to create the React Component object corresponding to 
+the module. The RB_CONTEXT object fields are as follows:
 
 | field | description | example |
 | -              | -                                          | -                 |
-| options | 创建react-band时，传入的配置信息。 | { locale: 'en', theme: 'default' } |
-| modules | 执行index.entry.jsx后返回的React Component对象列表。 |  |
-| i18ns | 保存各模块的i18n资源。 |  |
-| themes | 保存各模块的主题资源。 |  |
-| packedModules | 各模块根据配置文件添加装饰器后生成的React Component对象列表。 |  |
-| modulesConfig | 各模块的config.js配置信息列表。 |  |
-| routes | 带有路由信息的config.js配置信息列表。 |  |
-| getModule | 异步获取模块 | const Test = await getModule('test')  |
+| options | The configuration information passed in when creating a react-band instance. | { locale: 'en', theme: 'default' } |
+| modules | The list of React Component objects returned after index.entry.jsx is executed. |  |
+| i18ns | Store i18n resources of each module. |  |
+| themes | Store the theme resources of each module. |  |
+| packedModules | The React Component object list generated after add their decorators according to the configuration file. |  |
+| modulesConfig | The config.js configuration information list of each module. |  |
+| routes | Config.js configuration information list with route information. |  |
+| getModule | Get modules asynchronously | const Test = await getModule('test')  |
 
-react-band提供getModule方法来异步获取模块对象。从而降低了模块间的强依赖。如下所示：
+react-band provides getModule method to get module object asynchronously. Thereby reducing the strong 
+dependence between modules. As follows:
 
 ```javascript
 // moduel1/index.js
@@ -309,10 +343,17 @@ export default async ({ getModule }) => {
 }
 ```
 
-## 主题文件（themes/）
-themes目录用于存放模块相关的样式文件。react-band支持多套主题动态切换。目录下必须有一个default文件夹，用于存放默认的主题文件。为了支持模块主题的按需加载，约定主题的入口文件为index.css或者index.global.css。react-band将根据这两个文件分割代码。react-band采用less-loader和css-loader加载样式文件，所以模块的样式文件支持less语法。react-band加载index.css的时候，采用css-loader的local模式。在加载index.global.css的时候，采用css-loader的global模式。
+## Theme file (themes/)
+The themes directory is used to store module-related style files. react-band supports dynamic switching 
+of multiple sets of themes. There must be a default folder in the directory to store the default theme files. 
+In order to support the on-demand loading of module themes, it is agreed that the entry file of the theme 
+is index.css or index.global.css. react-band will split the code based on these two files. react-band uses 
+less-loader and css-loader to load style files, so the module style files support less syntax. When react-band 
+loads index.css, it uses the local mode of css-loader. When loading index.global.css, the global mode of css-loader is adopted.
 
-我们推荐使用局部作用域，所以通常只要创建index.css文件就行。使用局部作用域的话，我们需要使用@theme装饰器。引用@theme装饰器后，会向模块对象注入theme属性。如下所示：
+We recommend using local scope, so usually just create the index.css file. To use local scope, we need to 
+use the @theme decorator. After referencing the @theme decorator, the theme attribute will be injected into 
+the module object. As follows:
 
 ```css
 /* src/modules/custom/basic/home/themes/default/index.css */
@@ -370,15 +411,20 @@ export default (RB_CONTEXT) => {
 }
 ```
 
-有的时候需要引用第三方库的样式文件，这个时候就要用到全局作用域。如下所示：
+Sometimes you need to refer to the style file of a third-party library, this time you need to use the 
+global scope. As follows:
 
 ```css
 /* src/modules/common/antd/components/themes/default/index.global.css */
 @import "~antd/dist/antd.css";
 ```
 
-## 国际化资源文件（i18n/）
-i18n目录用于存放json格式的国际化资源文件。react-band支持多语言动态切换，支持国际化资源的按需加载。要获取国际化资源，我们需要使用@i18n装饰器。引用@i18n装饰器后，会向模块对象注入__属性。@i18n装饰器使用intl-messageformat解析国际化资源。如下所示：
+## Internationalized resource files (i18n/)
+The i18n directory is used to store internationalized resource files in json format. react-band supports 
+dynamic switching of multiple languages and on-demand loading of internationalized resources. To obtain 
+internationalized resources, we need to use the @i18n decorator. After referencing the @i18n decorator, 
+the __ attribute will be injected into the module object. The @i18n decorator uses intl-messageformat 
+to parse internationalized resources. As follows:
 
 ```json
 // demo: basic
@@ -434,5 +480,5 @@ export default (RB_CONTEXT) => {
 }
 ```
 
-## 单元测试文件（\_\_test\_\_/）
-\_\_test\_\_/目录用于存放单元测试文件。react-band采用jest+enzyme执行单元测试。
+## Unit test file(\_\_test\_\_/)
+\_\_test\_\_/ directory is used to store unit test files. react-band uses jest+enzyme to perform unit tests.

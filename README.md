@@ -1,6 +1,12 @@
 # react-band
 A simple react scaffold with webpack, babel, jest, enzyme and puppeteer.
 
+# Document
+
+[en](./document/en/tutorial.md)
+
+[zh-CN](./document/zh-CN/tutorial.md)
+
 # Quick Start
 
 ## Install react-band-cli
@@ -117,12 +123,6 @@ npm run test:debug
 ```bash
 npm run build
 ```
-
-# Document
-
-[en](./document/en/tutorial.md)
-
-[zh-CN](./document/zh-CN/tutorial.md)
 
 ## License
 [MIT](https://opensource.org/licenses/mit-license.php)
