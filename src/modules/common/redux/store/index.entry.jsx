@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
 import { createAction, handleActions } from 'redux-actions'
+import React from 'react'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
 import getStore from '../getStore'
@@ -60,17 +60,9 @@ export default async ({ getModule }) => {
       return selectedState
     }
 
-    class reduxStoreDeco extends Component {
-      constructor (props, context) {
-        super(props, context)
-
-        this.COMP = connect(mapStateToProps, mapDispatchToProps)(WrappedComponent)
-      }
-
-      render () {
-        const COMP = this.COMP
-        return <COMP {...this.props} />
-      }
+    const COMP = connect(mapStateToProps, mapDispatchToProps)(WrappedComponent)
+    function reduxStoreDeco (props) {
+      return <COMP {...props} />
     }
 
     if (process.env.NODE_ENV !== 'production') {

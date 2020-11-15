@@ -1,16 +1,16 @@
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 
 export default () => {
-  return class Loading extends Component {
-    static propTypes = {
-      __: PropTypes.func.isRequired,
-      theme: PropTypes.object.isRequired
-    }
-
-    render () {
-      const { __, theme } = this.props
-      return <div className={theme.loading}>{__('loading')}</div>
-    }
+  function Loading (props) {
+    const { __, theme } = props
+    return <div className={theme.loading}>{__('loading')}</div>
   }
+
+  Loading.propTypes = {
+    __: PropTypes.func.isRequired,
+    theme: PropTypes.object.isRequired
+  }
+
+  return Loading
 }
