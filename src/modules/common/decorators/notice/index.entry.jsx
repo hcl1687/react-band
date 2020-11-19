@@ -62,7 +62,7 @@ function _getMethodParams (method) {
   return params
 }
 
-function _handleNotification ({ notification = {} }, preProps, target) {
+function _handleNotification ({ notification = {} }, preProps = {}, target) {
   const { notification: pre } = preProps
   Object.keys(notification).forEach(methodName => {
     const action = notification[methodName]
@@ -153,18 +153,20 @@ export default async ({ getModule }) => {
 
     const WrappedComponentWithRef = forwardRef(WrappedComponent)
     function noticeFunctionDeco (props) {
-      const target = useRef()
+      const targetRef = useRef()
       const prevPropsRef = useRef()
       useEffect(() => {
         prevPropsRef.current = props
       })
       const prevProps = prevPropsRef.current
-      _handleNotification(props, prevProps, target)
+      useEffect(() => {
+        _handleNotification(props, prevProps, targetRef)
+      })
 
-      const [getNotification, notify, registerNotifyHandler] = useNotice()
+      const [getNotification, notify, setNotifyTarget] = useNotice()
 
-      return <WrappedComponentWithRef {...props} ref={target}
-        getNotification={getNotification} notify={notify} registerNotifyHandler={registerNotifyHandler} />
+      return <WrappedComponentWithRef {...props} ref={targetRef}
+        getNotification={getNotification} notify={notify} setNotifyHandler={setNotifyTarget(targetRef)} />
     }
 
     let noticeDeco = noticeFunctionDeco
@@ -181,13 +183,13 @@ export default async ({ getModule }) => {
 }
 
 export function useNotice () {
-  const [state, setState] = useState({})
+  const [state, setState] = useState({ childrenNotification: {} })
 
   const getNotification = _getNotification({ state, setState })
   const notify = _notify({ state, setState })
-  const register = (ref, handlers) => {
+  const setNotifyTarget = ref => handlers => {
     useImperativeHandle(ref, () => (handlers))
   }
 
-  return [getNotification, notify, register]
+  return [getNotification, notify, setNotifyTarget]
 }

@@ -8,6 +8,6 @@ export default () => {
         }
       }
     },
-    decorators: ['@notice', '@i18n', '@theme', '@reduxStore']
+    decorators: ['@i18n', '@theme', '@reduxStore']
   }
 }

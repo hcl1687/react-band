@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 
 export default async function (RB_CONTEXT = {}) {
   const { getModule, options = {} } = RB_CONTEXT
@@ -7,22 +7,13 @@ export default async function (RB_CONTEXT = {}) {
   const asUtils = await getModule('asUtils')
   const { getUrlByKey } = asUtils
 
-  class User extends Component {
-    static propTypes = {
-      theme: PropTypes.object.isRequired,
-      AUTH: PropTypes.object
-    }
-
-    static defaultProps = {
-      AUTH: {}
-    }
-
-    handleError = (e) => {
+  function User (props) {
+    const handleError = (e) => {
       // e.target.src = this.getDefaultSrc()
     }
 
-    getDefaultSrc () {
-      const { AUTH } = this.props
+    const getDefaultSrc = () => {
+      const { AUTH } = props
       const role = AUTH.role
       let src = 'img_Student.png'
       if (role === 'Teacher') {
@@ -32,18 +23,25 @@ export default async function (RB_CONTEXT = {}) {
       return `themes/${themeType}/${src}`
     }
 
-    render () {
-      const { AUTH, theme } = this.props
-      const { name, avatar } = AUTH
-      const imgUrl = avatar ? getUrlByKey(avatar) : this.getDefaultSrc()
+    const { AUTH, theme } = props
+    const { name, avatar } = AUTH
+    const imgUrl = avatar ? getUrlByKey(avatar) : getDefaultSrc()
 
-      return <div className={theme.user}>
-        <img className={theme.avatar} src={imgUrl} onError={this.handleError} />
-        <div className={theme.name}>
-          {name}
-        </div>
+    return <div className={theme.user}>
+      <img className={theme.avatar} src={imgUrl} onError={handleError} />
+      <div className={theme.name}>
+        {name}
       </div>
-    }
+    </div>
+  }
+
+  User.propTypes = {
+    theme: PropTypes.object.isRequired,
+    AUTH: PropTypes.object
+  }
+
+  User.defaultProps = {
+    AUTH: {}
   }
 
   return User
