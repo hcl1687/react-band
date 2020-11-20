@@ -1,67 +1,65 @@
-import React, { Component } from 'react'
+import React, { useContext, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { ReactReduxContext } from 'react-redux'
 
 export default async ({ getModule }) => {
   const antd = await getModule('antd')
   const { Button } = antd
-  return class Test extends Component {
-    static propTypes = {
-      __: PropTypes.func.isRequired,
-      theme: PropTypes.object.isRequired,
-      addItem: PropTypes.func.isRequired,
-      deleteItem: PropTypes.func.isRequired,
-      items: PropTypes.array.isRequired,
-      showLeft: PropTypes.func.isRequired,
-      LEFT_STATUS: PropTypes.bool.isRequired
-    }
+  function Test (props) {
+    const { deleteItem, addItem, LEFT_STATUS, showLeft, items = [], __, theme } = props
+    const reduxContext = useContext(ReactReduxContext)
 
-    static contextType = ReactReduxContext
-
-    componentDidMount () {
-      const storeState = this.context.store.getState()
+    useEffect(() => {
+      const storeState = reduxContext.store.getState()
       console.log(storeState)
+    }, [])
+
+    const handleDelete = (i) => {
+      deleteItem(i)
     }
 
-    handleDelete = (i) => {
-      this.props.deleteItem(i)
-    }
-
-    handleAdd = () => {
-      this.props.addItem({
+    const handleAdd = () => {
+      addItem({
         name: `he-${Date.now()}`
       })
     }
 
-    toogleMenu = () => {
-      const { LEFT_STATUS, showLeft } = this.props
+    const toogleMenu = () => {
       showLeft(!LEFT_STATUS)
     }
 
-    createList () {
-      const { items = [], __ } = this.props
+    const createList = () => {
       return items.map((item, i) => {
         return <div key={i}>
           {item.name}
-          <Button onClick={() => { this.handleDelete(i) }}>{__('delete')}</Button>
+          <Button onClick={() => { handleDelete(i) }}>{__('delete')}</Button>
         </div>
       })
     }
 
-    render () {
-      const { __, theme } = this.props
-      return <div className={theme.test}>
-        <div>
-          {__('test')}
-        </div>
-        <div>
-          {this.createList()}
-        </div>
-        <div>
-          <Button onClick={this.handleAdd}>{__('add')}</Button>
-          <Button onClick={this.toogleMenu}>{__('toggle')}</Button>
-        </div>
+    return <div className={theme.test}>
+      <div>
+        {__('test')}
       </div>
-    }
+      <div>
+        {createList()}
+      </div>
+      <div>
+        <Button onClick={handleAdd}>{__('add')}</Button>
+        <Button onClick={toogleMenu}>{__('toggle')}</Button>
+      </div>
+    </div>
   }
+
+  Test.propTypes = {
+    __: PropTypes.func.isRequired,
+    theme: PropTypes.object.isRequired,
+    addItem: PropTypes.func.isRequired,
+    deleteItem: PropTypes.func.isRequired,
+    items: PropTypes.array.isRequired,
+    showLeft: PropTypes.func.isRequired,
+    LEFT_STATUS: PropTypes.bool.isRequired
+  }
+
+  return Test
 }
