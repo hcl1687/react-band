@@ -1,24 +1,14 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import menus from './menus'
 
 export default () => {
-  return class Menu extends Component {
-    static propTypes = {
-      __: PropTypes.func.isRequired,
-      theme: PropTypes.object.isRequired
-    }
+  function Menu (props) {
+    const { theme, __, setNotifyHandler } = props
+    const [show, setShow] = useState(true)
 
-    constructor (props, context) {
-      super(props, context)
-      this.state = {
-        show: true
-      }
-    }
-
-    createMenus () {
-      const { __ } = this.props
+    const createMenus = () => {
       return <ul className='menu'>
         {
           menus.map((item, i) => {
@@ -31,21 +21,25 @@ export default () => {
       </ul>
     }
 
-    toggleMenu () {
-      const { show } = this.state
-      this.setState({
-        show: !show
-      })
+    const toggleMenu = () => {
+      setShow(!show)
     }
+    setNotifyHandler({
+      toggleMenu
+    })
 
-    render () {
-      const { theme } = this.props
-      const { show } = this.state
-      return <div className={theme.menus}>
-        <div style={{ display: show ? 'block' : 'none' }}>
-          {this.createMenus()}
-        </div>
+    return <div className={theme.menus}>
+      <div style={{ display: show ? 'block' : 'none' }}>
+        {createMenus()}
       </div>
-    }
+    </div>
   }
+
+  Menu.propTypes = {
+    __: PropTypes.func.isRequired,
+    theme: PropTypes.object.isRequired,
+    setNotifyHandler: PropTypes.func.isRequired
+  }
+
+  return Menu
 }
