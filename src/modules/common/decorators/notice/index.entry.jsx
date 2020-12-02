@@ -86,7 +86,7 @@ function _getNotification (instance = {}) {
 
 function _notify (instance = {}) {
   return (childName, methodName, params) => {
-    const { state, setState } = instance
+    const { state } = instance
     const { childrenNotification } = state
 
     // should use getNotification to register notification before using notify
@@ -96,7 +96,7 @@ function _notify (instance = {}) {
 
     return new Promise((resolve, reject) => {
       const args = [params].concat([resolve, reject])
-      setState({
+      instance.setState({
         childrenNotification: {
           ...childrenNotification,
           [childName]: {
@@ -151,7 +151,11 @@ export default async ({ getModule }) => {
       }
     }
 
-    const WrappedComponentWithRef = forwardRef(WrappedComponent)
+    let WrappedComponentWithRef = null
+    // if it's not a react component, it's function component
+    if (!(typeof WrappedComponent === 'function' && shouldConstruct(WrappedComponent))) {
+      WrappedComponentWithRef = forwardRef(WrappedComponent)
+    }
     function noticeFunctionDeco (props) {
       const targetRef = useRef()
       const prevPropsRef = useRef()
@@ -170,6 +174,7 @@ export default async ({ getModule }) => {
     }
 
     let noticeDeco = noticeFunctionDeco
+    // if it's react component
     if (typeof WrappedComponent === 'function' && shouldConstruct(WrappedComponent)) {
       noticeDeco = noticeClassDeco
     }

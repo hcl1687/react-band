@@ -1,11 +1,27 @@
 import { mount, render } from 'enzyme'
-import React from 'react'
+import React, { useState } from 'react'
 import localStoreDecoFactory from '../index.entry'
 import tools from '~/../tests/utils/index'
 import utils from '~/../tests/utils/mockUtils'
 
-function Test () {
-  return <div>test</div>
+function Test (props) {
+  const { count, increase, decrease } = props
+  const [msg, setMsg] = useState('')
+  const hanldeBtn1 = () => {
+    increase(count)
+  }
+  const handleBtn2 = () => {
+    decrease().catch(err => {
+      setMsg(err.message)
+    })
+  }
+
+  return <div id='test' {...props}>
+    <div id='result'>{count}</div>
+    <div id='result1'>{msg}</div>
+    <button id='btn1' onClick={hanldeBtn1}>increase</button>
+    <button id='btn2' onClick={handleBtn2}>increase</button>
+  </div>
 }
 
 const state = {
@@ -91,9 +107,12 @@ describe('common/decorators/localStore', () => {
     const wrapper = mount(
       <TestWithLocalStoreDeco />
     )
-    expect(wrapper.state().count).toBe(0)
-    const inst = wrapper.instance()
-    expect(Object.keys(inst.actions)).toEqual(['increase', 'decrease'])
+    
+    const dom = wrapper.find('#test')
+    expect(dom.prop('count')).toBe(0)
+    
+    expect(typeof dom.prop('increase')).toBe('function')
+    expect(typeof dom.prop('decrease')).toBe('function')
   })
 
   it('should invoke action correctly', async () => {
@@ -108,13 +127,11 @@ describe('common/decorators/localStore', () => {
     const wrapper = mount(
       <TestWithLocalStoreDeco />
     )
-    expect(wrapper.state().count).toBe(0)
-    const inst = wrapper.instance()
-    inst.actions.increase(0)
 
-    expect(inst.state.count).toBe(0)
+    expect(wrapper.find('#test').prop('count')).toBe(0)
+    wrapper.find('#btn1').simulate('click')
     return tools.delay(() => {
-      expect(inst.state.count).toBe(1)
+      expect(wrapper.find('#result').text()).toEqual('1')
     }, 100)
   })
 
@@ -130,15 +147,12 @@ describe('common/decorators/localStore', () => {
     const wrapper = mount(
       <TestWithLocalStoreDeco />
     )
-    expect(wrapper.state().count).toBe(0)
-    const inst = wrapper.instance()
-    inst.actions.decrease(1).catch((err) => {
-      expect(err.message).toEqual('error')
-    })
+    expect(wrapper.find('#test').prop('count')).toBe(0)
+    wrapper.find('#btn2').simulate('click')
 
-    expect(inst.state.count).toBe(0)
     return tools.delay(() => {
-      expect(inst.state.count).toBe(-1)
+      expect(wrapper.find('#result1').text()).toEqual('error')
+      expect(wrapper.find('#result').text()).toEqual('-1')
     }, 100)
   })
 
@@ -154,7 +168,11 @@ describe('common/decorators/localStore', () => {
     const wrapper = mount(
       <TestWithLocalStoreDeco />
     )
-    expect(wrapper.state()).toEqual({})
+
+    const { children, ...rest } = wrapper.find('#test').props()
+    expect(rest).toEqual({
+      id: 'test'
+    })
   })
 })
 
