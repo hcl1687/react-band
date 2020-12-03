@@ -82,10 +82,8 @@ import Module2 from '../module2/index.js'
 export default async ({ getModule }) => {
   const Module2 = await getModule('module2')
 
-  return class Module1 extends Component {
-    render () {
-      return <Module2 />
-    }
+  return function Module1 {
+    return <Module2 />
   }
 }
 ```
@@ -248,30 +246,30 @@ export default (config) => {
 ```javascript
 // demo: basic
 // src/modules/custom/basic/home/index.entry.jsx
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 
 export default (RB_CONTEXT) => {
-  return class Home extends Component {
-    static propTypes = {
-      __: PropTypes.func.isRequired,
-      theme: PropTypes.object.isRequired,
-      history: PropTypes.object.isRequired
-    }
-
-    handleClick = () => {
-      const { history } = this.props
+  function Home (props) {
+    const handleClick = () => {
+      const { history } = props
       history.push('/test')
     }
 
-    render () {
-      const { __, theme } = this.props
-      return <div className={theme.home}>
-        <div className={theme.content}>{__('home')}</div>
-        <button onClick={this.handleClick}>{__('toTest')}</button>
-      </div>
-    }
+    const { __, theme } = props
+    return <div className={theme.home}>
+      <div className={theme.content}>{__('home')}</div>
+      <button onClick={handleClick}>{__('toTest')}</button>
+    </div>
   }
+
+  Home.propTypes = {
+    __: PropTypes.func.isRequired,
+    theme: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
+  }
+
+  return Home
 }
 ```
 
@@ -301,10 +299,8 @@ import Module2 from '../module2/index.js'
 export default async ({ getModule }) => {
   const Module2 = await getModule('module2')
 
-  return class Module1 extends Component {
-    render () {
-      return <Module2 />
-    }
+  return function Module1 {
+    return <Module2 />
   }
 }
 ```
@@ -343,30 +339,30 @@ export default (config) => {
 ```javascript
 // demo: basic
 // src/modules/custom/basic/home/index.entry.jsx
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 
 export default (RB_CONTEXT) => {
-  return class Home extends Component {
-    static propTypes = {
-      __: PropTypes.func.isRequired,
-      theme: PropTypes.object.isRequired,
-      history: PropTypes.object.isRequired
-    }
-
-    handleClick = () => {
-      const { history } = this.props
+  function Home (props) {
+    const handleClick = () => {
+      const { history } = props
       history.push('/test')
     }
 
-    render () {
-      const { __, theme } = this.props
-      return <div className={theme.home}>
-        <div className={theme.content}>{__('home')}</div>
-        <button onClick={this.handleClick}>{__('toTest')}</button>
-      </div>
-    }
+    const { __, theme } = props
+    return <div className={theme.home}>
+      <div className={theme.content}>{__('home')}</div>
+      <button onClick={handleClick}>{__('toTest')}</button>
+    </div>
   }
+
+  Home.propTypes = {
+    __: PropTypes.func.isRequired,
+    theme: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
+  }
+
+  return Home
 }
 ```
 
@@ -407,30 +403,30 @@ export default (config) => {
 ```javascript
 // demo: basic
 // src/modules/custom/basic/home/index.entry.jsx
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 
 export default (RB_CONTEXT) => {
-  return class Home extends Component {
-    static propTypes = {
-      __: PropTypes.func.isRequired,
-      theme: PropTypes.object.isRequired,
-      history: PropTypes.object.isRequired
-    }
-
-    handleClick = () => {
-      const { history } = this.props
+  function Home (props) {
+    const handleClick = () => {
+      const { history } = props
       history.push('/test')
     }
 
-    render () {
-      const { __, theme } = this.props
-      return <div className={theme.home}>
-        <div className={theme.content}>{__('home')}</div>
-        <button onClick={this.handleClick}>{__('toTest')}</button>
-      </div>
-    }
+    const { __, theme } = props
+    return <div className={theme.home}>
+      <div className={theme.content}>{__('home')}</div>
+      <button onClick={handleClick}>{__('toTest')}</button>
+    </div>
   }
+
+  Home.propTypes = {
+    __: PropTypes.func.isRequired,
+    theme: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
+  }
+
+  return Home
 }
 ```
 
