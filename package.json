@@ -137,6 +137,7 @@
     "postcss-url": "^8.0.0",
     "prop-types": "^15.7.2",
     "puppeteer": "^1.19.0",
+    "puppeteer-core": "^5.5.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-test-renderer": "^16.13.1",
