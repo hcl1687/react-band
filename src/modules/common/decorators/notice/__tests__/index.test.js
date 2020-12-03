@@ -140,45 +140,45 @@ async function Test1Factory () {
   function Test1 (props) {
     const { notify, getNotification } = props
     const [msg, setMsg] = useState('')
-  
-    handleBtn1 = () => {
+
+    const handleBtn1 = () => {
       notify('child', 'show1', 'show1').then(() => {
         setMsg('show1')
       })
     }
-  
-    handleBtn2 = () => {
+
+    const handleBtn2 = () => {
       notify('child', 'show2', 'show2').then(() => {
         setMsg('show2')
       })
     }
-  
-    handleBtn3 = () => {
+
+    const handleBtn3 = () => {
       notify('child', 'show3', 'show3').then(() => {
         setMsg('show3')
       })
     }
 
-    handleBtn4 = () => {
+    const handleBtn4 = () => {
       notify('child1', 'show1', 'show1').catch((err) => {
         setMsg(err.message)
       })
     }
 
-    handleBtn5 = () => {
-      notify('child', 'show5', 'show5').then(() => {
-        setMsg('show5')
+    const handleBtn5 = () => {
+      notify('child', 'show5', 'show5').catch((err) => {
+        setMsg(err.message)
       })
     }
   
     return <div id='test' {...props}>
       <ChildTest1WithNoticeDeco {...getNotification('child')} />
       <div id='testResult'>{msg}</div>
-      <button id='btn1' onClick={this.handleBtn1}>btn1</button>
-      <button id='btn2' onClick={this.handleBtn2}>btn2</button>
-      <button id='btn3' onClick={this.handleBtn3}>btn3</button>
-      <button id='btn4' onClick={this.handleBtn4}>btn4</button>
-      <button id='btn5' onClick={this.handleBtn5}>btn5</button>
+      <button id='btn1' onClick={handleBtn1}>btn1</button>
+      <button id='btn2' onClick={handleBtn2}>btn2</button>
+      <button id='btn3' onClick={handleBtn3}>btn3</button>
+      <button id='btn4' onClick={handleBtn4}>btn4</button>
+      <button id='btn5' onClick={handleBtn5}>btn5</button>
     </div>
   }
   
@@ -213,9 +213,9 @@ async function Test1Factory () {
     }
   
     setNotifyHandler({
-      show,
       show1,
-      show2
+      show2,
+      show3
     })
   
     useEffect(() => {
@@ -232,7 +232,7 @@ async function Test1Factory () {
       }
     }, [text])
   
-    return <div id='childTest'>{text}</div>
+    return <div id='childTest' {...props}>{text}</div>
   }
   
   ChildTest1.propTypes = {
@@ -242,7 +242,7 @@ async function Test1Factory () {
   return Test1WithNoticeDeco
 }
 
-describe('common/decorators/notice', () => {
+describe('common/decorators/notice test class', () => {
   it('should render correctly', async () => {
     const TestWithNoticeDeco = await TestFactory()
     const wrapper = render(<TestWithNoticeDeco />)
@@ -319,6 +319,88 @@ describe('common/decorators/notice', () => {
     const TestWithNoticeDeco = await TestFactory()
     const wrapper = mount(
       <TestWithNoticeDeco />
+    )
+
+    wrapper.find('#btn5').simulate('click')
+
+    return tools.delay(() => {
+      expect(wrapper.find('#testResult').text()).toBe('show5 is not exsist.')
+      expect(wrapper.find('#childTest').text()).toBe('')
+    })
+  })
+})
+
+describe('common/decorators/notice test function', () => {
+  it('should render correctly', async () => {
+    const Test1WithNoticeDeco = await Test1Factory()
+    const wrapper = render(<Test1WithNoticeDeco />)
+    expect(wrapper).toMatchSnapshot()
+  })
+
+  it('should mount correctly', async () => {
+    const Test1WithNoticeDeco = await Test1Factory()
+    const wrapper = mount(
+      <Test1WithNoticeDeco />
+    )
+
+    expect(typeof wrapper.find('#test').prop('getNotification')).toBe('function')
+    expect(typeof wrapper.find('#test').prop('notify')).toBe('function')
+    expect(typeof wrapper.find('#childTest').prop('getNotification')).toBe('function')
+    expect(typeof wrapper.find('#childTest').prop('notify')).toBe('function')
+    expect(wrapper.find('#childTest').prop('notification')).toEqual({})
+    wrapper.find('#btn1').simulate('click')
+
+    return tools.delay(() => {
+      expect(wrapper.find('#testResult').text()).toBe('show1')
+      expect(wrapper.find('#childTest').text()).toBe('show1')
+    })
+  })
+
+  it('should reject notify if not register first', async () => {
+    const Test1WithNoticeDeco = await Test1Factory()
+    const wrapper = mount(
+      <Test1WithNoticeDeco />
+    )
+
+    wrapper.find('#btn4').simulate('click')
+
+    return tools.delay(() => {
+      expect(wrapper.find('#testResult').text()).toBe('child1 has not been registered.')
+    })
+  })
+
+  it('should handle notification when called function declares a resolve parameter.', async () => {
+    const Test1WithNoticeDeco = await Test1Factory()
+    const wrapper = mount(
+      <Test1WithNoticeDeco />
+    )
+
+    wrapper.find('#btn2').simulate('click')
+
+    return tools.delay(() => {
+      expect(wrapper.find('#testResult').text()).toBe('show2')
+      expect(wrapper.find('#childTest').text()).toBe('show2')
+    })
+  })
+
+  it('should handle notification when called function return a promise', async () => {
+    const Test1WithNoticeDeco = await Test1Factory()
+    const wrapper = mount(
+      <Test1WithNoticeDeco />
+    )
+
+    wrapper.find('#btn3').simulate('click')
+
+    return tools.delay(() => {
+      expect(wrapper.find('#testResult').text()).toBe('show3')
+      expect(wrapper.find('#childTest').text()).toBe('show3')
+    })
+  })
+
+  it('should handle not existed method', async () => {
+    const Test1WithNoticeDeco = await Test1Factory()
+    const wrapper = mount(
+      <Test1WithNoticeDeco />
     )
 
     wrapper.find('#btn5').simulate('click')
