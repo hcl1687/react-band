@@ -1,73 +1,53 @@
-import React, { Component } from 'react'
+import React, { useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 
 export default async ({ getModule }) => {
   const antd = await getModule('antd')
   const { Form, Input, Button, Modal } = antd
-  return class Login extends Component {
-    static propTypes = {
-      __: PropTypes.func.isRequired,
-      theme: PropTypes.object.isRequired,
-      AUTH: PropTypes.object,
-      login: PropTypes.func.isRequired
-    }
 
-    constructor (props, context) {
-      super(props, context)
-      this.state = {
-        visible: false,
-        errMsg: '',
-        loading: false
-      }
+  function Login (props) {
+    const [visible, setVisible] = useState(false)
+    const [errMsg, setErrMsg] = useState('')
+    const [loading, setLoading] = useState(false)
+    const formRef = useRef(null)
+    const { setNotifyHandler } = props
 
-      this.formRef = React.createRef()
-    }
-
-    setLoading (loading) {
-      this.setState({
-        loading
-      })
-    }
-
-    show = ({ visible }) => {
+    const show = ({ visible }) => {
       return new Promise((resolve) => {
-        this.setState({
-          visible
-        }, () => {
+        setVisible(visible, () => {
           resolve()
         })
       })
     }
 
-    handleCancel = () => {
-      if (this.formRef && this.formRef.current) {
-        this.formRef.current.resetFields()
+    setNotifyHandler({
+      show
+    })
+
+    const handleCancel = () => {
+      if (formRef && formRef.current) {
+        formRef.current.resetFields()
       }
 
-      this.setState({
-        visible: false,
-        loading: false,
-        errMsg: ''
-      })
+      setVisible(false)
+      setLoading(false)
+      setErrMsg('')
     }
 
-    handleFinish = (values) => {
-      const { login } = this.props
-      this.setLoading(true)
+    const handleFinish = (values) => {
+      const { login } = props
+      setLoading(true)
       login(values).then(() => {
-        this.handleCancel()
-        this.setLoading(false)
+        handleCancel()
+        setLoading(false)
       }).catch(err => {
-        this.setState({
-          errMsg: err.message,
-          loading: false
-        })
+        setErrMsg(err.message)
+        setLoading(false)
       })
     }
 
-    createForm () {
-      const { __, theme } = this.props
-      const { loading, errMsg } = this.state
+    function createForm () {
+      const { __, theme } = props
       const layout = {
         labelCol: { span: 6 },
         wrapperCol: { span: 18 }
@@ -76,8 +56,7 @@ export default async ({ getModule }) => {
         wrapperCol: { offset: 6, span: 18 }
       }
 
-      return <Form ref={this.formRef} {...layout} name='basic' onFinish={this.handleFinish}
-        onFinishFailed={this.handleFinishFailed}>
+      return <Form ref={formRef} {...layout} name='basic' onFinish={handleFinish} >
         <Form.Item
           label={__('userName')}
           name='name'
@@ -103,14 +82,19 @@ export default async ({ getModule }) => {
       </Form>
     }
 
-    render () {
-      const { theme, __ } = this.props
-      const { visible } = this.state
-
-      return <Modal className={theme.loginModal} title={__('loginTitle')} visible={visible}
-        footer={null} maskClosable={false} onCancel={this.handleCancel}>
-        {this.createForm()}
-      </Modal>
-    }
+    const { theme, __ } = props
+    return <Modal className={theme.loginModal} title={__('loginTitle')} visible={visible}
+      footer={null} maskClosable={false} onCancel={handleCancel}>
+      {createForm()}
+    </Modal>
   }
+
+  Login.propTypes = {
+    __: PropTypes.func.isRequired,
+    theme: PropTypes.object.isRequired,
+    login: PropTypes.func.isRequired,
+    setNotifyHandler: PropTypes.func.isRequired
+  }
+
+  return Login
 }

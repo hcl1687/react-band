@@ -1,18 +1,18 @@
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 
 export default () => {
-  return class Layout extends Component {
-    static propTypes = {
-      theme: PropTypes.object.isRequired,
-      children: PropTypes.any
-    }
-
-    render () {
-      const { theme, children } = this.props
-      return <div className={theme.layout}>
-        {children}
-      </div>
-    }
+  function Layout (props) {
+    const { theme, children } = props
+    return <div className={theme.layout}>
+      {children}
+    </div>
   }
+
+  Layout.propTypes = {
+    theme: PropTypes.object.isRequired,
+    children: PropTypes.any
+  }
+
+  return Layout
 }

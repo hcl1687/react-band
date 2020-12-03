@@ -1,13 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 export default async ({ getModule }) => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
   return ({ theme }) => WrappedComponent => {
-    class themeDeco extends Component {
-      render () {
-        return <WrappedComponent {...this.props} theme={theme} />
-      }
+    function themeDeco (props) {
+      return <WrappedComponent {...props} theme={theme} />
     }
 
     if (process.env.NODE_ENV !== 'production') {

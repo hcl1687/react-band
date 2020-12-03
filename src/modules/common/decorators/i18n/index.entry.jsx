@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
 import IntlMessageFormat from 'intl-messageformat'
+import React from 'react'
 
 export default async ({ getModule, options }) => {
   const utils = await getModule('utils') || {}
@@ -7,17 +7,15 @@ export default async ({ getModule, options }) => {
   const { locale } = options
 
   return ({ i18n }) => WrappedComponent => {
-    class i18nDeco extends Component {
-      __ = (key, values) => {
-        if (!i18n[key]) {
-          return key
-        }
-        return new IntlMessageFormat(i18n[key], locale).format(values)
+    const __ = (key, values) => {
+      if (!i18n[key]) {
+        return key
       }
+      return new IntlMessageFormat(i18n[key], locale).format(values)
+    }
 
-      render () {
-        return <WrappedComponent {...this.props} __={this.__} />
-      }
+    function i18nDeco (props) {
+      return <WrappedComponent {...props} __={__} />
     }
 
     if (process.env.NODE_ENV !== 'production') {

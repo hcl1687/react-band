@@ -1,26 +1,17 @@
-import React, { Component } from 'react'
+import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import lottie from 'lottie-web'
 
 export default () => {
-  return class Loading extends Component {
-    static propTypes = {
-      __: PropTypes.func.isRequired,
-      theme: PropTypes.object.isRequired
-    }
+  function Loading (props) {
+    const lottieDom = useRef(null)
 
-    constructor (props, context) {
-      super(props, context)
-
-      this.lottieDom = React.createRef()
-    }
-
-    componentDidMount () {
+    useEffect(() => {
       // wait 3s to show loading animate.
       setTimeout(() => {
-        if (this.lottieDom && this.lottieDom.current) {
+        if (lottieDom && lottieDom.current) {
           lottie.loadAnimation({
-            container: this.lottieDom.current,
+            container: lottieDom.current,
             renderer: 'svg',
             loop: true,
             autoplay: true,
@@ -28,14 +19,19 @@ export default () => {
           })
         }
       }, 3000)
-    }
+    }, [])
 
-    render () {
-      const { __, theme } = this.props
-      return <div className={theme.loading}>
-        <div ref={this.lottieDom} className={theme.lottie} />
-        <div className={theme.tip}>{__('loading')}</div>
-      </div>
-    }
+    const { __, theme } = props
+    return <div className={theme.loading}>
+      <div ref={lottieDom} className={theme.lottie} />
+      <div className={theme.tip}>{__('loading')}</div>
+    </div>
   }
+
+  Loading.propTypes = {
+    __: PropTypes.func.isRequired,
+    theme: PropTypes.object.isRequired
+  }
+
+  return Loading
 }

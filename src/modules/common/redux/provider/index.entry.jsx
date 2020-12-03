@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
 import { Provider } from 'react-redux'
+import React from 'react'
 import getStore from '../getStore'
 
 export default async ({ getModule }) => {
@@ -8,12 +8,10 @@ export default async ({ getModule }) => {
 
   return (config, decoConfig, RB_CONTEXT) => async WrappedComponent => {
     const store = getStore()
-    class reduxProviderDeco extends Component {
-      render () {
-        return <Provider store={store}>
-          <WrappedComponent {...this.props} />
-        </Provider>
-      }
+    function reduxProviderDeco (props) {
+      return <Provider store={store}>
+        <WrappedComponent {...props} />
+      </Provider>
     }
 
     if (process.env.NODE_ENV !== 'production') {

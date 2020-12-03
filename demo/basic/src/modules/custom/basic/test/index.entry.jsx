@@ -1,25 +1,25 @@
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 
 export default async (RB_CONTEXT) => {
-  return class Test extends Component {
-    static propTypes = {
-      __: PropTypes.func.isRequired,
-      theme: PropTypes.object.isRequired,
-      history: PropTypes.object.isRequired
-    }
-
-    handleClick = (e) => {
-      const { history } = this.props
+  function Test (props) {
+    const handleClick = (e) => {
+      const { history } = props
       history.push('/')
     }
 
-    render () {
-      const { __, theme } = this.props
-      return <div className={theme.test}>
-        <div className={theme.content}>{__('test')}</div>
-        <button onClick={this.handleClick} >{__('toHome')}</button>
-      </div>
-    }
+    const { __, theme } = props
+    return <div className={theme.test}>
+      <div className={theme.content}>{__('test')}</div>
+      <button onClick={handleClick} >{__('toHome')}</button>
+    </div>
   }
+
+  Test.propTypes = {
+    __: PropTypes.func.isRequired,
+    theme: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
+  }
+
+  return Test
 }

@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import classnames from 'classnames'
 import { createFromIconfontCN } from '@ant-design/icons'
 
@@ -10,35 +10,35 @@ const IconFont = createFromIconfontCN({
 })
 
 export default (RB_CONTEXT) => {
-  return class AsICON extends Component {
-    static propTypes = {
-      className: PropTypes.string,
-      mode: PropTypes.string,
-      type: PropTypes.string,
-      size: PropTypes.number,
-      style: PropTypes.any
+  function AsICON (props) {
+    const { mode, type, size, style, className, ...rest } = props
+    const newStyle = style || {}
+    if (size) {
+      newStyle.fontSize = `${size}px`
+    }
+    let newType = type
+    if (newType) {
+      newType = newType.indexOf('iconicon_') === 0 ? newType : `iconicon_${newType}`
     }
 
-    static defaultProps = {
-      className: '',
-      type: '',
-      mode: 'font' // font or symbol
-    }
-
-    render () {
-      const { mode, type, size, style, className, ...rest } = this.props
-      const newStyle = style || {}
-      if (size) {
-        newStyle.fontSize = `${size}px`
-      }
-      let newType = type
-      if (newType) {
-        newType = newType.indexOf('iconicon_') === 0 ? newType : `iconicon_${newType}`
-      }
-
-      return mode === 'font' ? <i className={classnames('iconfont', newType, className)}
-        style={newStyle} {...rest} />
-        : <IconFont type={newType} style={newStyle} className={className} {...rest} />
-    }
+    return mode === 'font' ? <i className={classnames('iconfont', newType, className)}
+      style={newStyle} {...rest} />
+      : <IconFont type={newType} style={newStyle} className={className} {...rest} />
   }
+
+  AsICON.propTypes = {
+    className: PropTypes.string,
+    mode: PropTypes.string,
+    type: PropTypes.string,
+    size: PropTypes.number,
+    style: PropTypes.any
+  }
+
+  AsICON.defaultProps = {
+    className: '',
+    type: '',
+    mode: 'font' // font or symbol
+  }
+
+  return AsICON
 }

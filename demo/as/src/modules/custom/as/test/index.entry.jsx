@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 
 export default async ({ getModule }) => {
@@ -6,70 +6,45 @@ export default async ({ getModule }) => {
   const asUtils = await getModule('asUtils')
   const { getDateText } = asUtils
   const { Table } = antd
-  return class Test extends Component {
-    static propTypes = {
-      __: PropTypes.func.isRequired,
-      theme: PropTypes.object.isRequired,
-      items: PropTypes.array.isRequired,
-      getList: PropTypes.func.isRequired
-    }
-
-    constructor (props, context) {
-      super(props, context)
-
-      this.state = {
-        pagination: {
-          current: 1,
-          pageSize: 10,
-          total: 0
-        },
-        loading: false
-      }
-    }
-
-    componentDidMount () {
-      const { pagination } = this.state
-      this.getData(pagination)
-    }
-
-    setLoading (loading) {
-      this.setState({
-        loading
-      })
-    }
-
-    getData (pagination) {
-      const { getList } = this.props
-      this.setLoading(true)
+  function Test (props) {
+    const [pagination, setPagination] = useState({
+      current: 1,
+      pageSize: 10,
+      total: 0
+    })
+    const [loading, setLoading] = useState(false)
+    const getData = (pagination) => {
+      const { getList } = props
+      setLoading(true)
       getList(pagination).then(data => {
-        this.setState({
+        setPagination({
           pagination: {
             ...pagination,
             total: data.count
-          },
-          loading: false
+          }
         })
+        setLoading(false)
         return data
       }).catch(err => {
-        this.setLoading(false)
+        setLoading(false)
         return err
       })
     }
 
-    getColumns () {
-      const { __ } = this.props
+    const getColumns = () => {
+      const { __ } = props
 
       return [{
         title: __('type'),
         dataIndex: 'PlayType',
-        render: this.hanldeType
+        render: hanldeType
       }, {
         title: __('name'),
         dataIndex: 'Name'
       }, {
         title: __('questions'),
         dataIndex: 'Questions',
-        render: this.handleQuestions
+        render: handleQuestions
       }, {
         title: __('totalPlayers'),
         dataIndex: 'UsersCount'
@@ -79,11 +54,11 @@ export default async ({ getModule }) => {
       }, {
         title: __('deadline'),
         dataIndex: 'DeadlineTime',
-        render: this.handleDate
+        render: handleDate
       }]
     }
 
-    hanldeType = (text) => {
+    const hanldeType = (text) => {
       if (text === 'HomeWork') {
         return 'Hw'
       } else {
@@ -91,34 +66,44 @@ export default async ({ getModule }) => {
       }
     }
 
-    handleDate = (text) => {
+    const handleDate = (text) => {
       const value = text ? getDateText(text * 1000) : ''
       return value
     }
 
-    handleQuestions = (text) => {
-      const { __ } = this.props
+    const handleQuestions = (text) => {
+      const { __ } = props
       return __('qsText', [text])
     }
 
-    handleTableChange = (pagination) => {
-      this.getData(pagination)
+    const handleTableChange = (pagination) => {
+      getData(pagination)
     }
 
-    render () {
-      const { theme, items } = this.props
-      const { pagination, loading } = this.state
-      const columns = this.getColumns()
-      return <div className={theme.test}>
-        <Table
-          columns={columns}
-          rowKey={record => record.Id}
-          dataSource={items}
-          pagination={pagination}
-          loading={loading}
-          onChange={this.handleTableChange}
-        />
-      </div>
-    }
+    useEffect(() => {
+      getData(pagination)
+    }, [])
+
+    const { theme, items } = props
+    const columns = getColumns()
+    return <div className={theme.test}>
+      <Table
+        columns={columns}
+        rowKey={record => record.Id}
+        dataSource={items}
+        pagination={pagination}
+        loading={loading}
+        onChange={handleTableChange}
+      />
+    </div>
   }
+
+  Test.propTypes = {
+    __: PropTypes.func.isRequired,
+    theme: PropTypes.object.isRequired,
+    items: PropTypes.array.isRequired,
+    getList: PropTypes.func.isRequired
+  }
+
+  return Test
 }
