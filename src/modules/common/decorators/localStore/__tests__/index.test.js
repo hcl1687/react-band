@@ -1,5 +1,6 @@
-import { mount, render } from 'enzyme'
 import React, { useState } from 'react'
+import { mount, render } from 'enzyme'
+import PropTypes from 'prop-types'
 import localStoreDecoFactory from '../index.entry'
 import tools from '~/../tests/utils/index'
 import utils from '~/../tests/utils/mockUtils'
@@ -22,6 +23,12 @@ function Test (props) {
     <button id='btn1' onClick={hanldeBtn1}>increase</button>
     <button id='btn2' onClick={handleBtn2}>increase</button>
   </div>
+}
+
+Test.propTypes = {
+  count: PropTypes.number.isRequired,
+  increase: PropTypes.func.isRequired,
+  decrease: PropTypes.func.isRequired
 }
 
 const state = {
@@ -107,10 +114,10 @@ describe('common/decorators/localStore', () => {
     const wrapper = mount(
       <TestWithLocalStoreDeco />
     )
-    
+
     const dom = wrapper.find('#test')
     expect(dom.prop('count')).toBe(0)
-    
+
     expect(typeof dom.prop('increase')).toBe('function')
     expect(typeof dom.prop('decrease')).toBe('function')
   })

@@ -1,6 +1,6 @@
-import React, { Children, Component, useEffect, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { Component, useEffect, useRef, useState } from 'react'
 import { mount, render } from 'enzyme'
+import PropTypes from 'prop-types'
 import noticeDecoFactory from '../index.entry'
 import tools from '~/../tests/utils/index'
 import utils from '~/../tests/utils/mockUtils'
@@ -17,18 +17,18 @@ async function TestFactory () {
   class ChildTest extends Component {
     constructor (props, context) {
       super(props, context)
-  
+
       this.state = {
         text: ''
       }
     }
-  
+
     show1 = (text) => {
       this.setState({
         text
       })
     }
-  
+
     show2 = (text, resolve) => {
       this.setState({
         text
@@ -36,7 +36,7 @@ async function TestFactory () {
         resolve()
       })
     }
-  
+
     show3 = (text) => {
       return new Promise(resolve => {
         this.setState({
@@ -46,7 +46,7 @@ async function TestFactory () {
         })
       })
     }
-  
+
     render () {
       return <div id='childTest' {...this.props}>{this.state.text}</div>
     }
@@ -55,7 +55,7 @@ async function TestFactory () {
   class Test extends Component {
     constructor (props, context) {
       super(props, context)
-  
+
       this.state = {
         msg: ''
       }
@@ -65,7 +65,7 @@ async function TestFactory () {
       notify: PropTypes.func.isRequired,
       getNotification: PropTypes.func.isRequired
     }
-  
+
     handleBtn1 = () => {
       const { notify } = this.props
       notify('child', 'show1', 'show1').then(() => {
@@ -74,7 +74,7 @@ async function TestFactory () {
         })
       })
     }
-  
+
     handleBtn2 = () => {
       const { notify } = this.props
       notify('child', 'show2', 'show2').then(() => {
@@ -83,7 +83,7 @@ async function TestFactory () {
         })
       })
     }
-  
+
     handleBtn3 = () => {
       const { notify } = this.props
       notify('child', 'show3', 'show3').then(() => {
@@ -110,7 +110,7 @@ async function TestFactory () {
         })
       })
     }
-  
+
     render () {
       const { getNotification } = this.props
       return <div id='test' {...this.props}>
@@ -170,7 +170,7 @@ async function Test1Factory () {
         setMsg(err.message)
       })
     }
-  
+
     return <div id='test' {...props}>
       <ChildTest1WithNoticeDeco {...getNotification('child')} />
       <div id='testResult'>{msg}</div>
@@ -181,28 +181,28 @@ async function Test1Factory () {
       <button id='btn5' onClick={handleBtn5}>btn5</button>
     </div>
   }
-  
+
   Test1.propTypes = {
     notify: PropTypes.func.isRequried,
     getNotification: PropTypes.func.isRequried
   }
-  
+
   function ChildTest1 (props) {
     const { setNotifyHandler } = props
     const [text, setText] = useState('')
     const thisRef = useRef({})
-  
+
     const show1 = (text) => {
       setText(text)
     }
-  
+
     const show2 = (text, resolve) => {
       setText(text)
       if (thisRef && thisRef.current) {
         thisRef.current.show1Resolve = resolve
       }
     }
-  
+
     const show3 = (text) => {
       return new Promise(resolve => {
         setText(text)
@@ -211,13 +211,13 @@ async function Test1Factory () {
         }
       })
     }
-  
+
     setNotifyHandler({
       show1,
       show2,
       show3
     })
-  
+
     useEffect(() => {
       if (thisRef && thisRef.current) {
         if (thisRef.current.show1Resolve) {
@@ -231,10 +231,10 @@ async function Test1Factory () {
         }
       }
     }, [text])
-  
+
     return <div id='childTest' {...props}>{text}</div>
   }
-  
+
   ChildTest1.propTypes = {
     setNotifyHandler: PropTypes.func.isRequried
   }
