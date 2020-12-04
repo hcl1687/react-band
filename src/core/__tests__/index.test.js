@@ -1,6 +1,6 @@
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import RBCore from '../index'
-import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import { mount } from 'enzyme'
 
@@ -34,7 +34,7 @@ describe('core/index', () => {
       const rbInstance = RBCore.create()
       rbInstance.fetchI18n = jest.fn((path, locale) => {
         return Promise.resolve({
-          'default': {
+          default: {
             a: 'test'
           }
         })
@@ -42,7 +42,7 @@ describe('core/index', () => {
 
       return rbInstance.loadI18n('testPath', 'test').then(i18n => {
         expect(i18n).toEqual({
-          'default': {
+          default: {
             a: 'test'
           }
         })
@@ -59,7 +59,7 @@ describe('core/index', () => {
     it('fetch failed', () => {
       const rbInstance = RBCore.create()
       rbInstance.fetchI18n = jest.fn((path, locale) => {
-        return Promise.reject({})
+        return Promise.reject(new Error(''))
       })
 
       return rbInstance.loadI18n('testPath', 'test').then(i18n => {
@@ -78,14 +78,14 @@ describe('core/index', () => {
       const rbInstance = RBCore.create()
       rbInstance.fetchI18nJSON = jest.fn((path, locale) => {
         return Promise.resolve({
-          'default': {
+          default: {
             a: 'test'
           }
         })
       })
       return rbInstance.fetchI18n('testPath', 'en').then((i18n) => {
         expect(i18n).toEqual({
-          'default': {
+          default: {
             a: 'test'
           }
         })
@@ -99,18 +99,18 @@ describe('core/index', () => {
     it('fetch json failed', () => {
       const rbInstance = RBCore.create()
       rbInstance.fetchI18nJSON = jest.fn((path, locale) => {
-        return Promise.reject({})
+        return Promise.reject(new Error(''))
       })
       rbInstance.fetchI18nJS = jest.fn((path, locale) => {
         return Promise.resolve({
-          'default': {
+          default: {
             a: 'test'
           }
         })
       })
       return rbInstance.fetchI18n('testPath', 'en').then((i18n) => {
         expect(i18n).toEqual({
-          'default': {
+          default: {
             a: 'test'
           }
         })
@@ -128,10 +128,10 @@ describe('core/index', () => {
     it('fetch failed', () => {
       const rbInstance = RBCore.create()
       rbInstance.fetchI18nJSON = jest.fn((path, locale) => {
-        return Promise.reject({})
+        return Promise.reject(new Error(''))
       })
       rbInstance.fetchI18nJS = jest.fn((path, locale) => {
-        return Promise.reject({})
+        return Promise.reject(new Error(''))
       })
       return rbInstance.fetchI18n('testPath', 'en').catch(() => {
         expect(rbInstance.fetchI18nJSON.mock.calls.length).toBe(1)
@@ -169,7 +169,7 @@ describe('core/index', () => {
       const rbInstance = RBCore.create()
       rbInstance.fetchTheme = jest.fn((path, locale) => {
         return Promise.resolve({
-          'default': {
+          default: {
             a: 'test'
           }
         })
@@ -177,7 +177,7 @@ describe('core/index', () => {
 
       return rbInstance.loadTheme('testPath', 'test').then(i18n => {
         expect(i18n).toEqual({
-          'default': {
+          default: {
             a: 'test'
           }
         })
@@ -197,14 +197,14 @@ describe('core/index', () => {
       const rbInstance = RBCore.create()
       rbInstance.fetchLocalTheme = jest.fn((path, locale) => {
         return Promise.resolve({
-          'default': {
+          default: {
             a: 'test'
           }
         })
       })
       return rbInstance.fetchTheme('testPath', 'default').then((i18n) => {
         expect(i18n).toEqual({
-          'default': {
+          default: {
             a: 'test'
           }
         })
@@ -219,7 +219,7 @@ describe('core/index', () => {
       const rbInstance = RBCore.create()
       rbInstance.fetchLocalTheme = jest.fn((path, locale) => {
         return Promise.resolve({
-          'default': {
+          default: {
             a: 'test'
           }
         })
@@ -229,7 +229,7 @@ describe('core/index', () => {
       })
       return rbInstance.fetchTheme('testPath', 'default').then((i18n) => {
         expect(i18n).toEqual({
-          'default': {
+          default: {
             a: 'test'
           }
         })
@@ -250,7 +250,7 @@ describe('core/index', () => {
       const rbInstance = RBCore.create()
       return rbInstance.fetchLocalTheme('testPath', 'default').then((res) => {
         expect(res).toEqual({
-          'default': {}
+          default: {}
         })
       })
     })
@@ -279,7 +279,7 @@ describe('core/index', () => {
       })
       rbInstance.fetchModule = jest.fn((path) => {
         return Promise.resolve({
-          'default': (RB_CONTEXT) => {
+          default: (RB_CONTEXT) => {
             const { options } = RB_CONTEXT
             return function () {
               return options.locale
@@ -290,7 +290,7 @@ describe('core/index', () => {
 
       return rbInstance.loadModule('testPath', 'test').then(res => {
         expect(res).toEqual({
-          'default': {}
+          default: {}
         })
         expect(rbInstance.loadI18n.mock.calls.length).toBe(1)
         expect(rbInstance.loadI18n.mock.calls[0][0]).toEqual('testPath')
@@ -329,7 +329,7 @@ describe('core/index', () => {
           __: PropTypes.func.isRequired,
           theme: PropTypes.object.isRequired
         }
-    
+
         render () {
           const { theme, __ } = this.props
           return <div className={theme.test}>{__('test')}</div>
@@ -354,12 +354,12 @@ describe('core/index', () => {
               __ = (key, values) => {
                 return i18n[key]
               }
-        
+
               render () {
                 return <WrappedComponent {...this.props} __={this.__} />
               }
             }
-        
+
             return i18nDeco
           }
         } else if (type === '@theme') {
@@ -369,7 +369,7 @@ describe('core/index', () => {
                 return <WrappedComponent {...this.props} theme={theme} />
               }
             }
-        
+
             return themeDeco
           }
         }
@@ -431,26 +431,26 @@ describe('core/index', () => {
     it('create successful', () => {
       const rbInstance = RBCore.create()
       rbInstance._modulesConfig = {
-        'home': {
+        home: {
           name: 'home',
           route: {
             path: '/',
             exact: true
           }
         },
-        'notFound': {
+        notFound: {
           name: 'notFound',
           route: {
             path: undefined
           }
         },
-        'test': {
+        test: {
           name: 'test',
           route: {
             path: '/test'
           }
         },
-        'test1': {
+        test1: {
           name: 'test1'
         }
       }
@@ -479,11 +479,11 @@ describe('core/index', () => {
     it('load successful', () => {
       const rbInstance = RBCore.create()
       rbInstance._modulesConfig = {
-        'test': {
+        test: {
           name: 'test',
           key: 'testPath'
         },
-        'test1': {
+        test1: {
           name: 'test1',
           key: 'test1Path',
           lazy: false
@@ -519,7 +519,7 @@ describe('core/index', () => {
         static propTypes = {
           children: PropTypes.any
         }
-    
+
         render () {
           const { children } = this.props
           return <div className='app'>{children}</div>
