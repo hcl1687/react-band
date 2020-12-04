@@ -47,7 +47,7 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.jsx?$/,
+      test: /\.(ts|js)x?$/,
       include: src,
       use: [{
         loader: 'eslint-loader',
@@ -58,7 +58,7 @@ module.exports = {
       }],
       enforce: 'pre'
     }, {
-      test: /\.(js|jsx)$/,
+      test: /\.(ts|js)x?$/,
       exclude: /node_modules/,
       use: [{
         loader: 'babel-loader'
@@ -87,7 +87,7 @@ module.exports = {
     }]
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx', '.css', '.json'],
+    extensions: ['*', '.js', '.jsx', '.ts', '.tsx', '.css', '.json'],
     alias: {
       '~': src
     }

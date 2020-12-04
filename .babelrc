@@ -2,12 +2,14 @@
   "env": {
     "development": {
       "presets": [
-        "@babel/preset-react",
-        "@babel/preset-env"
+        "@babel/preset-env",
+        "@babel/preset-typescript",
+        "@babel/preset-react"
       ],
       "plugins": [
         "add-module-exports",
         "@babel/plugin-proposal-class-properties",
+        "@babel/proposal-object-rest-spread",
         ["@babel/plugin-transform-runtime",
           {
             "regenerator": true
@@ -18,12 +20,14 @@
     },
     "test": {
       "presets": [
-        "@babel/preset-react",
-        "@babel/preset-env"
+        "@babel/preset-env",
+        "@babel/preset-typescript",
+        "@babel/preset-react"
       ],
       "plugins": [
         "add-module-exports",
         "@babel/plugin-proposal-class-properties",
+        "@babel/proposal-object-rest-spread",
         ["@babel/plugin-transform-runtime",
           {
             "regenerator": true
@@ -34,12 +38,14 @@
     },
     "production": {
       "presets": [
-        "@babel/preset-react",
-        "@babel/preset-env"
+        "@babel/preset-env",
+        "@babel/preset-typescript",
+        "@babel/preset-react"
       ],
       "plugins": [
         "add-module-exports",
         "@babel/plugin-proposal-class-properties",
+        "@babel/proposal-object-rest-spread",
         ["@babel/plugin-transform-runtime",
           {
             "regenerator": true
