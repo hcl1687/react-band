@@ -45,26 +45,26 @@ const actions = {
 }
 const reducers = {
   increase: {
-    next (state, action) {
+    next (state) {
       const { count } = state
       return {
         ...state,
         count: count + 1
       }
     },
-    throw (state, action) {
+    throw (state) {
       return state
     }
   },
   decrease: {
-    next (state, action) {
+    next (state) {
       const { count } = state
       return {
         ...state,
         count: count - 1
       }
     },
-    throw (state, action) {
+    throw (state) {
       return state
     }
   }

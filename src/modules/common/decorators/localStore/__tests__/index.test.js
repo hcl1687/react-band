@@ -36,7 +36,7 @@ const state = {
 }
 const actions = {
   increase: data => ++data,
-  decrease: data => {
+  decrease: () => {
     throw new Error('error')
   }
 }
@@ -50,7 +50,7 @@ const reducers = {
         count
       }
     },
-    throw (state, action) {
+    throw (state) {
       return state
     }
   },
@@ -63,7 +63,7 @@ const reducers = {
         count
       }
     },
-    throw (state, action) {
+    throw (state) {
       return {
         ...state,
         count: -1
@@ -176,6 +176,7 @@ describe('common/decorators/localStore', () => {
       <TestWithLocalStoreDeco />
     )
 
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     const { children, ...rest } = wrapper.find('#test').props()
     expect(rest).toEqual({
       id: 'test'

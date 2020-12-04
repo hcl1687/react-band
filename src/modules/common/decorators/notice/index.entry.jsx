@@ -120,7 +120,7 @@ export default async ({ getModule }) => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
 
-  return ({ decoratorsConfig }) => WrappedComponent => {
+  return () => WrappedComponent => {
     class noticeClassDeco extends Component {
       static propTypes = {
         notification: PropTypes.object

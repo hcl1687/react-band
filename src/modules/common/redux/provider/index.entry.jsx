@@ -6,7 +6,7 @@ export default async ({ getModule }) => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
 
-  return (config, decoConfig, RB_CONTEXT) => async WrappedComponent => {
+  return () => async WrappedComponent => {
     const store = getStore()
     function reduxProviderDeco (props) {
       return <Provider store={store}>

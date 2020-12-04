@@ -221,7 +221,7 @@ export default class RBCore {
   async loadSyncModule () {
     const modulesConfig = this._modulesConfig
     // load not lazy modules
-    await runFlow(modulesConfig, undefined, (value, key) => {
+    await runFlow(modulesConfig, undefined, (value) => {
       if (value.lazy === false) {
         return this.loadModule(value.key, value.name)
       }
