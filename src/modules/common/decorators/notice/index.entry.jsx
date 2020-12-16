@@ -116,6 +116,10 @@ function shouldConstruct (Component) {
   return !!(prototype && prototype.isReactComponent)
 }
 
+function setFakeNotifyHandler () {
+  console.error('only functions that accept exactly two parameters: props and ref are support setNotifyHandler.')
+}
+
 export default async ({ getModule }) => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
@@ -154,7 +158,30 @@ export default async ({ getModule }) => {
     let WrappedComponentWithRef = null
     // if it's not a react component, it's function component
     if (!(typeof WrappedComponent === 'function' && shouldConstruct(WrappedComponent))) {
-      WrappedComponentWithRef = forwardRef(WrappedComponent)
+      // fix: forwardRef render functions accept exactly two parameters: props and ref. Did you forget to use the ref parameter?
+      if (WrappedComponent.length === 2) {
+        let propTypes
+        let defaultProps
+        if (WrappedComponent.propTypes) {
+          propTypes = WrappedComponent.propTypes
+          delete WrappedComponent.propTypes
+        }
+        if (WrappedComponent.defaultProps) {
+          defaultProps = WrappedComponent.defaultProps
+          delete WrappedComponent.defaultProps
+        }
+
+        WrappedComponentWithRef = forwardRef(WrappedComponent)
+
+        // fix: forwardRef render functions do not support propTypes or defaultProps
+        // https://stackoverflow.com/questions/59716140/using-forwardref-with-proptypes-and-eslint
+        if (propTypes) {
+          WrappedComponentWithRef.propTypes = propTypes
+        }
+        if (defaultProps) {
+          WrappedComponentWithRef.defaultProps = defaultProps
+        }
+      }
     }
     function noticeFunctionDeco (props) {
       const targetRef = useRef()
@@ -167,10 +194,11 @@ export default async ({ getModule }) => {
         _handleNotification(props, prevProps, targetRef)
       })
 
-      const [getNotification, notify, setNotifyTarget] = useNotice()
+      const [getNotification, notify, setNotifyHandler] = useNotice()
 
-      return <WrappedComponentWithRef {...props} ref={targetRef}
-        getNotification={getNotification} notify={notify} setNotifyHandler={setNotifyTarget(targetRef)} />
+      return WrappedComponentWithRef ? <WrappedComponentWithRef {...props} ref={targetRef}
+        getNotification={getNotification} notify={notify} setNotifyHandler={setNotifyHandler} />
+        : <WrappedComponent {...props} getNotification={getNotification} notify={notify} setNotifyHandler={setFakeNotifyHandler} />
     }
 
     let noticeDeco = noticeFunctionDeco
@@ -192,9 +220,9 @@ export function useNotice () {
 
   const getNotification = _getNotification({ state, setState })
   const notify = _notify({ state, setState })
-  const setNotifyTarget = ref => handlers => {
+  const setNotifyHandler = (handlers, ref) => {
     useImperativeHandle(ref, () => (handlers))
   }
 
-  return [getNotification, notify, setNotifyTarget]
+  return [getNotification, notify, setNotifyHandler]
 }
