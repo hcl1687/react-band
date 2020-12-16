@@ -2,7 +2,7 @@
 
 exports[`common/decorators/layout/production should render correctly 1`] = `
 <div
-  count="0"
+  data-props="[object Object]"
   id="test"
 >
   <div
@@ -28,7 +28,7 @@ exports[`common/decorators/layout/production should render correctly 1`] = `
 
 exports[`common/decorators/localStore should render correctly 1`] = `
 <div
-  count="0"
+  data-props="[object Object]"
   id="test"
 >
   <div

@@ -17,7 +17,7 @@ function Test (props) {
     })
   }
 
-  return <div id='test' {...props}>
+  return <div id='test' data-props={props}>
     <div id='result'>{count}</div>
     <div id='result1'>{msg}</div>
     <button id='btn1' onClick={hanldeBtn1}>increase</button>
@@ -26,9 +26,9 @@ function Test (props) {
 }
 
 Test.propTypes = {
-  count: PropTypes.number.isRequired,
-  increase: PropTypes.func.isRequired,
-  decrease: PropTypes.func.isRequired
+  count: PropTypes.any,
+  increase: PropTypes.any,
+  decrease: PropTypes.any
 }
 
 const state = {
@@ -116,10 +116,11 @@ describe('common/decorators/localStore', () => {
     )
 
     const dom = wrapper.find('#test')
-    expect(dom.prop('count')).toBe(0)
+    const props = dom.prop('data-props')
+    expect(props['count']).toBe(0)
 
-    expect(typeof dom.prop('increase')).toBe('function')
-    expect(typeof dom.prop('decrease')).toBe('function')
+    expect(typeof props['increase']).toBe('function')
+    expect(typeof props['decrease']).toBe('function')
   })
 
   it('should invoke action correctly', async () => {
@@ -135,8 +136,9 @@ describe('common/decorators/localStore', () => {
       <TestWithLocalStoreDeco />
     )
 
-    expect(wrapper.find('#test').prop('count')).toBe(0)
+    expect(wrapper.find('#test').prop('data-props')['count']).toBe(0)
     wrapper.find('#btn1').simulate('click')
+
     return tools.delay(() => {
       expect(wrapper.find('#result').text()).toEqual('1')
     }, 100)
@@ -154,7 +156,7 @@ describe('common/decorators/localStore', () => {
     const wrapper = mount(
       <TestWithLocalStoreDeco />
     )
-    expect(wrapper.find('#test').prop('count')).toBe(0)
+    expect(wrapper.find('#test').prop('data-props')['count']).toBe(0)
     wrapper.find('#btn2').simulate('click')
 
     return tools.delay(() => {
@@ -176,10 +178,8 @@ describe('common/decorators/localStore', () => {
       <TestWithLocalStoreDeco />
     )
 
-    const { children, ...rest } = wrapper.find('#test').props()
-    expect(rest).toEqual({
-      id: 'test'
-    })
+    const { children } = wrapper.find('#test').props('data-props')
+    expect(children.length).toEqual(4)
   })
 })
 

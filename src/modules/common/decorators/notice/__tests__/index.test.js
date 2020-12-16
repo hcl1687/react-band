@@ -48,7 +48,7 @@ async function TestFactory () {
     }
 
     render () {
-      return <div id='childTest' {...this.props}>{this.state.text}</div>
+      return <div id='childTest' data-props={this.props}>{this.state.text}</div>
     }
   }
 
@@ -113,7 +113,7 @@ async function TestFactory () {
 
     render () {
       const { getNotification } = this.props
-      return <div id='test' {...this.props}>
+      return <div id='test' data-props={this.props}>
         <ChildTestWithNoticeDeco {...getNotification('child')} />
         <div id='testResult'>{this.state.msg}</div>
         <button id='btn1' onClick={this.handleBtn1}>btn1</button>
@@ -171,7 +171,7 @@ async function Test1Factory () {
       })
     }
 
-    return <div id='test' {...props}>
+    return <div id='test' data-props={props}>
       <ChildTest1WithNoticeDeco {...getNotification('child')} />
       <div id='testResult'>{msg}</div>
       <button id='btn1' onClick={handleBtn1}>btn1</button>
@@ -183,11 +183,11 @@ async function Test1Factory () {
   }
 
   Test1.propTypes = {
-    notify: PropTypes.func.isRequried,
-    getNotification: PropTypes.func.isRequried
+    notify: PropTypes.func.isRequired,
+    getNotification: PropTypes.func.isRequired
   }
 
-  function ChildTest1 (props) {
+  function ChildTest1 (props, ref) {
     const { setNotifyHandler } = props
     const [text, setText] = useState('')
     const thisRef = useRef({})
@@ -216,7 +216,7 @@ async function Test1Factory () {
       show1,
       show2,
       show3
-    })
+    }, ref)
 
     useEffect(() => {
       if (thisRef && thisRef.current) {
@@ -232,11 +232,11 @@ async function Test1Factory () {
       }
     }, [text])
 
-    return <div id='childTest' {...props}>{text}</div>
+    return <div id='childTest' data-props={props}>{text}</div>
   }
 
   ChildTest1.propTypes = {
-    setNotifyHandler: PropTypes.func.isRequried
+    setNotifyHandler: PropTypes.func.isRequired
   }
 
   return Test1WithNoticeDeco
@@ -261,11 +261,11 @@ describe('common/decorators/notice test class', () => {
       <TestWithNoticeDeco />
     )
 
-    expect(typeof wrapper.find('#test').prop('getNotification')).toBe('function')
-    expect(typeof wrapper.find('#test').prop('notify')).toBe('function')
-    expect(typeof wrapper.find('#childTest').prop('getNotification')).toBe('function')
-    expect(typeof wrapper.find('#childTest').prop('notify')).toBe('function')
-    expect(wrapper.find('#childTest').prop('notification')).toEqual({})
+    expect(typeof wrapper.find('#test').prop('data-props')['getNotification']).toBe('function')
+    expect(typeof wrapper.find('#test').prop('data-props')['notify']).toBe('function')
+    expect(typeof wrapper.find('#childTest').prop('data-props')['getNotification']).toBe('function')
+    expect(typeof wrapper.find('#childTest').prop('data-props')['notify']).toBe('function')
+    expect(wrapper.find('#childTest').prop('data-props')['notification']).toEqual({})
     wrapper.find('#btn1').simulate('click')
 
     return tools.delay(() => {
@@ -343,11 +343,12 @@ describe('common/decorators/notice test function', () => {
       <Test1WithNoticeDeco />
     )
 
-    expect(typeof wrapper.find('#test').prop('getNotification')).toBe('function')
-    expect(typeof wrapper.find('#test').prop('notify')).toBe('function')
-    expect(typeof wrapper.find('#childTest').prop('getNotification')).toBe('function')
-    expect(typeof wrapper.find('#childTest').prop('notify')).toBe('function')
-    expect(wrapper.find('#childTest').prop('notification')).toEqual({})
+    expect(typeof wrapper.find('#test').prop('data-props')['getNotification']).toBe('function')
+    expect(typeof wrapper.find('#test').prop('data-props')['notify']).toBe('function')
+    expect(typeof wrapper.find('#childTest').prop('data-props')['getNotification']).toBe('function')
+    expect(typeof wrapper.find('#childTest').prop('data-props')['notify']).toBe('function')
+    expect(wrapper.find('#childTest').prop('data-props')['notification']).toEqual({})
+
     wrapper.find('#btn1').simulate('click')
 
     return tools.delay(() => {
