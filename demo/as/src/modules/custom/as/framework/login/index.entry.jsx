@@ -5,7 +5,7 @@ export default async ({ getModule }) => {
   const antd = await getModule('antd')
   const { Form, Input, Button, Modal } = antd
 
-  function Login (props) {
+  function Login (props, ref) {
     const [visible, setVisible] = useState(false)
     const [errMsg, setErrMsg] = useState('')
     const [loading, setLoading] = useState(false)
@@ -22,7 +22,7 @@ export default async ({ getModule }) => {
 
     setNotifyHandler({
       show
-    })
+    }, ref)
 
     const handleCancel = () => {
       if (formRef && formRef.current) {

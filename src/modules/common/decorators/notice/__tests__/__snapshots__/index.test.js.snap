@@ -2,12 +2,12 @@
 
 exports[`common/decorators/notice test class should render correctly 1`] = `
 <div
+  data-props="[object Object]"
   id="test"
-  notification="[object Object]"
 >
   <div
+    data-props="[object Object]"
     id="childTest"
-    notification="[object Object]"
   />
   <div
     id="testResult"
@@ -42,11 +42,12 @@ exports[`common/decorators/notice test class should render correctly 1`] = `
 
 exports[`common/decorators/notice test function should render correctly 1`] = `
 <div
+  data-props="[object Object]"
   id="test"
 >
   <div
+    data-props="[object Object]"
     id="childTest"
-    notification="[object Object]"
   />
   <div
     id="testResult"
@@ -81,12 +82,12 @@ exports[`common/decorators/notice test function should render correctly 1`] = `
 
 exports[`common/decorators/notice/production should render correctly in production env 1`] = `
 <div
+  data-props="[object Object]"
   id="test"
-  notification="[object Object]"
 >
   <div
+    data-props="[object Object]"
     id="childTest"
-    notification="[object Object]"
   />
   <div
     id="testResult"
