@@ -9,7 +9,7 @@ export default async (RB_CONTEXT) => {
   const antd = await getModule('antd')
   const { Menu } = antd
 
-  function MenuComp (props) {
+  function MenuComp (props, ref) {
     const { __, setNotifyHandler } = props
     const [show, setShow] = useState(true)
     const createMenus = () => {
@@ -33,7 +33,7 @@ export default async (RB_CONTEXT) => {
     }
     setNotifyHandler({
       toggleMenu
-    })
+    }, ref)
 
     const { theme } = props
     return <div className={theme.menu} style={{ display: show ? 'block' : 'none' }}>
