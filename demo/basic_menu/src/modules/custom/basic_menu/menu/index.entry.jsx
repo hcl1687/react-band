@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import menus from './menus'
 
 export default () => {
-  function Menu (props) {
+  function Menu (props, ref) {
     const { theme, __, setNotifyHandler } = props
     const [show, setShow] = useState(true)
 
@@ -26,7 +26,7 @@ export default () => {
     }
     setNotifyHandler({
       toggleMenu
-    })
+    }, ref)
 
     return <div className={theme.menus}>
       <div style={{ display: show ? 'block' : 'none' }}>
