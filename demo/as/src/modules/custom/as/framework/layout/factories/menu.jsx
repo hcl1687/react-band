@@ -5,9 +5,9 @@ import menus from './menus'
 
 export default () => {
   function Menu (props) {
-    const [show, setShow] = useState(true)
+    const [show] = useState(true)
+    const { theme, __ } = props
     const createMenus = () => {
-      const { __ } = props
       return <ul className='menu'>
         {
           menus.map((item, i) => {
@@ -20,11 +20,6 @@ export default () => {
       </ul>
     }
 
-    const toggleMenu = () => {
-      setShow(!show)
-    }
-
-    const { theme } = props
     return <div className={theme.menus}>
       <div style={{ display: show ? 'block' : 'none' }}>
         {createMenus()}
