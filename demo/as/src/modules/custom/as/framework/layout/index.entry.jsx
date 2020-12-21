@@ -22,7 +22,7 @@ export default async ({ getModule }) => {
       </div>
       <div className={theme.content}>
         <div className={leftClassName}>
-          <Menu />
+          <Menu LEFT_STATUS={LEFT_STATUS} />
         </div>
         <div className={rightClassName}>
           {children}

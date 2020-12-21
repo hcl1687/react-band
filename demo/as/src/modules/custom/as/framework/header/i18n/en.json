@@ -4,5 +4,8 @@
   "default": "Default",
   "darkgray": "Dark Gray",
   "en": "English",
-  "zh-CN": "Simplified Chinese"
+  "zh-CN": "Simplified Chinese",
+  "editProfile": "Edit Profile",
+  "configTitle": "Config",
+  "themeType": "Theme type:"
 }

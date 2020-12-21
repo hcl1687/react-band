@@ -4,5 +4,8 @@
   "default": "默认",
   "darkgray": "暗灰",
   "en": "英文",
-  "zh-CN": "简体中文"
+  "zh-CN": "简体中文",
+  "editProfile": "编辑用户信息",
+  "configTitle": "配置",
+  "themeType": "主题类型:"
 }

@@ -1,27 +1,42 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import menus from './menus'
 
 export default async (RB_CONTEXT) => {
   const { getModule } = RB_CONTEXT
-  const AsIcon = await getModule('asIcon')
+  const antdIcon = await getModule('antdIcon')
   const antd = await getModule('antd')
   const { Menu } = antd
 
   function MenuComp (props, ref) {
-    const { __, setNotifyHandler } = props
+    const { __, setNotifyHandler, LEFT_STATUS } = props
     const [show, setShow] = useState(true)
+    const location = useLocation()
+    const history = useHistory()
+
+    const handleClick = (e) => {
+      const key = e.key
+      const menu = menus[key]
+      history.push(menu.path)
+    }
+
     const createMenus = () => {
-      return <Menu mode='inline'>
+      const selectedKeys = []
+      menus.forEach((menu, i) => {
+        if (menu.path === location.pathname) {
+          selectedKeys.push('' + i)
+        }
+      })
+
+      return <Menu mode='inline' selectedKeys={selectedKeys} inlineCollapsed={!LEFT_STATUS}
+        onClick={handleClick}>
         {
           menus.map((item, i) => {
-            const { path, name, icon } = item
-            return <Menu.Item key={i}>
-              <Link to={path}>
-                <AsIcon mode='symbol' type={icon} />
-                {__(name)}
-              </Link>
+            const { name, icon } = item
+            const MenuIcon = antdIcon[icon]
+            return <Menu.Item key={i} icon={<MenuIcon className={theme.menuIcon} />}>
+              {__(name)}
             </Menu.Item>
           })
         }
@@ -44,7 +59,8 @@ export default async (RB_CONTEXT) => {
   MenuComp.propTypes = {
     __: PropTypes.func.isRequired,
     theme: PropTypes.object.isRequired,
-    setNotifyHandler: PropTypes.func.isRequired
+    setNotifyHandler: PropTypes.func.isRequired,
+    LEFT_STATUS: PropTypes.bool.isRequired
   }
 
   return MenuComp
