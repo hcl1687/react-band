@@ -4,5 +4,8 @@ export default {
   },
   showHead: (show) => {
     return show
+  },
+  setLayout: (mode) => {
+    return mode
   }
 }

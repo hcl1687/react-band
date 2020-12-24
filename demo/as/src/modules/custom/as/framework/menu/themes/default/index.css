@@ -1,11 +1,7 @@
 .menu {
   height: 100%;
+}
 
-  :global(.ant-menu) {
-    :global(.ant-menu-item) {
-      .menuIcon {
-        font-size: 20px;
-      }
-    }
-  }
+.menu :global(.ant-menu) :global(.ant-menu-item) .menuIcon {
+  font-size: 20px;
 }

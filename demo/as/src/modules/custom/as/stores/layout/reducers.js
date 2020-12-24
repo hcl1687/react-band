@@ -14,5 +14,13 @@ export default {
         HEAD_STATUS: action.payload
       }
     }
+  },
+  setLayout: {
+    next (state, action) {
+      return {
+        ...state,
+        LAYOUT_MODE: action.payload
+      }
+    }
   }
 }

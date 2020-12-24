@@ -4,8 +4,8 @@ export default (config) => {
     decoratorsConfig: {
       '@reduxStore': {
         layoutStore: {
-          actions: ['showLeft'],
-          state: ['LEFT_STATUS']
+          actions: ['showLeft', 'setLayout'],
+          state: ['LEFT_STATUS', 'LAYOUT_MODE']
         },
         authStore: {
           state: ['AUTH'],

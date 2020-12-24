@@ -17,6 +17,8 @@ export default async (RB_CONTEXT) => {
     MenuUnfoldOutlined, SettingOutlined } = antdIcon || {}
 
   function Header (props) {
+    const { theme, showLeft, LEFT_STATUS, LAYOUT_MODE, __, notify, getNotification, logout, AUTH = {},
+      setLayout } = props
     const [visible, setVisible] = useState(false)
     const showDrawer = () => {
       setVisible(true)
@@ -26,7 +28,6 @@ export default async (RB_CONTEXT) => {
     }
 
     const handleToggleMenu = () => {
-      const { showLeft, LEFT_STATUS } = props
       showLeft && showLeft(!LEFT_STATUS)
     }
 
@@ -44,22 +45,24 @@ export default async (RB_CONTEXT) => {
     }
 
     const handleLogin = () => {
-      const { notify } = props
       notify('loginModal', 'show', {
         visible: true
       })
     }
 
     const handleLogout = () => {
-      const { logout } = props
       logout && logout()
     }
 
     const handleEditProfile = () => {
     }
 
+    const handleLayoutChange = (e) => {
+      const value = e.target.value
+      setLayout && setLayout(value)
+    }
+
     const createLogin = () => {
-      const { AUTH = {}, __, theme } = props
       if (!AUTH.uid) {
         // not login, show login button
         return <Button icon={<LoginOutlined />} onClick={handleLogin}>
@@ -122,6 +125,13 @@ export default async (RB_CONTEXT) => {
       const themeOpts = themes.map((item, i) => {
         return { label: __(item), value: item }
       })
+      const layoutOpts = [{
+        label: __('left'),
+        value: 'left'
+      }, {
+        label: __('top'),
+        value: 'top'
+      }]
 
       return <div>
         <SettingOutlined onClick={showDrawer} />
@@ -143,14 +153,24 @@ export default async (RB_CONTEXT) => {
               optionType='button'
             />
           </div>
+          <div className='config-item'>
+            <span className='label'>{__('layoutType')}</span>
+            <Radio.Group
+              options={layoutOpts}
+              onChange={handleLayoutChange}
+              value={LAYOUT_MODE}
+              optionType='button'
+            />
+          </div>
         </Drawer>
       </div>
     }
 
-    const { theme, LEFT_STATUS, __, getNotification } = props
     const { languages } = options
+    const isTopMode = LAYOUT_MODE === 'top'
     const headerClass = classnames(theme.header, {
-      [theme.collapse]: !LEFT_STATUS
+      [theme.collapse]: !LEFT_STATUS,
+      [theme.topMode]: isTopMode
     })
 
     return <div className={headerClass}>
@@ -158,11 +178,13 @@ export default async (RB_CONTEXT) => {
         <div className={theme.logo}>
           <span className={theme.logoImg} />
         </div>
-        <div className={theme.menu} onClick={handleToggleMenu}>
-          {
-            LEFT_STATUS ? <MenuFoldOutlined className={theme.menuIcon} /> : <MenuUnfoldOutlined className={theme.menuIcon} />
-          }
-        </div>
+        {
+          !isTopMode ? <div className={theme.menu} onClick={handleToggleMenu}>
+            {
+              LEFT_STATUS ? <MenuFoldOutlined className={theme.menuIcon} /> : <MenuUnfoldOutlined className={theme.menuIcon} />
+            }
+          </div> : null
+        }
       </div>
       <div className={theme.right}>
         <div className={theme.locale}>
@@ -184,10 +206,12 @@ export default async (RB_CONTEXT) => {
     theme: PropTypes.object.isRequired,
     showLeft: PropTypes.func.isRequired,
     LEFT_STATUS: PropTypes.bool.isRequired,
+    LAYOUT_MODE: PropTypes.string.isRequired,
     AUTH: PropTypes.object,
     logout: PropTypes.func.isRequired,
     getNotification: PropTypes.func.isRequired,
-    notify: PropTypes.func.isRequired
+    notify: PropTypes.func.isRequired,
+    setLayout: PropTypes.func.isRequired
   }
 
   Header.defaultProps = {

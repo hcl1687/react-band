@@ -4,13 +4,13 @@ import PropTypes from 'prop-types'
 import menus from './menus'
 
 export default async (RB_CONTEXT) => {
-  const { getModule } = RB_CONTEXT
+  const { getModule, options } = RB_CONTEXT
   const antdIcon = await getModule('antdIcon')
   const antd = await getModule('antd')
   const { Menu } = antd
 
   function MenuComp (props, ref) {
-    const { __, setNotifyHandler, LEFT_STATUS } = props
+    const { __, setNotifyHandler, expand, mode = 'inline' } = props
     const [show, setShow] = useState(true)
     const location = useLocation()
     const history = useHistory()
@@ -29,8 +29,14 @@ export default async (RB_CONTEXT) => {
         }
       })
 
-      return <Menu mode='inline' selectedKeys={selectedKeys} inlineCollapsed={!LEFT_STATUS}
-        onClick={handleClick}>
+      const { theme } = options
+      let menuTheme = 'light'
+      if (theme !== 'default') {
+        menuTheme = 'dark'
+      }
+
+      return <Menu mode={mode} selectedKeys={selectedKeys} inlineCollapsed={!expand}
+        theme={menuTheme} onClick={handleClick}>
         {
           menus.map((item, i) => {
             const { name, icon } = item
@@ -60,7 +66,8 @@ export default async (RB_CONTEXT) => {
     __: PropTypes.func.isRequired,
     theme: PropTypes.object.isRequired,
     setNotifyHandler: PropTypes.func.isRequired,
-    LEFT_STATUS: PropTypes.bool.isRequired
+    expand: PropTypes.bool.isRequired,
+    mode: PropTypes.string
   }
 
   return MenuComp
