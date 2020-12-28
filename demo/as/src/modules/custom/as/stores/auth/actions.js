@@ -56,7 +56,8 @@ function getFuns (asUtils, asConstants) {
           method: 'get',
           url: `${ENV.SERVER_WEBAPI}/${role}/${userID}`
         })
-        return req.then((userInfo) => {
+        return req.then((res1 = {}) => {
+          const { data: userInfo } = res1
           const userType = get(userInfo, 'userType', '')
           const email = get(userInfo, 'email', '')
           const avatar = get(userInfo, 'avatar', '')

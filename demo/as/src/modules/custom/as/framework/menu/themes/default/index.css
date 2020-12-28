@@ -1,3 +1,11 @@
 .menu {
   height: 100%;
 }
+
+.menu :global(.ant-menu-horizontal) {
+  border-bottom: solid 1px white;
+}
+
+.menu :global(.ant-menu) :global(.ant-menu-item) .menuIcon {
+  font-size: 20px;
+}

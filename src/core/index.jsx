@@ -89,15 +89,19 @@ export default class RBCore {
 
   fetchLocalTheme (path, theme) {
     return import(`~/modules/${path}/themes/${theme}/index.css`).catch(() => {
-      const res = {}
-      res['default'] = {}
-      return res
+      return import(`~/modules/${path}/themes/default/index.css`).catch(() => {
+        const res = {}
+        res['default'] = {}
+        return res
+      })
     })
   }
 
   fetchGlobalTheme (path, theme) {
     return import(`~/modules/${path}/themes/${theme}/index.global.css`).catch(() => {
-      return {}
+      return import(`~/modules/${path}/themes/${theme}/index.global.css`).catch(() => {
+        return {}
+      })
     })
   }
 
