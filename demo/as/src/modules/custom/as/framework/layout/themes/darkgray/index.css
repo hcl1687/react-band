@@ -29,6 +29,7 @@
 .right {
   flex: 1;
   padding: 25px;
+  overflow: auto;
   background-color: #fafafb;
   transition: all 0.3s ease-out;
 }
@@ -42,11 +43,28 @@
 }
 
 .nav {
+  background-color: #193550;
+  box-shadow: 12px 24px rgba(18, 38, 63, 0.03);
+}
+
+.navInner {
   max-width: 1400px;
   margin: 0 auto;
 }
 
 .main {
   height: 100%;
+}
+
+:global(.top-mode) .content {
+  display: block;
+  height: calc(100vh - 118px);
   overflow: auto;
+  background-color: #fafafb;
+}
+
+.middle {
+  max-width: 1400px;
+  height: 100%;
+  margin: 0 auto;
 }

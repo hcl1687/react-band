@@ -10,8 +10,7 @@ export default async ({ getModule }) => {
 
     const isTopMode = LAYOUT_MODE === 'top'
     const layoutClassName = classnames('layout', {
-      [theme.layoutTop]: isTopMode,
-      [theme.layout]: !isTopMode
+      'top-mode': isTopMode
     })
 
     const leftClassName = classnames('left', theme.left, {
@@ -27,13 +26,17 @@ export default async ({ getModule }) => {
       </div>
       {
         isTopMode ? <div className={`nav ${theme.nav}`}>
-          <Menu mode={isTopMode ? 'horizontal' : 'inline'} expand={LEFT_STATUS} />
+          <div className={`nav-inner ${theme.navInner}`}>
+            <Menu mode={isTopMode ? 'horizontal' : 'inline'} expand={LEFT_STATUS} />
+          </div>
         </div> : null
       }
       {
         isTopMode ? <div className={`content ${theme.content}`}>
-          <div className={`main ${theme.main}`}>
-            {children}
+          <div className={`middle ${theme.middle}`}>
+            <div className={`main ${theme.main}`}>
+              {children}
+            </div>
           </div>
         </div> : <div className={`content ${theme.content}`}>
           <div className={leftClassName}>
