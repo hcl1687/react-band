@@ -70,6 +70,8 @@ export default async ({ getModule }) => {
     }
 
     const handleFinish = (values) => {
+      values.CreatedTime = Math.floor(values.CreatedTime.valueOf() / 1000)
+      values.DeadlineTime = Math.floor(values.DeadlineTime.valueOf() / 1000)
       setCommitLoading(true)
       const id = getQueryParam(props, 'id')
       editAssignment(id, values).then(() => {
@@ -102,8 +104,8 @@ export default async ({ getModule }) => {
 
     const handleValues = (values) => {
       var ret = { ...values }
-      ret.CreatedTime = moment(ret.CreatedTime * 1000)
-      ret.DeadlineTime = moment(ret.DeadlineTime * 1000)
+      ret.CreatedTime = moment((ret.CreatedTime || 0) * 1000)
+      ret.DeadlineTime = moment((ret.DeadlineTime || 0) * 1000)
 
       return ret
     }
