@@ -1,0 +1,10 @@
+{
+  "type": "类型",
+  "name": "名字",
+  "questions": "问题数",
+  "totalPlayers": "玩家数",
+  "accuracy": "准确率",
+  "deadline": "截止时间",
+  "qsText": "{0} Qs",
+  "detail": "详情"
+}

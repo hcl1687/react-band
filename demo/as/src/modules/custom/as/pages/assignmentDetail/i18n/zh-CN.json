@@ -1,0 +1,22 @@
+{
+  "assignment": "作业",
+  "assignmentDetail": "详情",
+  "id": "Id",
+  "activityId": "活动Id",
+  "version": "版本",
+  "name": "名称",
+  "playType": "类型",
+  "accuracy": "准确率",
+  "usersCount": "用户数",
+  "questions": "问题数",
+  "createdTime": "创建时间",
+  "deadlineTime": "截止时间",
+  "submit": "提交",
+  "back": "返回",
+  "homeWork": "家庭作业",
+  "soloLive": "单人挑战",
+  "teamLive": "团队挑战",
+  "nameTip": "请输入名字。",
+  "playTypeTip": "请选择类型。",
+  "deadlineTimeTip": "请选择截至时间。"
+}

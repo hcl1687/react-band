@@ -1,9 +1,0 @@
-{
-  "type": "Type",
-  "name": "Name",
-  "questions": "Questions",
-  "totalPlayers": "Total Players",
-  "accuracy": "Accuracy",
-  "deadline": "Deadline",
-  "qsText": "{0} Qs"
-}

@@ -1,0 +1,11 @@
+{
+  "id": "Id",
+  "userEmail": "Email",
+  "userName": "User Name",
+  "userType": "User Type",
+  "address": "Address",
+  "userNameTip": "Please input user name!",
+  "success": "Save Successful!",
+  "title": "Profile",
+  "submit": "Submit"
+}

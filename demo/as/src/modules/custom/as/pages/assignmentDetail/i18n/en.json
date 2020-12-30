@@ -1,0 +1,22 @@
+{
+  "assignment": "Assignment",
+  "assignmentDetail": "Detail",
+  "id": "Id",
+  "activityId": "Activity Id",
+  "version": "Version",
+  "name": "Name",
+  "playType": "Play Type",
+  "accuracy": "Accuracy",
+  "usersCount": "Users Count",
+  "questions": "Questions",
+  "createdTime": "Created Time",
+  "deadlineTime": "Deadline Time",
+  "submit": "Submit",
+  "back": "Back",
+  "homeWork": "HomeWork",
+  "soloLive": "SoloLive",
+  "teamLive": "TeamLive",
+  "nameTip": "Please input name.",
+  "playTypeTip": "Please select play type.",
+  "deadlineTimeTip": "Please select dealline time."
+}

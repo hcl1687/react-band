@@ -14,8 +14,8 @@ export default async function (RB_CONTEXT = {}) {
     }
 
     const getDefaultSrc = () => {
-      const { AUTH } = props
-      const role = AUTH.role
+      const { user } = props
+      const role = user.userType
       let src = 'img_Student.png'
       if (role === 'Teacher') {
         src = 'img_Teacher.png'
@@ -24,8 +24,8 @@ export default async function (RB_CONTEXT = {}) {
       return `themes/${themeType}/${src}`
     }
 
-    const { AUTH, theme, className } = props
-    const { avatar } = AUTH
+    const { user, theme, className } = props
+    const { avatar } = user
     const imgUrl = avatar ? getUrlByKey(avatar) : getDefaultSrc()
     const cName = classnames(className, theme.avatar)
 
@@ -35,12 +35,12 @@ export default async function (RB_CONTEXT = {}) {
   Avatar.propTypes = {
     className: PropTypes.string,
     theme: PropTypes.object.isRequired,
-    AUTH: PropTypes.object
+    user: PropTypes.object
   }
 
   Avatar.defaultProps = {
     className: '',
-    AUTH: {}
+    user: {}
   }
 
   return Avatar

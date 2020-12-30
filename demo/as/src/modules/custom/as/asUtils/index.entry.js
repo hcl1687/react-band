@@ -1,5 +1,5 @@
+import getRemoteComponent from './getRemoteComponent'
 import getRequestProvider from './request'
-import moment from 'moment'
 
 export default async (RB_CONTEXT) => {
   const { getModule } = RB_CONTEXT
@@ -73,13 +73,29 @@ export default async (RB_CONTEXT) => {
     return user
   }
 
-  function getDateText (datetime) {
-    const d = moment(datetime)
-    if (d.unix() === 0) {
-      return ''
+  function getAuth () {
+    let strAuth = getLocalStorageItem('auth')
+    strAuth = strAuth ? window.atob(strAuth) : ''
+    const auth = safeParse(strAuth)
+
+    return auth
+  }
+
+  function getQueryParams (qs = '') {
+    qs = qs.split('+').join(' ')
+
+    const params = {}
+    const re = /[?&]?([^=]+)=([^&]*)/g
+    let tokens = re.exec(qs)
+
+    while (tokens) {
+      var key = decodeURIComponent(tokens[1])
+      var val = decodeURIComponent(tokens[2])
+      params[key] = val
+      tokens = re.exec(qs)
     }
 
-    return moment(datetime).format('MM/DD/YYYY hh:mm:ss A')
+    return params
   }
 
   return {
@@ -90,6 +106,8 @@ export default async (RB_CONTEXT) => {
     request,
     safeParse,
     getUser,
-    getDateText
+    getAuth,
+    getRemoteComponent,
+    getQueryParams
   }
 }
