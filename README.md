@@ -18,12 +18,12 @@ npm install react-band-cli -g
 ## Initiate project
 
 ```bash
-react-band-cli init test -d basic
+react-band-cli init test -d as
 ```
 
 init test: create test folder in the current directory, and initiate project.
 
--d basic: add basic demo after initiate the project. Currently, react-band provide these demos：
+-d as: add as demo after initiate the project. Currently, react-band provide these demos：
 
 * as: a real backstage management system. Based on react+react-router+redux+antd, using json-server to mock server api.
 * basic: a basic react+react-router demo, providing a custom homepage and a test page, the two pages can jump to each other.
