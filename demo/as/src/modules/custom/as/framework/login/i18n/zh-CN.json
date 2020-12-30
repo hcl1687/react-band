@@ -1,9 +1,10 @@
 {
-  "InvalidUserName": "用户名或密码无效!",
-  "InvalidPassword": "用户名或密码无效!",
+  "InvalidUserEmail": "邮箱或密码无效!",
+  "InvalidPassword": "邮箱或密码无效!",
   "loginTitle": "欢迎",
-  "userName": "用户名",
-  "nameTip": "请输入你的名字!",
+  "userEmail": "邮箱",
+  "emailTip": "请输入你的邮箱!",
+  "invalidEmail": "请输入合法邮箱!",
   "password": "密码",
   "passwordTip": "请输入你的密码!",
   "submit": "提交"

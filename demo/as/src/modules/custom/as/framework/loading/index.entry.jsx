@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
-import lottie from 'lottie-web'
 
-export default () => {
+export default async ({ getModule }) => {
+  const lottie = await getModule('lottie')
+
   function Loading (props) {
     const lottieDom = useRef(null)
 

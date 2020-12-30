@@ -10,6 +10,9 @@ export default (config) => {
         authStore: {
           state: ['AUTH'],
           actions: ['logout']
+        },
+        teacherStore: {
+          state: ['teacher']
         }
       }
     },

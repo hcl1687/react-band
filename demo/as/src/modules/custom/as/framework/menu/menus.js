@@ -3,7 +3,7 @@ export default [{
   name: 'home',
   icon: 'HomeOutlined'
 }, {
-  path: '/test',
-  name: 'test',
+  path: '/assignment',
+  name: 'assignment',
   icon: 'AppstoreOutlined'
 }]

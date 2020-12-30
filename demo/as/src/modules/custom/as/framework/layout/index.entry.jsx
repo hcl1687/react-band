@@ -5,6 +5,7 @@ import classnames from 'classnames'
 export default async ({ getModule }) => {
   const Menu = await getModule('menu')
   const Header = await getModule('header')
+  const Breadcrumb = await getModule('breadcrumb')
   function Layout (props) {
     const { LEFT_STATUS, LAYOUT_MODE, theme, children } = props
 
@@ -34,6 +35,7 @@ export default async ({ getModule }) => {
       {
         isTopMode ? <div className={`content ${theme.content}`}>
           <div className={`middle ${theme.middle}`}>
+            <Breadcrumb />
             <div className={`main ${theme.main}`}>
               {children}
             </div>
@@ -43,6 +45,7 @@ export default async ({ getModule }) => {
             <Menu expand={LEFT_STATUS} />
           </div>
           <div className={rightClassName}>
+            <Breadcrumb />
             <div className={`main ${theme.main}`}>
               {children}
             </div>

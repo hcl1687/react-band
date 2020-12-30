@@ -10,6 +10,7 @@ export default async (RB_CONTEXT) => {
   const antd = await getModule('antd')
   const antdIcon = await getModule('antdIcon')
   const Login = await getModule('login')
+  const Profile = await getModule('profile')
   const Avatar = await avatarFactory(RB_CONTEXT)
   const User = await userFactory(RB_CONTEXT)
   const { Button, Drawer, Dropdown, Menu, Radio } = antd
@@ -18,7 +19,7 @@ export default async (RB_CONTEXT) => {
 
   function Header (props) {
     const { theme, showLeft, LEFT_STATUS, LAYOUT_MODE, __, notify, getNotification, logout, AUTH = {},
-      setLayout } = props
+      setLayout, teacher } = props
     const [visible, setVisible] = useState(false)
     const showDrawer = () => {
       setVisible(true)
@@ -55,6 +56,9 @@ export default async (RB_CONTEXT) => {
     }
 
     const handleEditProfile = () => {
+      notify('profileModal', 'show', {
+        visible: true
+      })
     }
 
     const handleLayoutChange = (e) => {
@@ -71,9 +75,13 @@ export default async (RB_CONTEXT) => {
       }
 
       // show user info
+      let user = {}
+      if (AUTH.role === 'Teacher') {
+        user = teacher
+      }
       const menu = <Menu>
         <Menu.Item className={theme.userItem}>
-          <User {...props} />
+          <User {...props} user={user} />
         </Menu.Item>
         <Menu.Item>
           <div onClick={handleEditProfile}>
@@ -95,7 +103,7 @@ export default async (RB_CONTEXT) => {
 
       return <Dropdown overlay={menu} overlayClassName={theme.loginOverlay} trigger={['click']}>
         <div className={theme.avatarWrapper}>
-          <Avatar {...props} />
+          <Avatar {...props} user={user} />
         </div>
       </Dropdown>
     }
@@ -197,6 +205,7 @@ export default async (RB_CONTEXT) => {
           {createSetting()}
         </div>
         <Login {...getNotification('loginModal')} />
+        <Profile {...getNotification('profileModal')} />
       </div>
     </div>
   }
@@ -208,6 +217,7 @@ export default async (RB_CONTEXT) => {
     LEFT_STATUS: PropTypes.bool.isRequired,
     LAYOUT_MODE: PropTypes.string.isRequired,
     AUTH: PropTypes.object,
+    teacher: PropTypes.object,
     logout: PropTypes.func.isRequired,
     getNotification: PropTypes.func.isRequired,
     notify: PropTypes.func.isRequired,

@@ -6,6 +6,10 @@ export default () => {
         authStore: {
           state: ['AUTH'],
           actions: ['login']
+        },
+        teacherStore: {
+          state: ['teacher'],
+          actions: ['getTeacher']
         }
       }
     },

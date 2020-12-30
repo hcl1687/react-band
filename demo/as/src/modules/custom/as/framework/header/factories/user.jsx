@@ -6,13 +6,13 @@ export default async function (RB_CONTEXT = {}) {
   const Avatar = await avatarFactory(RB_CONTEXT)
 
   function User (props) {
-    const { AUTH, theme } = props
-    const { name, userType } = AUTH
+    const { user, theme } = props
+    const { userName, userType } = user
 
     return <div className={theme.user}>
-      <Avatar AUTH={AUTH} className={theme.userAvatar} theme={theme} />
+      <Avatar user={user} className={theme.userAvatar} theme={theme} />
       <div className={theme.name}>
-        {name}
+        {userName}
       </div>
       <div className={theme.description}>
         {userType}
@@ -22,11 +22,11 @@ export default async function (RB_CONTEXT = {}) {
 
   User.propTypes = {
     theme: PropTypes.object.isRequired,
-    AUTH: PropTypes.object
+    user: PropTypes.object
   }
 
   User.defaultProps = {
-    AUTH: {}
+    user: {}
   }
 
   return User

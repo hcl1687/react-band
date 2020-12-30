@@ -1,36 +1,26 @@
-import get from 'lodash/get'
-
 function getFuns (asUtils, asConstants) {
   const { request, setLocalStorageItem } = asUtils
   const { ENV, LOCAL_STORAGE_PREFIX } = asConstants
 
   const handleToken = ({
     apiToken,
-    userName,
     expiryDate,
     userID,
     role,
-    token,
-    email,
-    avatar,
-    userType
+    token
   }) => {
-    const me = {
-      name: userName,
+    const auth = {
       expiry: expiryDate,
       uid: userID,
       role,
-      token,
-      email,
-      avatar,
-      userType
+      token
     }
 
     // save to localStorage
     setLocalStorageItem('access_token', apiToken)
     setLocalStorageItem('cudos_token', token)
-    const strMe = me ? window.btoa(JSON.stringify(me)) : ''
-    setLocalStorageItem('me', strMe)
+    const strAuth = auth ? window.btoa(JSON.stringify(auth)) : ''
+    setLocalStorageItem('auth', strAuth)
   }
 
   const jsLogin = (email, password) => {
@@ -46,48 +36,18 @@ function getFuns (asUtils, asConstants) {
 
       if (status === 'Success') {
         const apiToken = doc.getElementsByTagName('ApiToken')[0].textContent
-        const userName = doc.getElementsByTagName('UserName')[0].textContent
         const expiryDate = doc.getElementsByTagName('ExpiryDate')[0].textContent
         const cudosToken = doc.getElementsByTagName('CudosToken')[0].textContent
         const userID = doc.getElementsByTagName('UserID')[0].textContent
         const role = doc.getElementsByTagName('Role')[0].textContent
 
-        const req = request({
-          method: 'get',
-          url: `${ENV.SERVER_WEBAPI}/${role}/${userID}`
+        handleToken({
+          apiToken,
+          expiryDate,
+          userID,
+          role,
+          token: cudosToken
         })
-        return req.then((res1 = {}) => {
-          const { data: userInfo } = res1
-          const userType = get(userInfo, 'userType', '')
-          const email = get(userInfo, 'email', '')
-          const avatar = get(userInfo, 'avatar', '')
-          const newUserName = get(userInfo, 'userName', '')
-          const newToken = get(userInfo, 'token', '')
-          handleToken({
-            apiToken,
-            userName: newUserName,
-            expiryDate,
-            userID,
-            role,
-            token: newToken,
-            email,
-            avatar,
-            userType
-          })
-        }).catch(() => {
-          handleToken({
-            apiToken,
-            userName,
-            expiryDate,
-            userID,
-            role,
-            token: cudosToken,
-            email: undefined,
-            avatar: undefined,
-            userType: undefined
-          })
-        })
-        // return Promise.resolve(true)
       } else {
         return Promise.reject(status)
       }
@@ -122,14 +82,14 @@ export default async (RB_CONTEXT) => {
   const { getModule } = RB_CONTEXT
   const asUtils = await getModule('asUtils')
   const asConstants = await getModule('asConstants')
-  const { getUser } = asUtils
+  const { getAuth } = asUtils
   const { jsLogin, logout } = getFuns(asUtils, asConstants)
 
   return {
-    login: ({ name, password }) => {
-      return jsLogin(name, password).then(success => {
-        const user = getUser()
-        return user
+    login: ({ email, password }) => {
+      return jsLogin(email, password).then(success => {
+        const auth = getAuth()
+        return auth
       }).catch(msg => {
         throw new Error(msg)
       })

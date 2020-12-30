@@ -1,9 +1,10 @@
 {
-  "InvalidUserName": "Invalid user name or password!",
-  "InvalidPassword": "Invalid user name or password!",
+  "InvalidUserEmail": "Invalid Email or password!",
+  "InvalidPassword": "Invalid Email or password!",
   "loginTitle": "Welcome",
-  "userName": "User Name",
-  "nameTip": "Please input your username!",
+  "userEmail": "Email",
+  "emailTip": "Please input your Email!",
+  "invalidEmail": "The input is not valid E-mail!",
   "password": "Password",
   "passwordTip": "Please input your password!",
   "submit": "Submit"
