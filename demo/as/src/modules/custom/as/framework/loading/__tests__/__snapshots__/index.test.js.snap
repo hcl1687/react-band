@@ -2,13 +2,13 @@
 
 exports[`common/loading should render correctly 1`] = `
 <div
-  class=""
+  className=""
 >
   <div
-    class=""
+    className=""
   />
   <div
-    class=""
+    className=""
   >
     loading
   </div>

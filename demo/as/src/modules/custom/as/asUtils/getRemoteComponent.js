@@ -156,6 +156,27 @@ export default function getRemoteComponent (componentInfo = {}, dependencies = {
   })
 }
 
+// expose createScript for unit test's mocking.
+getRemoteComponent.createScript = ({ id, src, onload, onerror }) => {
+  const scriptDom = document.createElement('script')
+  scriptDom.id = id
+  scriptDom.onload = () => {
+    scriptDom.onload = null
+    scriptDom.onerror = null
+    onload()
+  }
+  scriptDom.onerror = () => {
+    scriptDom.onload = null
+    scriptDom.onerror = null
+    onerror()
+  }
+  scriptDom.src = src
+
+  document.getElementsByTagName('head')[0].appendChild(scriptDom)
+
+  return scriptDom
+}
+
 function getFileNameFromUrl (url = '') {
   // https://goolge.com/abc/efg/hij.js => hij.js
   return url.replace(/(.*\/)([^/]+)$/, ($1, $2, $3) => ($3))
@@ -166,27 +187,22 @@ function loadScript (name, src) {
   const hash = hashCode(src)
   const id = `${name}/${fileName}/${hash}`
 
-  let scriptDom = document.getElementById(id)
+  const scriptDom = document.getElementById(id)
   if (scriptDom) {
     scriptDom.parentNode.removeChild(scriptDom)
   }
 
   return new Promise((resolve, reject) => {
-    scriptDom = document.createElement('script')
-    scriptDom.id = id
-    scriptDom.onload = () => {
-      scriptDom.onload = null
-      scriptDom.onerror = null
+    const onload = () => {
       resolve()
     }
-    scriptDom.onerror = () => {
-      scriptDom.onload = null
-      scriptDom.onerror = null
+    const onerror = () => {
       reject(new Error(`${errorPrefix}${id} load failed`))
     }
-    scriptDom.src = src
 
-    document.getElementsByTagName('head')[0].appendChild(scriptDom)
+    getRemoteComponent.createScript({
+      id, src, onload, onerror
+    })
   })
 }
 
