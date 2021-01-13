@@ -100,8 +100,6 @@ describe('custom/as/asUtils/request', () => {
       res.resIpt = 1
     }]
 
-    debugger
-
     const instance = getRequestProvider()
     instance.intercept(reqIpts, resIpts)
 

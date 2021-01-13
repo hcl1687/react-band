@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom/as/framework/header/config should render correctly 1`] = `
+Object {
+  "decorators": Array [
+    "@notice",
+    "@i18n",
+    "@theme",
+    "@reduxStore",
+  ],
+  "decoratorsConfig": Object {
+    "@reduxStore": Object {
+      "authStore": Object {
+        "actions": Array [
+          "logout",
+        ],
+        "state": Array [
+          "AUTH",
+        ],
+      },
+      "layoutStore": Object {
+        "actions": Array [
+          "showLeft",
+          "setLayout",
+        ],
+        "state": Array [
+          "LEFT_STATUS",
+          "LAYOUT_MODE",
+        ],
+      },
+      "teacherStore": Object {
+        "state": Array [
+          "teacher",
+        ],
+      },
+    },
+  },
+  "name": "header",
+}
+`;

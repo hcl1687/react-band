@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom/as/framework/login/config should render correctly 1`] = `
+Object {
+  "decorators": Array [
+    "@notice",
+    "@i18n",
+    "@theme",
+    "@reduxStore",
+  ],
+  "decoratorsConfig": Object {
+    "@reduxStore": Object {
+      "authStore": Object {
+        "actions": Array [
+          "login",
+        ],
+        "state": Array [
+          "AUTH",
+        ],
+      },
+      "teacherStore": Object {
+        "actions": Array [
+          "getTeacher",
+        ],
+        "state": Array [
+          "teacher",
+        ],
+      },
+    },
+  },
+  "name": "login",
+}
+`;

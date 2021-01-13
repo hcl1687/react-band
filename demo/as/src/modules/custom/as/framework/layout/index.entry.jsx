@@ -28,7 +28,7 @@ export default async ({ getModule }) => {
       {
         isTopMode ? <div className={`nav ${theme.nav}`}>
           <div className={`nav-inner ${theme.navInner}`}>
-            <Menu mode={isTopMode ? 'horizontal' : 'inline'} expand={LEFT_STATUS} />
+            <Menu mode='horizontal' expand={LEFT_STATUS} />
           </div>
         </div> : null
       }
