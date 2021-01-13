@@ -107,7 +107,7 @@ describe('custom/as/framework/login', () => {
 
     expect(wrapper.find('.loginModal').length).toBe(1)
     expect(wrapper.find('.antd-form').length).toBe(1)
-    expect(wrapper.find('.antd-form-item').length).toBe(4)
+    expect(wrapper.find('.antd-form-item').length).toBe(3)
     expect(wrapper.find('.antd-input').length).toBe(1)
     expect(wrapper.find('.antd-input-password').length).toBe(1)
     expect(wrapper.find('.antd-button').length).toBe(1)
@@ -148,7 +148,7 @@ describe('custom/as/framework/login', () => {
 
     expect(wrapper.find('.loginModal').length).toBe(1)
     expect(wrapper.find('.antd-form').length).toBe(1)
-    expect(wrapper.find('.antd-form-item').length).toBe(4)
+    expect(wrapper.find('.antd-form-item').length).toBe(3)
     expect(wrapper.find('.antd-input').length).toBe(1)
     expect(wrapper.find('.antd-input-password').length).toBe(1)
     expect(wrapper.find('.antd-button').length).toBe(1)
@@ -190,7 +190,7 @@ describe('custom/as/framework/login', () => {
 
     expect(wrapper.find('.loginModal').length).toBe(1)
     expect(wrapper.find('.antd-form').length).toBe(1)
-    expect(wrapper.find('.antd-form-item').length).toBe(4)
+    expect(wrapper.find('.antd-form-item').length).toBe(3)
     expect(wrapper.find('.antd-input').length).toBe(1)
     expect(wrapper.find('.antd-input-password').length).toBe(1)
     expect(wrapper.find('.antd-button').length).toBe(1)
@@ -216,7 +216,7 @@ describe('custom/as/framework/login', () => {
 
     expect(wrapper.find('.loginModal').length).toBe(1)
     expect(wrapper.find('.antd-form').length).toBe(1)
-    expect(wrapper.find('.antd-form-item').length).toBe(4)
+    expect(wrapper.find('.antd-form-item').length).toBe(3)
     expect(wrapper.find('.antd-input').length).toBe(1)
     expect(wrapper.find('.antd-input-password').length).toBe(1)
     expect(wrapper.find('.antd-button').length).toBe(1)
@@ -243,7 +243,7 @@ describe('custom/as/framework/login', () => {
 
     expect(wrapper.find('.loginModal').length).toBe(1)
     expect(wrapper.find('.antd-form').length).toBe(1)
-    expect(wrapper.find('.antd-form-item').length).toBe(4)
+    expect(wrapper.find('.antd-form-item').length).toBe(3)
     expect(wrapper.find('.antd-input').length).toBe(1)
     expect(wrapper.find('.antd-input-password').length).toBe(1)
     expect(wrapper.find('.antd-button').length).toBe(1)
@@ -252,6 +252,7 @@ describe('custom/as/framework/login', () => {
     wrapper.find('.form-submit').simulate('click')
 
     return tools.delay(() => {
+      wrapper.update()
       expect(wrapper.find('.antd-form-item').length).toBe(4)
       expect(wrapper.find('.error').length).toBe(1)
       expect(wrapper.find('.error').text()).toBe('failed')

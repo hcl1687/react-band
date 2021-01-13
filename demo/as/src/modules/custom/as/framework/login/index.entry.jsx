@@ -61,9 +61,6 @@ export default async ({ getModule }) => {
         email: 'test@hcl1687.com',
         password: '123456'
       }
-      const errStyle = {
-        display: errMsg ? 'block' : 'none'
-      }
 
       return <Form ref={formRef} initialValues={initialValues} {...layout} onFinish={handleFinish} >
         <Form.Item
@@ -83,9 +80,11 @@ export default async ({ getModule }) => {
             {__('submit')}
           </Button>
         </Form.Item>
-        <Form.Item {...tailLayout} style={errStyle}>
-          <div className={theme.error}>{__(errMsg)}</div>
-        </Form.Item>
+        {
+          errMsg ? <Form.Item {...tailLayout}>
+            <div className={theme.error}>{__(errMsg)}</div>
+          </Form.Item> : null
+        }
       </Form>
     }
 
