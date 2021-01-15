@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom/as/framework/menu/menus should render correctly 1`] = `
+Array [
+  Object {
+    "icon": "HomeOutlined",
+    "name": "home",
+    "path": "/",
+  },
+  Object {
+    "icon": "AppstoreOutlined",
+    "name": "assignment",
+    "path": "/assignment",
+  },
+]
+`;

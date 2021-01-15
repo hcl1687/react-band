@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom/as/stores/teacher/state should render correctly 1`] = `
+Object {
+  "teacher": Object {},
+}
+`;

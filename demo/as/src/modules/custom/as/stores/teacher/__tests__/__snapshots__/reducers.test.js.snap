@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom/as/stores/teacher/reducers should render correctly 1`] = `
+Object {
+  "editTeacher": Object {
+    "next": [Function],
+    "throw": [Function],
+  },
+  "getTeacher": Object {
+    "next": [Function],
+    "throw": [Function],
+  },
+}
+`;

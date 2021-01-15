@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom/as/stores/layout/state should render correctly 1`] = `
+Object {
+  "HEAD_STATUS": true,
+  "LAYOUT_MODE": "left",
+  "LEFT_STATUS": true,
+}
+`;

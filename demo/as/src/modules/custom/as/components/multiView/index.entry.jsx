@@ -35,17 +35,20 @@ export default async ({ getModule }) => {
       }
     }
 
-    const handleChange = (index, name) => {
-      onChange && onChange(index, name)
+    const handleChange = (index, name, opts) => {
+      onChange && onChange(index, name, opts)
     }
 
     useEffect(() => {
       const { location: oldLocation = {} } = prevProps
       const { location = {} } = props
-      const { view: oldView } = getView(oldLocation)
+      const { view: preView, name: preName } = getView(oldLocation)
       const { view, name } = getView(location)
-      if (view !== oldView) {
-        handleChange(view, name)
+      if (view !== preView) {
+        handleChange(view, name, {
+          preView,
+          preName
+        })
       }
     })
 

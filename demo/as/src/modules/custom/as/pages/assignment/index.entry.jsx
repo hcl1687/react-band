@@ -100,11 +100,6 @@ export default async ({ getModule }) => {
     }
 
     const getDateText = (datetime) => {
-      const d = moment(datetime)
-      if (d.unix() === 0) {
-        return ''
-      }
-
       return moment(datetime).format('MM/DD/YYYY hh:mm:ss A')
     }
 
@@ -117,7 +112,7 @@ export default async ({ getModule }) => {
 
     const columns = getColumns()
     return <MultiView location={history.location} viewNames={['', 'detail']} onChange={handleMultiViewChange}>
-      <div className={theme.test}>
+      <div className={theme.wrapper}>
         <Table
           columns={columns}
           rowKey={record => record.id}

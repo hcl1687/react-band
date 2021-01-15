@@ -161,10 +161,16 @@ describe('custom/as/components/multiView', () => {
     expect(wrapper.find('.child2').prop('data-props').location).toBe(fakeLocation)
     expect(wrapper.find('.child2').prop('data-props').multiview_actived).toBe('true')
     expect(onChange.mock.calls.length).toBe(1)
-    expect(onChange.mock.calls[0]).toEqual([1, 'test'])
+    expect(onChange.mock.calls[0]).toEqual([1, 'test', {
+      preName: undefined,
+      preView: 0
+    }])
 
     wrapper.setProps({ location: { search: '' } })
     expect(onChange.mock.calls.length).toBe(2)
-    expect(onChange.mock.calls[1]).toEqual([0, undefined])
+    expect(onChange.mock.calls[1]).toEqual([0, undefined, {
+      preName: 'test',
+      preView: 1
+    }])
   })
 })
