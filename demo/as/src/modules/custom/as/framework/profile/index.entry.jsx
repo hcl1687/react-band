@@ -97,7 +97,7 @@ export default async ({ getModule }) => {
       </Form>
     }
 
-    return <Modal className={theme.loginModal} title={__('title')} visible={visible}
+    return <Modal className={theme.profileModal} title={__('title')} visible={visible}
       footer={null} maskClosable={false} onCancel={handleCancel}>
       <Spin spinning={loading}>
         {createForm()}

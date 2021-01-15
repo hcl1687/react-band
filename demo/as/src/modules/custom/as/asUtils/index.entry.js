@@ -15,15 +15,6 @@ export default async (RB_CONTEXT) => {
       return key
     }
 
-    // 'cudos/images/xxx.png' or '/cudos/images/xxx.png'
-    if (/^\/?cudos\//.test(key)) {
-      // covert 'cudos/images/xxx.png' to '/cudos/images/xxx.png'
-      if (key[0] !== '/') {
-        key = '/' + key
-      }
-      return `${ENV.MEDIA_URL}${key}`
-    }
-
     return `${ENV.MEDIA_URL}${type}${key}`
   }
 

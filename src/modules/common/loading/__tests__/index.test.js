@@ -1,4 +1,4 @@
-import { render, shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
 import loadingFactory from '../index.entry'
 
@@ -10,7 +10,7 @@ describe('common/loading', () => {
     const theme = {
       loading: 'abc'
     }
-    const wrapper = render(<Loading __={__} theme={theme} />)
+    const wrapper = shallow(<Loading __={__} theme={theme} />)
     expect(wrapper).toMatchSnapshot()
   })
 
@@ -19,7 +19,7 @@ describe('common/loading', () => {
     const theme = {
       loading: 'abc'
     }
-    const wrapper = shallow(
+    const wrapper = mount(
       <Loading __={__} theme={theme} />
     )
     expect(wrapper.find('div').length).toBe(1)

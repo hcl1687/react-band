@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom/as/framework/menu/config should render correctly 1`] = `
+Object {
+  "decorators": Array [
+    "@notice",
+    "@i18n",
+    "@theme",
+  ],
+  "name": "menu",
+}
+`;

@@ -2,15 +2,15 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import classnames from 'classnames'
 
-export default async function (RB_CONTEXT = {}) {
-  const { getModule, options = {} } = RB_CONTEXT
+export default async function (RB_CONTEXT) {
+  const { getModule, options } = RB_CONTEXT
   const { theme: themeType } = options
   const asUtils = await getModule('asUtils')
   const { getUrlByKey } = asUtils
 
   function Avatar (props) {
     const handleError = (e) => {
-      // e.target.src = this.getDefaultSrc()
+      e.target.src = getDefaultSrc()
     }
 
     const getDefaultSrc = () => {

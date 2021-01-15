@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom/as/stores/assignment/reducers should render correctly 1`] = `
+Object {
+  "editAssignment": Object {
+    "next": [Function],
+    "throw": [Function],
+  },
+  "getAssignment": Object {
+    "next": [Function],
+    "throw": [Function],
+  },
+  "getAssignmentList": Object {
+    "next": [Function],
+    "throw": [Function],
+  },
+}
+`;

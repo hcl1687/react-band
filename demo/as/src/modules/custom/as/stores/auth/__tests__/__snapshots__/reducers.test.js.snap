@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom/as/stores/auth/reducers should render correctly 1`] = `
+Object {
+  "login": Object {
+    "next": [Function],
+    "throw": [Function],
+  },
+  "logout": Object {
+    "next": [Function],
+  },
+}
+`;

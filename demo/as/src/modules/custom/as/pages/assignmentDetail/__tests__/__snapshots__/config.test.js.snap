@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom/as/pages/assignmentDetail/config should render correctly 1`] = `
+Object {
+  "decorators": Array [
+    "@i18n",
+    "@theme",
+    "@reduxStore",
+  ],
+  "decoratorsConfig": Object {
+    "@reduxStore": Object {
+      "assignmentStore": Object {
+        "actions": Array [
+          "getAssignment",
+          "editAssignment",
+        ],
+        "state": Array [
+          "assignment",
+        ],
+      },
+      "breadcrumbStore": Object {
+        "actions": Array [
+          "setBreadcrumb",
+        ],
+      },
+    },
+  },
+  "name": "assignmentDetail",
+}
+`;

@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom/as/stores/assignment/state should render correctly 1`] = `
+Object {
+  "assignment": Object {},
+  "assignments": Array [],
+  "total": 0,
+}
+`;

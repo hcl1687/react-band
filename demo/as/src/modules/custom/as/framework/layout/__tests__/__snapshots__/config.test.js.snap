@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom/as/framework/layout/config should render correctly 1`] = `
+Object {
+  "decorators": Array [
+    "@i18n",
+    "@theme",
+    "@reduxStore",
+  ],
+  "decoratorsConfig": Object {
+    "@reduxStore": Object {
+      "layoutStore": Object {
+        "state": Array [
+          "LEFT_STATUS",
+          "LAYOUT_MODE",
+        ],
+      },
+    },
+  },
+  "name": "layout",
+}
+`;
