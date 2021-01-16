@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import assignmentDetailFactory from '../index.entry'
-import { delay } from '~/../tests/utils'
 import { mount } from 'enzyme'
+import tools from '~/../tests/utils'
 
 const fakeValues = {
   name: 'test',
@@ -262,7 +262,7 @@ describe('custom/as/pages/assignmentDetail', () => {
     expect(props.editAssignment.mock.calls.length).toBe(0)
     wrapper.find('.form-submit').simulate('click')
 
-    return delay(() => {
+    return tools.delay(() => {
       wrapper.update()
       expect(props.editAssignment.mock.calls.length).toBe(1)
       expect(props.editAssignment.mock.calls[0]).toEqual(['xxx', {
@@ -292,7 +292,7 @@ describe('custom/as/pages/assignmentDetail', () => {
     expect(props.editAssignment.mock.calls.length).toBe(0)
     wrapper.find('.form-submit').simulate('click')
 
-    return delay(() => {
+    return tools.delay(() => {
       wrapper.update()
       expect(props.editAssignment.mock.calls.length).toBe(1)
       expect(props.editAssignment.mock.calls[0]).toEqual(['xxx', {
