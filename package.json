@@ -161,7 +161,7 @@
     "@ant-design/icons": "^4.2.1",
     "@babel/runtime": "^7.10.2",
     "antd": "^4.3.3",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "intl-messageformat": "^6.1.11",
     "lodash": "^4.17.15",
