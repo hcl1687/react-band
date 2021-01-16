@@ -38,6 +38,8 @@
     "no-debugger": 0,
     "prefer-const": 2,
     "space-before-function-paren": 2,
+    "template-curly-spacing": "off",
+    "indent" : "off",
     "jsx-control-statements/jsx-use-if-tag": "off",
     "react/jsx-no-undef": [2, { "allowGlobals": true }],
     "standard/no-callback-literal": 0,

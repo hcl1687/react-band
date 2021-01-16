@@ -17,7 +17,8 @@
     "test:watch": "better-npm-run test:watch",
     "test:coverage": "better-npm-run test:coverage",
     "test:update": "better-npm-run test:update",
-    "build": "better-npm-run build"
+    "compile": "better-npm-run compile",
+    "build": "node build.js"
   },
   "betterScripts": {
     "start": {
@@ -55,7 +56,7 @@
         "RB_ENV": "test"
       }
     },
-    "build": {
+    "compile": {
       "command": "webpack --config webpack.prod.config.js",
       "env": {
         "NODE_ENV": "production",
@@ -118,6 +119,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "extract-text-webpack-plugin": "^4.0.0-alpha.0",
     "file-loader": "^6.0.0",
+    "fs-extra": "^9.0.1",
     "html-webpack-plugin": "^3.2.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^24.8.0",
@@ -148,7 +150,7 @@
     "stylelint-config-standard": "^20.0.0",
     "stylelint-order": "^4.1.0",
     "stylelint-webpack-plugin": "^2.1.0",
-    "terser-webpack-plugin": "^2.3.5",
+    "terser-webpack-plugin": "^4.2.3",
     "url-loader": "^4.1.0",
     "webpack": "^4.37.0",
     "webpack-cli": "^3.3.6",
