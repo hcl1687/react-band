@@ -48,7 +48,7 @@ module.exports = (env) => {
       filename: '[name].bundle.js',
       chunkFilename: '[name].chunk.bundle.js',
       path: dist,
-      publicPath: '/'
+      publicPath: './'
     },
     module: {
       rules: [{
@@ -121,5 +121,5 @@ module.exports = (env) => {
         }]
       })
     ]
-  }  
+  }
 }
