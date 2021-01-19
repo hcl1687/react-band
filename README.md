@@ -1,5 +1,5 @@
 # react-band
-A portable react scaffold with webpack, babel, jest and enzyme.
+A portable react scaffold with webpack, babel, less, eslint, stylelint, jest and enzyme.
 
 # Motivation
 
