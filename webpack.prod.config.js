@@ -12,5 +12,6 @@ const config = merge(baseConfig('production'), {
 })
 
 config.plugins.unshift(new CleanWebpackPlugin())
+config.output.publicPath = './'
 
 module.exports = config
