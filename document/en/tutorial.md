@@ -1,6 +1,6 @@
 # Motivation
 
-When we develop a new project, we basically develop on this basis by cutting other people's project code.
+When we develop a new project, we basically develop it on the basis of tailoring other people's project code.
 In this way, mature code can be reused, which facilitates rapid project prototyping and reduces development risks.
 When porting the code of other people's projects to my own project, or even porting the code of my 
 previous project to a new project, I found the migration process very painful.
