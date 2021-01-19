@@ -8,7 +8,7 @@ export default async ({ getModule }) => {
     const lottieDom = useRef(null)
 
     useEffect(() => {
-      // wait 3s to show loading animate.
+      // wait 100ms to show loading animate.
       setTimeout(() => {
         if (lottieDom && lottieDom.current) {
           lottie.loadAnimation({
@@ -19,7 +19,7 @@ export default async ({ getModule }) => {
             path: '/lottie/Loading/data.json'
           })
         }
-      }, 3000)
+      }, 100)
     }, [])
 
     const { __, theme } = props
