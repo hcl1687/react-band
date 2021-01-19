@@ -16,7 +16,7 @@ export default async ({ getModule }) => {
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            path: '/lottie/Loading/data.json'
+            path: './lottie/Loading/data.json'
           })
         }
       }, 100)
