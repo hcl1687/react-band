@@ -1,5 +1,5 @@
 import getRemoteComponent from '../getRemoteComponent'
-global.Promise = jest.requireActual('promise')
+global.Promise = jest.requireActual('es6-promise')
 
 describe('custom/as/asUtils/getRemoteComponent', () => {
   it('componentInfo is undefined', () => {
