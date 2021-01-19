@@ -1,7 +1,7 @@
 {
   "name": "react-band",
   "version": "2.0.0",
-  "description": "A simple react scaffold with webpack, babel, jest, enzyme and puppeteer.",
+  "description": "A portable react scaffold with webpack, babel, jest and enzyme.",
   "main": "src/index.jsx",
   "scripts": {
     "start": "better-npm-run start",
