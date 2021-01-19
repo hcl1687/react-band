@@ -25,7 +25,7 @@ and international resources, and improve the loading speed of the page.
 
 # Demo
 
-[as - a backstage management system](https://www.hcl1687.com/react-band-as)
+<a href="https://www.hcl1687.com/react-band-as" target="_blank">as - a backstage management system</a>
 
 # Document
 
