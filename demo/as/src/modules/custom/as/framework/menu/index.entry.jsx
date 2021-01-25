@@ -35,7 +35,9 @@ export default async (RB_CONTEXT) => {
         menuTheme = 'dark'
       }
 
-      return <Menu mode={mode} selectedKeys={selectedKeys} inlineCollapsed={!expand}
+      const inlineCollapsed = mode === 'inline' ? !expand : false
+
+      return <Menu mode={mode} selectedKeys={selectedKeys} inlineCollapsed={inlineCollapsed}
         theme={menuTheme} onClick={handleClick}>
         {
           menus.map((item, i) => {
