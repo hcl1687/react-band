@@ -7,19 +7,27 @@ export default async ({ getModule }) => {
   const Header = await getModule('header')
   const Breadcrumb = await getModule('breadcrumb')
   function Layout (props) {
-    const { LEFT_STATUS, LAYOUT_MODE, theme, children } = props
+    const { LEFT_STATUS, LAYOUT_MODE, theme, children, showLeft } = props
 
     const isTopMode = LAYOUT_MODE === 'top'
     const layoutClassName = classnames('layout', {
       'top-mode': isTopMode
     })
 
+    const leftMaskClassName = classnames('left-mask', theme.leftMask, {
+      [theme.collapsed]: !LEFT_STATUS
+    })
     const leftClassName = classnames('left', theme.left, {
       [theme.collapsed]: !LEFT_STATUS
     })
     const rightClassName = classnames('right', theme.right, {
       [theme.expand]: !LEFT_STATUS
     })
+
+    const hideLeft = (e) => {
+      e.stopPropagation()
+      showLeft(false)
+    }
 
     return <div className={layoutClassName}>
       <div className={`header ${theme.header}`}>
@@ -41,6 +49,7 @@ export default async ({ getModule }) => {
             </div>
           </div>
         </div> : <div className={`content ${theme.content}`}>
+          <div className={leftMaskClassName} onClick={hideLeft} />
           <div className={leftClassName}>
             <Menu expand={LEFT_STATUS} />
           </div>
@@ -59,7 +68,8 @@ export default async ({ getModule }) => {
     theme: PropTypes.object.isRequired,
     LEFT_STATUS: PropTypes.bool.isRequired,
     LAYOUT_MODE: PropTypes.string.isRequired,
-    children: PropTypes.any
+    children: PropTypes.any,
+    showLeft: PropTypes.func.isRequired
   }
 
   return Layout

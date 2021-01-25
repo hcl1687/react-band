@@ -18,6 +18,10 @@
   height: calc(100vh - 70px);
 }
 
+.leftMask {
+  display: none;
+}
+
 .left {
   width: 250px;
   padding: 10px 0;
@@ -68,4 +72,34 @@
   height: calc(100% - 50px);
   padding: 25px 0;
   margin: 0 auto;
+}
+
+@media screen and (max-width: 1199px) {
+  .leftMask {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.45);
+  }
+
+  .collapsed {
+    width: 0;
+    overflow: hidden;
+  }
+
+  .leftMask.collapsed {
+    display: none;
+  }
+
+  .left {
+    position: absolute;
+    z-index: 2;
+    height: 100%;
+  }
+
+  .middle {
+    padding: 25px;
+  }
 }
