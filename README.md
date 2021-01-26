@@ -1,5 +1,31 @@
 # react-band
-A simple react scaffold with webpack, babel, jest, enzyme and puppeteer.
+A portable react scaffold with webpack, babel, less, eslint, stylelint, jest and enzyme.
+
+# Motivation
+
+When we develop a new project, we basically develop it on the basis of tailoring other people's project code.
+In this way, mature code can be reused, which facilitates rapid project prototyping and reduces development risks.
+When porting the code of other people's projects to my own project, or even porting the code of my 
+previous project to a new project, I found the migration process very painful.
+The modules in the project depend on each other and are complicated. It is usually necessary to read 
+the source code in detail before deciding which codes to keep and which codes to delete.
+Therefore, I hope there is a very simple way to transplant project code.
+
+We always emphasize the need to abstract common components for reuse. But in actual development, 
+abstraction is a gradual and iterative process. This is because our business needs are constantly iterative, 
+so the abstraction of components cannot be achieved in one step. Therefore, I want to be able to 
+distinguish between common and non-common components, and it can easily convert non-common components 
+into common components. At the same time, it is also allowed to convert common components to non-common 
+components to meet customized requirements.
+
+With the continuous iteration of the project, there are more and more business codes, and the packaged 
+js files are getting bigger and bigger, causing problems such as slow page loading. Therefore, I hope 
+to have a unified asynchronous loading scheme to realize the on-demand loading of module code, style files, 
+and international resources, and improve the loading speed of the page.
+
+# Demo
+
+<a href="https://www.hcl1687.com/react-band-as" target="_blank">as - a backstage management system</a>
 
 # Document
 
@@ -18,12 +44,12 @@ npm install react-band-cli -g
 ## Initiate project
 
 ```bash
-react-band-cli init test -d basic
+react-band-cli init my-app -d as
 ```
 
-init test: create test folder in the current directory, and initiate project.
+init my-app: create my-app folder in the current directory, and initiate project.
 
--d basic: add basic demo after initiate the project. Currently, react-band provide these demos：
+-d as: add as demo after initiate the project. Currently, react-band provide these demos：
 
 * as: a real backstage management system. Based on react+react-router+redux+antd, using json-server to mock server api.
 * basic: a basic react+react-router demo, providing a custom homepage and a test page, the two pages can jump to each other.
@@ -32,7 +58,7 @@ init test: create test folder in the current directory, and initiate project.
 * default: the simplest demo. Only provides a default home page and a test page.
 * redux_menu_antd: a react+react-router+redux+antd demo with left menu bar.
 
-After the initialization is complete, a basic folder will be added under the src/modules/custom directory. The directory structure is similar to this:
+If init with the basic demo. After the initialization is complete, a basic folder will be added under the src/modules/custom directory. The directory structure is similar to this:
 
 ```bash
 |-src
@@ -69,7 +95,7 @@ After the initialization is complete, a basic folder will be added under the src
 npm run start
 ```
 
-If using json-server to mock server api, the following code needs to be executed:
+If using json-server to mock server api, such as the as demo, the following code needs to be executed:
 
 ```bash
 npm run start:mock

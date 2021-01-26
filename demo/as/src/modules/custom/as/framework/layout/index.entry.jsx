@@ -5,37 +5,71 @@ import classnames from 'classnames'
 export default async ({ getModule }) => {
   const Menu = await getModule('menu')
   const Header = await getModule('header')
+  const Breadcrumb = await getModule('breadcrumb')
   function Layout (props) {
-    const { LEFT_STATUS, HEAD_STATUS, theme, children } = props
+    const { LEFT_STATUS, LAYOUT_MODE, theme, children, showLeft } = props
 
-    const headDisplay = HEAD_STATUS ? 'block' : 'none'
-    const leftClassName = classnames(theme.left, {
+    const isTopMode = LAYOUT_MODE === 'top'
+    const layoutClassName = classnames('layout', {
+      'top-mode': isTopMode
+    })
+
+    const leftMaskClassName = classnames('left-mask', theme.leftMask, {
       [theme.collapsed]: !LEFT_STATUS
     })
-    const rightClassName = classnames(theme.right, {
+    const leftClassName = classnames('left', theme.left, {
+      [theme.collapsed]: !LEFT_STATUS
+    })
+    const rightClassName = classnames('right', theme.right, {
       [theme.expand]: !LEFT_STATUS
     })
 
-    return <div className={theme.layout}>
-      <div className={theme.header} style={{ display: headDisplay }}>
+    const hideLeft = (e) => {
+      e.stopPropagation()
+      showLeft(false)
+    }
+
+    return <div className={layoutClassName}>
+      <div className={`header ${theme.header}`}>
         <Header />
       </div>
-      <div className={theme.content}>
-        <div className={leftClassName}>
-          <Menu />
+      {
+        isTopMode ? <div className={`nav ${theme.nav}`}>
+          <div className={`nav-inner ${theme.navInner}`}>
+            <Menu mode='horizontal' expand={LEFT_STATUS} />
+          </div>
+        </div> : null
+      }
+      {
+        isTopMode ? <div className={`content ${theme.content}`}>
+          <div className={`middle ${theme.middle}`}>
+            <Breadcrumb />
+            <div className={`main ${theme.main}`}>
+              {children}
+            </div>
+          </div>
+        </div> : <div className={`content ${theme.content}`}>
+          <div className={leftMaskClassName} onClick={hideLeft} />
+          <div className={leftClassName}>
+            <Menu expand={LEFT_STATUS} />
+          </div>
+          <div className={rightClassName}>
+            <Breadcrumb />
+            <div className={`main ${theme.main}`}>
+              {children}
+            </div>
+          </div>
         </div>
-        <div className={rightClassName}>
-          {children}
-        </div>
-      </div>
+      }
     </div>
   }
 
   Layout.propTypes = {
     theme: PropTypes.object.isRequired,
     LEFT_STATUS: PropTypes.bool.isRequired,
-    HEAD_STATUS: PropTypes.bool.isRequired,
-    children: PropTypes.any
+    LAYOUT_MODE: PropTypes.string.isRequired,
+    children: PropTypes.any,
+    showLeft: PropTypes.func.isRequired
   }
 
   return Layout

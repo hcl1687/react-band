@@ -1,9 +1,9 @@
 export default [{
   path: '/',
   name: 'home',
-  icon: 'iconicon_Main-menu_My-Activities'
+  icon: 'HomeOutlined'
 }, {
-  path: '/test',
-  name: 'test',
-  icon: 'iconicon_Main-menu_My-Assignments'
+  path: '/assignment',
+  name: 'assignment',
+  icon: 'AppstoreOutlined'
 }]

@@ -1,12 +1,42 @@
 export default {
-  getList: {
+  getAssignmentList: {
     next (state, action) {
-      const { items = [], count = 0 } = action.payload
+      const { assignments = [], count = 0 } = action.payload
 
       return {
         ...state,
-        items,
+        assignments,
         count
+      }
+    },
+    throw (state, action) {
+      // handle error
+      return {
+        ...state
+      }
+    }
+  },
+  getAssignment: {
+    next (state, action) {
+      const assignment = action.payload
+
+      return {
+        ...state,
+        assignment
+      }
+    },
+    throw (state, action) {
+      // handle error
+      return {
+        ...state
+      }
+    }
+  },
+  editAssignment: {
+    next (state, action) {
+      // handle error
+      return {
+        ...state
       }
     },
     throw (state, action) {

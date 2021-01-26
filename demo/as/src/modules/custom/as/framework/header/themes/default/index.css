@@ -1,22 +1,21 @@
 .header {
   height: 100%;
   overflow: hidden;
-  line-height: 88px;
-  background-color: #15193b;
+  line-height: 70px;
 }
 
 .left {
   display: inline-block;
   width: 328px;
-  height: 88px;
-  background: url(./images/pic_navbar.png) no-repeat;
+  height: 70px;
 }
 
 .menu {
   display: inline-block;
   width: 56px;
-  height: 88px;
+  height: 70px;
   padding-left: 18px;
+  color: white;
   cursor: pointer;
 }
 
@@ -24,48 +23,149 @@
   display: inline-block;
   width: 24px;
   height: 24px;
+  font-size: 20px;
   vertical-align: middle;
   background-size: contain;
 }
 
-.menuShow {
-  background-image: url(./images/icon_sidebar_collapse.png);
-}
-
-.menuHide {
-  background-image: url(./images/icon_sidebar_expand.png);
-}
-
 .logo {
   display: inline-block;
-  width: 148px;
-  height: 62px;
+  width: 250px;
+  padding: 0 16px;
+}
+
+.logoImg {
+  display: inline-block;
+  width: 100px;
+  height: 55px;
   vertical-align: middle;
-  background-image: url(./images/Logo.png);
-  background-size: cover;
+  background-image: url(./images/as-logo-white.png);
+  background-size: contain;
 }
 
 .right {
   float: right;
-  margin-right: 20px;
+  margin: 0 16px;
 }
 
-.themeType {
-  display: inline-block;
-  margin-right: 10px;
+:global(.config-drawer) :global(.config-item) {
+  margin-bottom: 5px;
+}
+
+.localeOverlay {
+  top: 75px !important;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.localeOverlay :global(.ant-dropdown-menu) {
+  border-radius: 10px;
+}
+
+.localeOverlay :global(.ant-dropdown-menu-item) {
+  padding: 8px 20px;
+}
+
+.setting :global(.anticon) {
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+}
+
+.loginOverlay :global(.ant-dropdown-menu) {
+  border-radius: 10px;
+}
+
+.locale :global(.anticon) {
+  font-size: 20px;
+  color: white;
+}
+
+.loginOverlay :global(.ant-dropdown-menu-item) {
+  padding: 4px 16px 8px 16px;
+}
+
+.localeOverlay :global(.ant-dropdown-menu-item):first-child {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.localeOverlay :global(.ant-dropdown-menu-item):last-child {
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 
 .locale {
   display: inline-block;
-  margin-right: 10px;
+  margin: 0 15px;
+}
+
+.loginOverlay {
+  top: 75px !important;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.loginOverlay :global(.ant-dropdown-menu-item) > div {
+  height: 30px;
+  line-height: 30px;
+}
+
+.loginOverlay :global(.ant-dropdown-menu-item) :global(.anticon) {
+  margin-right: 16px;
+  font-size: 16px;
+}
+
+.loginOverlay :global(.ant-dropdown-menu-item):first-child {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.loginOverlay :global(.ant-dropdown-menu-item):last-child {
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.setting {
+  display: inline-block;
+  margin: 0 15px;
 }
 
 .login {
   display: inline-block;
+  margin: 0 15px;
 }
 
-.user {
-  height: 88px;
+.loginOverlay :global(.ant-dropdown-menu-item).userItem {
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  cursor: auto;
+  border-bottom: 1px solid #edf2f9;
+}
+
+.loginOverlay :global(.ant-dropdown-menu-item) > div.user {
+  position: relative;
+  height: 48px;
+  padding-left: 64px;
+}
+
+.userAvatar {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.name {
+  font-size: 16px;
+  color: #455560;
+}
+
+.description {
+  color: rgba(114, 132, 154, 0.7);
+}
+
+.avatarWrapper {
+  height: 70px;
   cursor: pointer;
 }
 
@@ -77,9 +177,55 @@
   border-radius: 48px;
 }
 
-.name {
-  display: inline-block;
-  margin: 0 16px 0 10px;
-  font-size: 16px;
-  color: white;
+.collapse .logo {
+  width: 80px;
+}
+
+.collapse .logoImg {
+  width: 40px;
+  height: 40px;
+  background-image: url(./images/as-logo-icon.png);
+}
+
+.topMode {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.localeItem {
+  position: relative;
+}
+
+.localeName {
+  padding-right: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.localeIndicator {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  color: #04d182;
+}
+
+:global(.config-drawer) :global(.config-item) :global(.label) {
+  margin-right: 10px;
+}
+
+.local :global(.anticon):hover {
+  color: #3e82f7;
+}
+
+.setting :global(.anticon):hover {
+  color: #3e82f7;
+}
+
+.loginOverlay :global(.ant-dropdown-menu-item):hover {
+  background-color: white;
+}
+
+.loginOverlay :global(.ant-dropdown-menu-item) > div:hover {
+  color: #3e82f7;
 }

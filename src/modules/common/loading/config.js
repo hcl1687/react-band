@@ -1,4 +1,4 @@
-export default () => {
+export default (config) => {
   return {
     name: 'loading',
     lazy: false,

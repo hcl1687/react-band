@@ -1,13 +1,14 @@
 import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
-import lottie from 'lottie-web'
 
-export default () => {
+export default async ({ getModule }) => {
+  const lottie = await getModule('lottie')
+
   function Loading (props) {
     const lottieDom = useRef(null)
 
     useEffect(() => {
-      // wait 3s to show loading animate.
+      // wait 100ms to show loading animate.
       setTimeout(() => {
         if (lottieDom && lottieDom.current) {
           lottie.loadAnimation({
@@ -15,10 +16,10 @@ export default () => {
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            path: '/lottie/Loading/data.json'
+            path: './lottie/Loading/data.json'
           })
         }
-      }, 3000)
+      }, 100)
     }, [])
 
     const { __, theme } = props

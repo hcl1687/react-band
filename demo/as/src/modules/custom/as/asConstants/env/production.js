@@ -1,3 +1,3 @@
-export const SERVER_WEBAPI = 'http://localhost:4000'
-export const MEDIA_URL = 'https://media.jumpstart.com'
-export const JSA_API_DOMAIN = 'http://localhost:4000'
+export const SERVER_WEBAPI = 'https://my-json-server.typicode.com/hcl1687/react-band-as-db'
+export const MEDIA_URL = 'https://media.hcl1687.com'
+export const JSA_API_DOMAIN = 'https://my-json-server.typicode.com/hcl1687/react-band-as-db'

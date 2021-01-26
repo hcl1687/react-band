@@ -3,7 +3,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const baseConfig = require('./webpack.base.config')
 const merge = require('webpack-merge')
 
-const config = merge(baseConfig, {
+const config = merge(baseConfig('production'), {
   mode: 'production',
   optimization: {
     minimizer: [new TerserPlugin()]
@@ -12,5 +12,6 @@ const config = merge(baseConfig, {
 })
 
 config.plugins.unshift(new CleanWebpackPlugin())
+config.output.publicPath = './'
 
 module.exports = config

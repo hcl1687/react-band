@@ -1,6 +1,7 @@
 export default (RB_CONTEXT) => {
   return {
-    items: [],
+    assignments: [],
+    assignment: {},
     total: 0
   }
 }

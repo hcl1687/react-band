@@ -14,9 +14,8 @@ export default async ({ getModule }) => {
 
     const show = ({ visible }) => {
       return new Promise((resolve) => {
-        setVisible(visible, () => {
-          resolve()
-        })
+        setVisible(visible)
+        resolve()
       })
     }
 
@@ -35,9 +34,12 @@ export default async ({ getModule }) => {
     }
 
     const handleFinish = (values) => {
-      const { login } = props
+      const { login, getTeacher } = props
       setLoading(true)
-      login(values).then(() => {
+      login(values).then((auth) => {
+        const getUser = auth.role === 'Teacher' ? getTeacher : Promise.resolve()
+        return getUser(auth.uid)
+      }).then(() => {
         handleCancel()
         setLoading(false)
       }).catch(err => {
@@ -55,12 +57,16 @@ export default async ({ getModule }) => {
       const tailLayout = {
         wrapperCol: { offset: 6, span: 18 }
       }
+      const initialValues = {
+        email: 'test@hcl1687.com',
+        password: '123456'
+      }
 
-      return <Form ref={formRef} {...layout} name='basic' onFinish={handleFinish} >
+      return <Form ref={formRef} initialValues={initialValues} {...layout} onFinish={handleFinish} >
         <Form.Item
-          label={__('userName')}
-          name='name'
-          rules={[{ required: true, message: __('nameTip') }]} >
+          label={__('userEmail')}
+          name='email'
+          rules={[{ required: true, message: __('emailTip') }, { type: 'email', message: __('invalidEmail') }]} >
           <Input />
         </Form.Item>
         <Form.Item
@@ -93,6 +99,7 @@ export default async ({ getModule }) => {
     __: PropTypes.func.isRequired,
     theme: PropTypes.object.isRequired,
     login: PropTypes.func.isRequired,
+    getTeacher: PropTypes.func.isRequired,
     setNotifyHandler: PropTypes.func.isRequired
   }
 

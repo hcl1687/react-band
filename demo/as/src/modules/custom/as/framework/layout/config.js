@@ -4,7 +4,8 @@ export default () => {
     decoratorsConfig: {
       '@reduxStore': {
         layoutStore: {
-          state: ['LEFT_STATUS', 'HEAD_STATUS']
+          actions: ['showLeft'],
+          state: ['LEFT_STATUS', 'LAYOUT_MODE']
         }
       }
     },

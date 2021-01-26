@@ -1,3 +1,19 @@
 .menu {
   height: 100%;
 }
+
+.menu :global(.ant-menu.ant-menu-dark) {
+  background-color: #193550;
+}
+
+.menu :global(.ant-menu-dark) :global(.ant-menu-sub) {
+  background-color: #193550;
+}
+
+.menu :global(.ant-menu) :global(.ant-menu-item) .menuIcon {
+  font-size: 20px;
+}
+
+.menu :global(.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected) {
+  background-color: rgba(255, 255, 255, 0.1);
+}

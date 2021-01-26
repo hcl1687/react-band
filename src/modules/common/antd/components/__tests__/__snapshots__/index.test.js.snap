@@ -10,7 +10,16 @@ Object {
     "Option": [Function],
     "render": [Function],
   },
-  "Avatar": [Function],
+  "Avatar": Object {
+    "$$typeof": Symbol(react.forward_ref),
+    "Group": [Function],
+    "defaultProps": Object {
+      "shape": "circle",
+      "size": "default",
+    },
+    "displayName": "Avatar",
+    "render": [Function],
+  },
   "BackTop": Object {
     "$$typeof": Symbol(react.memo),
     "compare": null,
@@ -22,21 +31,32 @@ Object {
     "$$typeof": Symbol(react.forward_ref),
     "Group": [Function],
     "__ANT_BUTTON": true,
-    "defaultProps": Object {
-      "block": false,
-      "ghost": false,
-      "htmlType": "button",
-      "loading": false,
-    },
     "displayName": "Button",
     "render": [Function],
   },
   "Calendar": [Function],
   "Card": [Function],
-  "Carousel": [Function],
+  "Carousel": Object {
+    "$$typeof": Symbol(react.forward_ref),
+    "render": [Function],
+  },
   "Cascader": [Function],
-  "Checkbox": [Function],
-  "Col": [Function],
+  "Checkbox": Object {
+    "$$typeof": Symbol(react.forward_ref),
+    "Group": Object {
+      "$$typeof": Symbol(react.memo),
+      "compare": null,
+      "type": [Function],
+    },
+    "__ANT_CHECKBOX": true,
+    "displayName": "Checkbox",
+    "render": [Function],
+  },
+  "Col": Object {
+    "$$typeof": Symbol(react.forward_ref),
+    "displayName": "Col",
+    "render": [Function],
+  },
   "Collapse": [Function],
   "Comment": [Function],
   "ConfigProvider": [Function],
@@ -48,6 +68,7 @@ Object {
   "Empty": [Function],
   "Form": Object {
     "$$typeof": Symbol(react.forward_ref),
+    "ErrorList": [Function],
     "Item": [Function],
     "List": [Function],
     "Provider": [Function],
@@ -58,6 +79,7 @@ Object {
   "Grid": Object {
     "useBreakpoint": [Function],
   },
+  "Image": [Function],
   "Input": [Function],
   "InputNumber": Object {
     "$$typeof": Symbol(react.forward_ref),
@@ -114,7 +136,10 @@ Object {
     "Group": Object {
       "$$typeof": Symbol(react.memo),
       "compare": null,
-      "type": [Function],
+      "type": Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "render": [Function],
+      },
     },
     "defaultProps": Object {
       "type": "radio",
@@ -131,8 +156,18 @@ Object {
     "render": [Function],
   },
   "Result": [Function],
-  "Row": [Function],
-  "Select": [Function],
+  "Row": Object {
+    "$$typeof": Symbol(react.forward_ref),
+    "displayName": "Row",
+    "render": [Function],
+  },
+  "Select": Object {
+    "$$typeof": Symbol(react.forward_ref),
+    "OptGroup": [Function],
+    "Option": [Function],
+    "SECRET_COMBOBOX_MODE_DO_NOT_USE": "SECRET_COMBOBOX_MODE_DO_NOT_USE",
+    "render": [Function],
+  },
   "Skeleton": [Function],
   "Slider": Object {
     "$$typeof": Symbol(react.forward_ref),
@@ -186,7 +221,15 @@ Object {
   "Transfer": [Function],
   "Tree": Object {
     "$$typeof": Symbol(react.forward_ref),
-    "DirectoryTree": [Function],
+    "DirectoryTree": Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "defaultProps": Object {
+        "expandAction": "click",
+        "showIcon": true,
+      },
+      "displayName": "DirectoryTree",
+      "render": [Function],
+    },
     "TreeNode": [Function],
     "defaultProps": Object {
       "blockNode": false,
@@ -196,17 +239,28 @@ Object {
         "motionDeadline": 500,
         "motionName": "ant-motion-collapse",
         "onAppearActive": [Function],
+        "onAppearEnd": [Function],
         "onAppearStart": [Function],
         "onEnterActive": [Function],
+        "onEnterEnd": [Function],
         "onEnterStart": [Function],
         "onLeaveActive": [Function],
+        "onLeaveEnd": [Function],
         "onLeaveStart": [Function],
       },
+      "selectable": true,
       "showIcon": false,
     },
     "render": [Function],
   },
-  "TreeSelect": [Function],
+  "TreeSelect": Object {
+    "$$typeof": Symbol(react.forward_ref),
+    "SHOW_ALL": "SHOW_ALL",
+    "SHOW_CHILD": "SHOW_CHILD",
+    "SHOW_PARENT": "SHOW_PARENT",
+    "TreeNode": [Function],
+    "render": [Function],
+  },
   "Typography": Object {
     "$$typeof": Symbol(react.forward_ref),
     "Link": Object {
@@ -219,7 +273,29 @@ Object {
     "displayName": "Typography",
     "render": [Function],
   },
-  "Upload": [Function],
+  "Upload": Object {
+    "$$typeof": Symbol(react.forward_ref),
+    "Dragger": Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "displayName": "Dragger",
+      "render": [Function],
+    },
+    "defaultProps": Object {
+      "accept": "",
+      "action": "",
+      "beforeUpload": [Function],
+      "className": "",
+      "data": Object {},
+      "disabled": false,
+      "listType": "text",
+      "multiple": false,
+      "showUploadList": true,
+      "supportServerRender": true,
+      "type": "select",
+    },
+    "displayName": "Upload",
+    "render": [Function],
+  },
   "message": Object {
     "config": [Function],
     "destroy": [Function],
@@ -228,6 +304,7 @@ Object {
     "loading": [Function],
     "open": [Function],
     "success": [Function],
+    "useMessage": [Function],
     "warn": [Function],
     "warning": [Function],
   },
@@ -243,6 +320,6 @@ Object {
     "warn": [Function],
     "warning": [Function],
   },
-  "version": "4.3.3",
+  "version": "4.10.2",
 }
 `;
