@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom/as/stores/layout/reducers should render correctly 1`] = `
+Object {
+  "setLayout": Object {
+    "next": [Function],
+  },
+  "showHead": Object {
+    "next": [Function],
+  },
+  "showLeft": Object {
+    "next": [Function],
+  },
+}
+`;

@@ -1,3 +1,5 @@
+import { IConfig, IConfigMap, IRBCore, IRBI18n, IRBI18nRaw, IRBI18nsMap, IRBModulesMap, IRBOptions, IRBPackedModulesMap,
+  IRBTheme, IRBThemeRaw, IRBThemesMap } from './interface'
 import React, { Suspense } from 'react'
 import { Route, HashRouter as Router, Switch } from 'react-router-dom'
 import ReactDOM from 'react-dom'
@@ -5,14 +7,28 @@ import flowFactory from 'promiseflow'
 import getConfig from './getConfig'
 
 const runFlow = flowFactory(Promise)
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS: IRBOptions = {
   locale: 'en',
   theme: 'default',
   container: '#container'
 }
 
 export default class RBCore {
-  constructor (options = {}) {
+  private _options: IRBOptions
+
+  private _modules: IRBModulesMap
+
+  private _i18ns: IRBI18nsMap
+
+  private _themes: IRBThemesMap
+
+  private _packedModules: IRBPackedModulesMap
+
+  private _modulesConfig: IConfigMap
+
+  private _routes: Array<IConfig>
+
+  constructor (options: IRBOptions = {}) {
     this._options = Object.assign({}, DEFAULT_OPTIONS, options)
     this._modules = {}
     this._i18ns = {}
@@ -22,11 +38,11 @@ export default class RBCore {
     this._routes = this.createRoute()
   }
 
-  static create (options) {
+  static create (options: IRBOptions): IRBCore {
     return new RBCore(options)
   }
 
-  getContext () {
+  private getContext () {
     return {
       options: this._options,
       modules: this._modules,
@@ -39,9 +55,9 @@ export default class RBCore {
     }
   }
 
-  loadI18n (path, name) {
+  private loadI18n (path: string, name: string): Promise<IRBI18nRaw | unknown> {
     const { locale } = this._options
-    return this.fetchI18n(path, locale).then(i18n => {
+    return this.fetchI18n(path, locale).then((i18n:IRBI18nRaw) => {
       this._i18ns[name] = this._i18ns[name] || {}
       this._i18ns[name][locale] = i18n['default']
       return i18n
@@ -53,31 +69,31 @@ export default class RBCore {
   }
 
   // support json or js i18n file
-  fetchI18n (path, locale) {
+  private fetchI18n (path: string, locale: string): Promise<IRBI18nRaw> {
     path = path.replace(/^\.\//, '')
     return this.fetchI18nJSON(path, locale).catch(() => {
       return this.fetchI18nJS(path, locale)
     })
   }
 
-  fetchI18nJSON (path, locale) {
+  private fetchI18nJSON (path: string, locale: string): Promise<IRBI18nRaw> {
     return import(`~/modules/${path}/i18n/${locale}.json`)
   }
 
-  fetchI18nJS (path, locale) {
+  private fetchI18nJS (path: string, locale: string): Promise<IRBI18nRaw> {
     return import(`~/modules/${path}/i18n/${locale}.js`)
   }
 
-  loadTheme (path, name) {
+  private loadTheme (path: string, name: string): Promise<IRBThemeRaw | unknown> {
     const { theme } = this._options
-    return this.fetchTheme(path, theme).then(themeObj => {
+    return this.fetchTheme(path, theme).then((themeObj: IRBThemeRaw) => {
       this._themes[name] = this._themes[name] || {}
       this._themes[name][theme] = themeObj['default']
       return themeObj
     })
   }
 
-  fetchTheme (path, theme) {
+  private fetchTheme (path: string, theme: string): Promise<IRBThemeRaw> {
     path = path.replace(/^\.\//, '')
     return Promise.all([
       this.fetchLocalTheme(path, theme),
@@ -87,7 +103,7 @@ export default class RBCore {
     })
   }
 
-  fetchLocalTheme (path, theme) {
+  private fetchLocalTheme (path: string, theme: string): Promise<IRBThemeRaw> {
     return import(`~/modules/${path}/themes/${theme}/index.css`).catch(() => {
       return import(`~/modules/${path}/themes/default/index.css`).catch(() => {
         const res = {}
@@ -97,7 +113,7 @@ export default class RBCore {
     })
   }
 
-  fetchGlobalTheme (path, theme) {
+  private fetchGlobalTheme (path: string, theme: string): Promise<unknown> {
     return import(`~/modules/${path}/themes/${theme}/index.global.css`).catch(() => {
       return import(`~/modules/${path}/themes/${theme}/index.global.css`).catch(() => {
         return {}
@@ -105,7 +121,7 @@ export default class RBCore {
     })
   }
 
-  async loadModule (path, name) {
+  private async loadModule (path: string, name: string) {
     // load i18n
     const i18nPromise = this.loadI18n(path, name)
     // load theme
@@ -123,14 +139,14 @@ export default class RBCore {
     return ret
   }
 
-  fetchModule (path) {
+  private fetchModule (path) {
     path = path.replace(/^\.\//, '')
     return import(
       `~/modules/${path}/index.entry`
     )
   }
 
-  async packModule (name) {
+  private async packModule (name) {
     const { locale, theme } = this._options
     let module = this._modules[name]
     const i18n = this._i18ns[name][locale]
@@ -166,7 +182,7 @@ export default class RBCore {
     return module
   }
 
-  getModule = async (name) => {
+  private getModule = async (name) => {
     const config = this._modulesConfig[name]
     if (!config) {
       return
@@ -180,7 +196,7 @@ export default class RBCore {
     return this._packedModules[name]
   }
 
-  createRoute () {
+  private createRoute () {
     const modulesConfig = this._modulesConfig
     let homeConfig
     let notFoundConfig
@@ -222,7 +238,7 @@ export default class RBCore {
     return routes
   }
 
-  async loadSyncModule () {
+  private async loadSyncModule () {
     const modulesConfig = this._modulesConfig
     // load not lazy modules
     await runFlow(modulesConfig, undefined, (value, key) => {
@@ -265,7 +281,7 @@ export default class RBCore {
     return Container
   }
 
-  asyncRoute (config) {
+  private asyncRoute (config) {
     const { name, route = {}, lazy, key } = config
     let component
     if (lazy === false) {

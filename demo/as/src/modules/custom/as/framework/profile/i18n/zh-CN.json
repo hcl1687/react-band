@@ -1,0 +1,11 @@
+{
+  "id": "Id",
+  "userEmail": "Email",
+  "userName": "User Name",
+  "userType": "User Type",
+  "address": "Address",
+  "userNameTip": "请输入用户名!",
+  "success": "保存成功!",
+  "title": "用户信息",
+  "submit": "提交"
+}

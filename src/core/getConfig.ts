@@ -1,17 +1,21 @@
+import { IConfig, IConfigFunctionMap, IConfigMap, IConfigReq, IRBOptions } from './interface'
+
 // mock context in test env
 if (process.env.NODE_ENV === 'test') {
-  require.context = () => {}
+  require.context = function (path: string) {
+    return {} as __WebpackModuleApi.RequireContext
+  }
 }
 
 const configReq = require && require.context('../modules', true, /^(.*)\/config.js$/)
-let CONFIGS = {}
-let MERGED_CONFIGS = {}
+let CONFIGS: IConfigFunctionMap = {}
+let MERGED_CONFIGS: IConfigMap = {}
 
 // for unit test
-export function createCONFIGS (configReq) {
+export function createCONFIGS (configReq: IConfigReq): IConfigFunctionMap {
   CONFIGS = {}
   MERGED_CONFIGS = {}
-  configReq && configReq.keys().forEach(key => {
+  configReq && configReq.keys().forEach((key: string) => {
     const name = key.replace('config.js', '').replace(/\/$/, '')
     if (!name) {
       return
@@ -25,9 +29,9 @@ export function createCONFIGS (configReq) {
 }
 
 // init
-createCONFIGS(configReq)
+createCONFIGS(<IConfigReq>configReq)
 
-function isExclude (key, options = {}) {
+function isExclude (key: string, options: IRBOptions = {}): boolean {
   const { exclude } = options
   if (!exclude) {
     return false
@@ -38,11 +42,11 @@ function isExclude (key, options = {}) {
   }
 
   if (Object.prototype.toString.call(exclude) === '[object RegExp]') {
-    return exclude.test(key)
+    return (<RegExp>exclude).test(key)
   }
 }
 
-export default function getConfig (options) {
+export default function getConfig (options: IRBOptions): IConfigMap {
   const parentKeys = {}
   // merge configs
   Object.keys(CONFIGS).forEach(key => {
@@ -53,12 +57,12 @@ export default function getConfig (options) {
     }
 
     // items like: ['.', 'common', 'home']
-    const items = key.split('/')
+    const items: Array<string> = key.split('/')
     const category = items.length > 1 ? items[1] : ''
-    let config = {}
-    let id = key
+    let config: (IConfig | any) = {}
+    let id: string = key
     config = items.reverse().reduce((obj, item) => {
-      let ret
+      let ret: IConfig
       if (CONFIGS[id]) {
         ret = CONFIGS[id](options)
       }
@@ -81,7 +85,7 @@ export default function getConfig (options) {
     delete MERGED_CONFIGS[key]
   })
 
-  const NAME_BASED_CONFIG = {}
+  const NAME_BASED_CONFIG: IConfigMap = {}
   Object.keys(MERGED_CONFIGS).forEach(key => {
     const config = MERGED_CONFIGS[key]
     config.key = key

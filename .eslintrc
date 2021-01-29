@@ -19,7 +19,8 @@
     "expect": false,
     "jest": false,
     "beforeAll": false,
-    "afterAll": false
+    "afterAll": false,
+    "__WebpackModuleApi": false
   },
   "rules": {
     "no-use-before-define": "off",

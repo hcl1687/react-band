@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom/as/framework/breadcrumb/config should render correctly 1`] = `
+Object {
+  "decorators": Array [
+    "@theme",
+    "@reduxStore",
+  ],
+  "decoratorsConfig": Object {
+    "@reduxStore": Object {
+      "breadcrumbStore": Object {
+        "state": Array [
+          "BREADCRUMBS",
+        ],
+      },
+    },
+  },
+  "name": "breadcrumb",
+}
+`;

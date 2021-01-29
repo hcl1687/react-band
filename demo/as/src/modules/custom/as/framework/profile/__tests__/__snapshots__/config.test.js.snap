@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom/as/framework/profile/config should render correctly 1`] = `
+Object {
+  "decorators": Array [
+    "@notice",
+    "@i18n",
+    "@theme",
+    "@reduxStore",
+  ],
+  "decoratorsConfig": Object {
+    "@reduxStore": Object {
+      "authStore": Object {
+        "state": Array [
+          "AUTH",
+        ],
+      },
+      "teacherStore": Object {
+        "actions": Array [
+          "getTeacher",
+          "editTeacher",
+        ],
+        "state": Array [
+          "teacher",
+        ],
+      },
+    },
+  },
+  "name": "profile",
+}
+`;
