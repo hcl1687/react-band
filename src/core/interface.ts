@@ -1,4 +1,5 @@
 import React from 'react'
+import { RouteProps } from 'react-router-dom'
 
 export interface IRBOptions {
   locale?: string
@@ -7,30 +8,41 @@ export interface IRBOptions {
   exclude?: boolean | RegExp | ((key: string) => boolean)
 }
 
-export interface IConfig {
+export interface IRBConfig {
   name: string
   key?: string
   category?: string
   disabled?: boolean
+  type?: string
+  decorators?: Array<string>
+  i18n?: IRBI18n
+  theme?: IRBTheme
+  route?: RouteProps
+  lazy?: boolean
 }
 
-export interface IConfigMap {
-  [propName: string]: IConfig
+export interface IRBDecoConfig {
+  i18n?: IRBI18n
+  theme?: IRBTheme
 }
 
-export interface IConfigFunctionMap {
-  [propName: string]: (RB_OPTIONS) => IConfig
+export interface IRBConfigMap {
+  [propName: string]: IRBConfig
 }
 
-export interface IConfigReq {
+export interface IRBConfigFunctionMap {
+  [propName: string]: (RB_OPTIONS: IRBOptions) => IRBConfig
+}
+
+export interface IRBConfigReq {
   (key: string): {
-    default: (RB_OPTIONS) => IConfig
+    default: (RB_OPTIONS: IRBOptions) => IRBConfig
   }
   keys: () => Array<string>
 }
 
 export interface IRBModulesMap {
-  [propName: string]: React.FC
+  [propName: string]: IRBModule
 }
 
 export interface IRBI18n {
@@ -61,10 +73,28 @@ export interface IRBThemesMap {
   }
 }
 
-export interface IRBPackedModulesMap {
-  [moduleName: string]: React.FC
-}
-
 export interface IRBCore {
   mount: () => Promise<React.FC>
 }
+
+export interface IRBDecoModule {
+  (config: IRBConfig, decoConfig: IRBDecoConfig, RB_CONTEXT: IRBContext): IRBDecoFactory
+}
+
+export type IRBCompModule = React.FC
+export interface IRBDecoFactory {
+  (WrappedComponent: React.FC): React.FC
+}
+
+export interface IRBContext {
+  options: IRBOptions
+  modules: IRBModulesMap
+  i18ns: IRBI18nsMap
+  themes: IRBThemesMap
+  packedModules: IRBModulesMap
+  modulesConfig: IRBConfigMap
+  routes: Array<IRBConfig>
+  getModule: (name: string) => Promise<IRBModule | undefined>
+}
+
+export type IRBModule = IRBCompModule | IRBDecoModule

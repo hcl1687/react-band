@@ -1,5 +1,5 @@
-import { IConfig, IConfigMap, IRBCore, IRBI18n, IRBI18nRaw, IRBI18nsMap, IRBModulesMap, IRBOptions, IRBPackedModulesMap,
-  IRBTheme, IRBThemeRaw, IRBThemesMap } from './interface'
+import { IRBCompModule, IRBConfig, IRBConfigMap, IRBContext, IRBCore, IRBDecoConfig, IRBDecoModule, IRBI18n, IRBI18nRaw,
+  IRBI18nsMap, IRBModule, IRBModulesMap, IRBOptions, IRBTheme, IRBThemeRaw, IRBThemesMap } from './interface'
 import React, { Suspense } from 'react'
 import { Route, HashRouter as Router, Switch } from 'react-router-dom'
 import ReactDOM from 'react-dom'
@@ -22,11 +22,11 @@ export default class RBCore {
 
   private _themes: IRBThemesMap
 
-  private _packedModules: IRBPackedModulesMap
+  private _packedModules: IRBModulesMap
 
-  private _modulesConfig: IConfigMap
+  private _modulesConfig: IRBConfigMap
 
-  private _routes: Array<IConfig>
+  private _routes: Array<IRBConfig>
 
   constructor (options: IRBOptions = {}) {
     this._options = Object.assign({}, DEFAULT_OPTIONS, options)
@@ -42,7 +42,7 @@ export default class RBCore {
     return new RBCore(options)
   }
 
-  private getContext () {
+  private getContext (): IRBContext {
     return {
       options: this._options,
       modules: this._modules,
@@ -121,7 +121,7 @@ export default class RBCore {
     })
   }
 
-  private async loadModule (path: string, name: string) {
+  private async loadModule (path: string, name: string): Promise<{ default?: IRBCompModule }> {
     // load i18n
     const i18nPromise = this.loadI18n(path, name)
     // load theme
@@ -139,21 +139,21 @@ export default class RBCore {
     return ret
   }
 
-  private fetchModule (path) {
+  private fetchModule (path: string) {
     path = path.replace(/^\.\//, '')
     return import(
       `~/modules/${path}/index.entry`
     )
   }
 
-  private async packModule (name) {
+  private async packModule (name: string) {
     const { locale, theme } = this._options
     let module = this._modules[name]
-    const i18n = this._i18ns[name][locale]
-    const themeObj = this._themes[name][theme]
+    const i18n: IRBI18n = this._i18ns[name][locale]
+    const themeObj: IRBTheme = this._themes[name][theme]
     const RB_CONTEXT = this.getContext()
 
-    const config = this._modulesConfig[name]
+    const config: IRBConfig = this._modulesConfig[name]
     if (config.type !== 'decorator') {
       // get decorators from config
       const { decorators = [] } = config
@@ -163,16 +163,18 @@ export default class RBCore {
         const decoConfig = this._modulesConfig[deco]
         const decoI18n = this._i18ns[deco][locale]
         const decoThemeObj = this._themes[deco][theme]
+        const moduleConfig: IRBConfig = {
+          ...config,
+          i18n,
+          theme: themeObj
+        }
+        const moduleDecoConfig: IRBDecoConfig = {
+          ...decoConfig,
+          i18n: decoI18n,
+          theme: decoThemeObj
+        }
         if (decoModule) {
-          module = await decoModule({
-            ...config,
-            i18n,
-            theme: themeObj
-          }, {
-            ...decoConfig,
-            i18n: decoI18n,
-            theme: decoThemeObj
-          }, RB_CONTEXT)(module)
+          module = (decoModule as IRBDecoModule)(moduleConfig, moduleDecoConfig, RB_CONTEXT)(module as IRBCompModule)
         }
       }
     }
@@ -182,7 +184,7 @@ export default class RBCore {
     return module
   }
 
-  private getModule = async (name) => {
+  private getModule = async (name: string): Promise<IRBModule | undefined> => {
     const config = this._modulesConfig[name]
     if (!config) {
       return
@@ -198,8 +200,8 @@ export default class RBCore {
 
   private createRoute () {
     const modulesConfig = this._modulesConfig
-    let homeConfig
-    let notFoundConfig
+    let homeConfig: IRBConfig
+    let notFoundConfig: IRBConfig
     Object.keys(modulesConfig).forEach(name => {
       const config = modulesConfig[name]
       const { route } = config
@@ -241,19 +243,19 @@ export default class RBCore {
   private async loadSyncModule () {
     const modulesConfig = this._modulesConfig
     // load not lazy modules
-    await runFlow(modulesConfig, undefined, (value, key) => {
+    await runFlow(modulesConfig, undefined, (value: IRBConfig) => {
       if (value.lazy === false) {
         return this.loadModule(value.key, value.name)
       }
     })
   }
 
-  async mount () {
+  async mount (): Promise<React.FC> {
     const { container } = this._options
     const routes = this._routes
     await this.loadSyncModule()
-    const Loading = this._packedModules['loading']
-    const App = this._packedModules['app']
+    const Loading = this._packedModules['loading'] as IRBCompModule
+    const App = this._packedModules['app'] as IRBCompModule
     const Comp = () => {
       return (
         <Router>
@@ -283,9 +285,9 @@ export default class RBCore {
 
   private asyncRoute (config) {
     const { name, route = {}, lazy, key } = config
-    let component
+    let component: IRBCompModule
     if (lazy === false) {
-      component = this._packedModules[name]
+      component = this._packedModules[name] as IRBCompModule
     } else {
       component = (
         React.lazy(() => (

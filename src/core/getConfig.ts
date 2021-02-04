@@ -1,4 +1,4 @@
-import { IConfig, IConfigFunctionMap, IConfigMap, IConfigReq, IRBOptions } from './interface'
+import { IRBConfig, IRBConfigFunctionMap, IRBConfigMap, IRBConfigReq, IRBOptions } from './interface'
 
 // mock context in test env
 if (process.env.NODE_ENV === 'test') {
@@ -8,11 +8,11 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 const configReq = require && require.context('../modules', true, /^(.*)\/config.js$/)
-let CONFIGS: IConfigFunctionMap = {}
-let MERGED_CONFIGS: IConfigMap = {}
+let CONFIGS: IRBConfigFunctionMap = {}
+let MERGED_CONFIGS: IRBConfigMap = {}
 
 // for unit test
-export function createCONFIGS (configReq: IConfigReq): IConfigFunctionMap {
+export function createCONFIGS (configReq: IRBConfigReq): IRBConfigFunctionMap {
   CONFIGS = {}
   MERGED_CONFIGS = {}
   configReq && configReq.keys().forEach((key: string) => {
@@ -29,7 +29,7 @@ export function createCONFIGS (configReq: IConfigReq): IConfigFunctionMap {
 }
 
 // init
-createCONFIGS(<IConfigReq>configReq)
+createCONFIGS(<IRBConfigReq>configReq)
 
 function isExclude (key: string, options: IRBOptions = {}): boolean {
   const { exclude } = options
@@ -46,7 +46,7 @@ function isExclude (key: string, options: IRBOptions = {}): boolean {
   }
 }
 
-export default function getConfig (options: IRBOptions): IConfigMap {
+export default function getConfig (options: IRBOptions): IRBConfigMap {
   const parentKeys = {}
   // merge configs
   Object.keys(CONFIGS).forEach(key => {
@@ -59,10 +59,10 @@ export default function getConfig (options: IRBOptions): IConfigMap {
     // items like: ['.', 'common', 'home']
     const items: Array<string> = key.split('/')
     const category = items.length > 1 ? items[1] : ''
-    let config: (IConfig | any) = {}
+    let config: (IRBConfig | any) = {}
     let id: string = key
     config = items.reverse().reduce((obj, item) => {
-      let ret: IConfig
+      let ret: IRBConfig
       if (CONFIGS[id]) {
         ret = CONFIGS[id](options)
       }
@@ -85,7 +85,7 @@ export default function getConfig (options: IRBOptions): IConfigMap {
     delete MERGED_CONFIGS[key]
   })
 
-  const NAME_BASED_CONFIG: IConfigMap = {}
+  const NAME_BASED_CONFIG: IRBConfigMap = {}
   Object.keys(MERGED_CONFIGS).forEach(key => {
     const config = MERGED_CONFIGS[key]
     config.key = key
