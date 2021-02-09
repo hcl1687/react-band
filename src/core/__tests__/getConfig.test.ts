@@ -1,6 +1,6 @@
 import getConfig, { createCONFIGS } from '../getConfig'
 
-const configReq = function (key) {
+const configReq = function (key: string) {
   const factory = {
     './common/antd/components/config.js': {
       default: () => {}
@@ -89,12 +89,12 @@ configReq.keys = () => ([
 describe('core/getConfig', () => {
   it('should render correctly', () => {
     createCONFIGS(configReq)
-    const config = getConfig()
+    const config = getConfig({})
     expect(config).toMatchSnapshot()
   })
 
   it('only show leaf config', () => {
-    const configReq1 = function (key) {
+    const configReq1 = function (key: string) {
       const factory = {
         './common/config.js': {
           default: () => ({ name: 'common' })
@@ -111,13 +111,13 @@ describe('core/getConfig', () => {
       './common/home/config.js'
     ])
     createCONFIGS(configReq1)
-    const config = getConfig()
+    const config = getConfig({})
     expect(config.common).toBe(undefined)
     expect(config.home).toBeDefined()
   })
 
   it('support exclude option by function', () => {
-    const configReq1 = function (key) {
+    const configReq1 = function (key: string) {
       const factory = {
         './common/config.js': {
           default: () => ({ name: 'common' })
@@ -169,7 +169,7 @@ describe('core/getConfig', () => {
   })
 
   it('should not return root config', () => {
-    const configReq1 = function (key) {
+    const configReq1 = function (key: string) {
       const factory = {
         './config.js': {
           default: () => ({ name: 'root' })
@@ -182,7 +182,7 @@ describe('core/getConfig', () => {
       './config.js'
     ])
     createCONFIGS(configReq1)
-    const config = getConfig()
+    const config = getConfig({})
     expect(config.root).toBe(undefined)
   })
 
@@ -208,7 +208,7 @@ describe('core/getConfig', () => {
       './common/home/config.js'
     ])
     createCONFIGS(configReq1)
-    const config = getConfig()
+    const config = getConfig({})
     expect(config.home).toBeDefined()
     expect(config.home).toEqual({
       a: 1,
@@ -220,7 +220,7 @@ describe('core/getConfig', () => {
   })
 
   it('support disable module', () => {
-    const configReq1 = function (key) {
+    const configReq1 = function (key: string) {
       const factory = {
         './common/config.js': {
           default: () => ({ disabled: true })
@@ -237,7 +237,7 @@ describe('core/getConfig', () => {
       './common/home/config.js'
     ])
     createCONFIGS(configReq1)
-    const config = getConfig()
+    const config = getConfig({})
     expect(config.home).toBe(undefined)
   })
 })

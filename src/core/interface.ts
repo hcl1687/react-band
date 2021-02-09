@@ -74,6 +74,19 @@ export interface IRBThemesMap {
 }
 
 export interface IRBCore {
+  getContext: () => IRBContext
+  getModule: (name: string) => Promise<IRBModule | undefined>
+  fetchI18n: (path: string, locale: string) => Promise<IRBI18nRaw>
+  loadI18n: (path: string, name: string) => Promise<IRBI18nRaw | unknown>
+  fetchI18nJSON: (path: string, locale: string) => Promise<IRBI18nRaw>
+  fetchI18nJS: (path: string, locale: string) => Promise<IRBI18nRaw>
+  loadTheme: (path: string, name: string) => Promise<IRBThemeRaw | unknown>
+  fetchTheme: (path: string, theme: string) => Promise<IRBThemeRaw>
+  fetchLocalTheme: (path: string, theme: string) => Promise<IRBThemeRaw>
+  fetchGlobalTheme: (path: string, theme: string) => Promise<unknown>
+  packModule: (name: string) => Promise<IRBModule>
+  fetchModule: (path: string) => Promise<{ default: IRBModuleFactory }>
+  loadModule: (path: string, name: string) => Promise<{ default: IRBModule }>
   mount: () => Promise<React.FC>
 }
 
@@ -98,3 +111,7 @@ export interface IRBContext {
 }
 
 export type IRBModule = IRBCompModule | IRBDecoModule
+
+export interface IRBModuleFactory {
+  (RB_CONTEXT: IRBContext): IRBModule
+}
