@@ -1,6 +1,6 @@
 import { IRBCompModule, IRBConfig, IRBConfigMap, IRBContext, IRBCore, IRBDecoConfig, IRBDecoModule, IRBI18n, IRBI18nRaw,
   IRBI18nsMap, IRBModule, IRBModuleFactory, IRBModulesMap, IRBOptions, IRBTheme, IRBThemeRaw, IRBThemesMap } from './interface'
-import React, { Suspense } from 'react'
+import React, { ReactNode, Suspense } from 'react'
 import { Route, HashRouter as Router, Switch } from 'react-router-dom'
 import ReactDOM from 'react-dom'
 import flowFactory from 'promiseflow'
@@ -200,7 +200,7 @@ export default class RBCore {
     return this._packedModules[name]
   }
 
-  private createRoute () {
+  public createRoute (): Array<IRBConfig> {
     const modulesConfig = this._modulesConfig
     let homeConfig: IRBConfig
     let notFoundConfig: IRBConfig
@@ -242,7 +242,7 @@ export default class RBCore {
     return routes
   }
 
-  private async loadSyncModule () {
+  public async loadSyncModule (): Promise<void> {
     const modulesConfig = this._modulesConfig
     // load not lazy modules
     await runFlow(modulesConfig, undefined, (value: IRBConfig) => {
@@ -292,7 +292,7 @@ export default class RBCore {
     }
   }
 
-  private asyncRoute (config) {
+  public asyncRoute (config: IRBConfig): ReactNode {
     const { name, route = {}, lazy, key } = config
     let component: IRBCompModule
     if (lazy === false) {

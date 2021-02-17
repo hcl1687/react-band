@@ -1,6 +1,6 @@
 import { IRBCompModule, IRBConfig, IRBConfigMap, IRBContext, IRBCore, IRBDecoConfig, IRBDecoModule, IRBI18n, IRBI18nRaw,
   IRBI18nsMap, IRBModule, IRBModuleFactory, IRBModulesMap, IRBOptions, IRBTheme, IRBThemeRaw, IRBThemesMap } from '../interface'
-import React, { Component } from 'react'
+import React, { Component, ReactNode } from 'react'
 import PropTypes from 'prop-types'
 import RBCore from '../index'
 import { Route } from 'react-router-dom'
@@ -431,35 +431,41 @@ describe('core/index', () => {
       const rbInstance = RBCore.create({})
       const context = rbInstance.getContext()
       context.modulesConfig['test'] = { name: 'test' }
-      context.packedModules['test'] = () => {}
+      context.packedModules['test'] = () => { return null }
       return rbInstance.getModule('test').then((module) => {
         expect(typeof module).toEqual('function')
       })
     })
 
     it('first loaded', () => {
-      const rbInstance = RBCore.create()
+      const rbInstance = RBCore.create({})
+      const context = rbInstance.getContext()
       rbInstance.loadModule = jest.fn((key, name) => {
-        rbInstance._packedModules[name] = () => {}
-        return Promise.resolve({})
+        context.packedModules[name] = () => { return null }
+        return Promise.resolve({
+          default: () => { return null }
+        })
       })
-      rbInstance._modulesConfig['test'] = {
+      context.modulesConfig['test'] = {
+        name: 'test',
         key: 'testPath'
       }
       return rbInstance.getModule('test').then((module) => {
         expect(module).not.toBe(undefined)
-        expect(rbInstance.loadModule.mock.calls.length).toBe(1)
-        expect(rbInstance.loadModule.mock.calls[0][0]).toEqual('testPath')
-        expect(rbInstance.loadModule.mock.calls[0][1]).toEqual('test')
-        expect(typeof rbInstance.loadModule.mock.results[0].value.then).toEqual('function')
+        const mockedLoadModule = rbInstance.loadModule as jest.Mock<Promise<{ default: IRBModule }>, [string, string]>
+        expect(mockedLoadModule.mock.calls.length).toBe(1)
+        expect(mockedLoadModule.mock.calls[0][0]).toEqual('testPath')
+        expect(mockedLoadModule.mock.calls[0][1]).toEqual('test')
+        expect(typeof mockedLoadModule.mock.results[0].value.then).toEqual('function')
       })
     })
   })
 
   describe('createRoute', () => {
     it('create successful', () => {
-      const rbInstance = RBCore.create()
-      rbInstance._modulesConfig = {
+      const rbInstance = RBCore.create({})
+      const context = rbInstance.getContext()
+      context.modulesConfig = {
         home: {
           name: 'home',
           route: {
@@ -506,8 +512,9 @@ describe('core/index', () => {
 
   describe('loadSyncModule', () => {
     it('load successful', () => {
-      const rbInstance = RBCore.create()
-      rbInstance._modulesConfig = {
+      const rbInstance = RBCore.create({})
+      const context = rbInstance.getContext()
+      context.modulesConfig = {
         test: {
           name: 'test',
           key: 'testPath'
@@ -518,11 +525,12 @@ describe('core/index', () => {
           lazy: false
         }
       }
-      rbInstance.loadModule = jest.fn((key, name) => {})
+      rbInstance.loadModule = jest.fn((key, name) => { return null })
       return rbInstance.loadSyncModule().then(() => {
-        expect(rbInstance.loadModule.mock.calls.length).toBe(1)
-        expect(rbInstance.loadModule.mock.calls[0][0]).toEqual('test1Path')
-        expect(rbInstance.loadModule.mock.calls[0][1]).toEqual('test1')
+        const mockedLoadModule = rbInstance.loadModule as jest.Mock<Promise<{ default: IRBModule }>, [string, string]>
+        expect(mockedLoadModule.mock.calls.length).toBe(1)
+        expect(mockedLoadModule.mock.calls[0][0]).toEqual('test1Path')
+        expect(mockedLoadModule.mock.calls[0][1]).toEqual('test1')
       })
     })
   })
@@ -538,43 +546,35 @@ describe('core/index', () => {
       div.parentNode.removeChild(div)
     })
     it('mount successful', () => {
-      const rbInstance = RBCore.create()
-      class Loading extends Component {
-        render () {
-          return <div className='loading'>loading</div>
-        }
+      const rbInstance = RBCore.create({})
+      const Loading = () => {
+        return <div className='loading'>loading</div>
       }
-      class App extends Component {
-        static propTypes = {
-          children: PropTypes.any
-        }
+      const App = (props) => {
+        const { children } = props
+        return <div className='app'>{children}</div>
+      }
+      const Home = () => {
+        return <div className='home'>home</div>
+      }
 
-        render () {
-          const { children } = this.props
-          return <div className='app'>{children}</div>
-        }
-      }
-      class Home extends Component {
-        render () {
-          return <div className='home'>home</div>
-        }
-      }
-      rbInstance._packedModules['loading'] = Loading
-      rbInstance._packedModules['app'] = App
-      rbInstance._packedModules['home'] = Home
-      rbInstance._routes = [{
+      const context = rbInstance.getContext()
+      context.packedModules['loading'] = Loading
+      context.packedModules['app'] = App
+      context.packedModules['home'] = Home
+      context.routes = [{
         name: 'home',
         lazy: false,
         route: {
           path: '/'
         }
       }]
-      rbInstance.loadSyncModule = jest.fn((key, name) => {
-        return Promise.resolve({})
+      rbInstance.loadSyncModule = jest.fn(() => {
+        return Promise.resolve()
       })
       rbInstance.asyncRoute = jest.fn((config) => {
         const { name, route } = config
-        const component = rbInstance._packedModules['home']
+        const component = context.packedModules['home'] as IRBCompModule
         return <Route key={name} {...route} component={component} />
       })
       return rbInstance.mount().then((Container) => {
@@ -582,9 +582,12 @@ describe('core/index', () => {
           <Container />
         )
 
-        expect(rbInstance.loadSyncModule.mock.calls.length).toBe(1)
-        expect(rbInstance.asyncRoute.mock.calls.length).toBe(2)
-        expect(rbInstance.asyncRoute.mock.calls[0][0]).toEqual({
+        const mockedLoadSyncModule = rbInstance.loadSyncModule as jest.Mock<Promise<void>, []>
+        const mockedAsyncRoute = rbInstance.asyncRoute as jest.Mock<ReactNode, [IRBConfig]>
+
+        expect(mockedLoadSyncModule.mock.calls.length).toBe(1)
+        expect(mockedAsyncRoute.mock.calls.length).toBe(2)
+        expect(mockedAsyncRoute.mock.calls[0][0]).toEqual({
           name: 'home',
           lazy: false,
           route: {
@@ -599,13 +602,13 @@ describe('core/index', () => {
 
   describe('asyncRoute', () => {
     it('sync component', () => {
-      const rbInstance = RBCore.create()
-      class Home extends Component {
-        render () {
-          return <div className='home'>home</div>
-        }
+      const rbInstance = RBCore.create({})
+      const Home = () => {
+        return <div className='home'>home</div>
       }
-      rbInstance._packedModules['home'] = Home
+
+      const context = rbInstance.getContext()
+      context.packedModules['home'] = Home
       const config = {
         key: 'homePath',
         name: 'home',

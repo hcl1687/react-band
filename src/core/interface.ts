@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { RouteProps } from 'react-router-dom'
 
 export interface IRBOptions {
@@ -88,6 +88,9 @@ export interface IRBCore {
   fetchModule: (path: string) => Promise<{ default: IRBModuleFactory }>
   loadModule: (path: string, name: string) => Promise<{ default: IRBModule }>
   mount: () => Promise<React.FC>
+  createRoute: () => Array<IRBConfig>
+  loadSyncModule: () => Promise<void>
+  asyncRoute: (config: IRBConfig) => ReactNode
 }
 
 export interface IRBDecoModule {
