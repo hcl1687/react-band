@@ -6,14 +6,14 @@ React.useLayoutEffect = React.useEffect
 
 const mockConsoleMethod = (realConsoleMethod) => {
   const ignoredMessages = [
-    'test was not wrapped in act(...)',
+    'test was not wrapped in act(...)'
   ]
 
   return (message, ...args) => {
     const containsIgnoredMessage = ignoredMessages.some(ignoredMessage => message.includes(ignoredMessage))
 
     if (!containsIgnoredMessage) {
-    realConsoleMethod(message, ...args)
+      realConsoleMethod(message, ...args)
     }
   }
 }

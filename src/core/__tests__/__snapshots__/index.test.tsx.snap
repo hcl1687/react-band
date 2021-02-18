@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`core/index loadModule process successful 1`] = `[Function]`;
+
 exports[`core/index should render correctly 1`] = `
 RBCore {
   "_i18ns": Object {},

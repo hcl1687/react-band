@@ -1,8 +1,6 @@
-import { IRBConfig, IRBConfigFunctionMap, IRBConfigMap, IRBConfigReq, IRBOptions } from './interface'
-
 // mock context in test env
 if (process.env.NODE_ENV === 'test') {
-  require.context = function (path: string) {
+  require.context = function () {
     return {} as __WebpackModuleApi.RequireContext
   }
 }
@@ -15,7 +13,7 @@ let MERGED_CONFIGS: IRBConfigMap = {}
 export function createCONFIGS (configReq: IRBConfigReq): IRBConfigFunctionMap {
   CONFIGS = {}
   MERGED_CONFIGS = {}
-  configReq && configReq.keys().forEach((key: string) => {
+  configReq && configReq.keys && configReq.keys().forEach((key: string) => {
     const name = key.replace('config.js', '').replace(/\/$/, '')
     if (!name) {
       return

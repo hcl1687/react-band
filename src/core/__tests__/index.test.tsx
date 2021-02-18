@@ -1,10 +1,7 @@
-import { IRBCompModule, IRBConfig, IRBConfigMap, IRBContext, IRBCore, IRBDecoConfig, IRBDecoModule, IRBI18n, IRBI18nRaw,
-  IRBI18nsMap, IRBModule, IRBModuleFactory, IRBModulesMap, IRBOptions, IRBTheme, IRBThemeRaw, IRBThemesMap } from '../interface'
-import React, { Component, ReactNode } from 'react'
-import PropTypes from 'prop-types'
+import { Route, HashRouter as Router } from 'react-router-dom'
 import RBCore from '../index'
-import { Route } from 'react-router-dom'
 import { mount } from 'enzyme'
+import tools from '~/../tests/utils/index'
 
 describe('core/index', () => {
   it('should render correctly', () => {
@@ -34,7 +31,7 @@ describe('core/index', () => {
   describe('loadI18n', () => {
     it('fetch successful', () => {
       const rbInstance = RBCore.create({})
-      rbInstance.fetchI18n = jest.fn((path, locale) => {
+      rbInstance['fetchI18n'] = jest.fn((path, locale) => {
         return Promise.resolve({
           default: {
             a: 'test'
@@ -42,7 +39,7 @@ describe('core/index', () => {
         })
       })
 
-      return rbInstance.loadI18n('testPath', 'test').then(i18n => {
+      return rbInstance['loadI18n']('testPath', 'test').then(i18n => {
         expect(i18n).toEqual({
           default: {
             a: 'test'
@@ -53,7 +50,7 @@ describe('core/index', () => {
           a: 'test'
         })
 
-        const mockedFetchI18n = rbInstance.fetchI18n as jest.Mock<Promise<IRBI18nRaw>, [string, string]>
+        const mockedFetchI18n = rbInstance['fetchI18n'] as jest.Mock<Promise<IRBI18nRaw>, [string, string]>
         expect(mockedFetchI18n.mock.calls.length).toBe(1)
         expect(mockedFetchI18n.mock.calls[0][0]).toEqual('testPath')
         expect(mockedFetchI18n.mock.calls[0][1]).toEqual('en')
@@ -63,15 +60,15 @@ describe('core/index', () => {
 
     it('fetch failed', () => {
       const rbInstance = RBCore.create({})
-      rbInstance.fetchI18n = jest.fn((path, locale) => {
+      rbInstance['fetchI18n'] = jest.fn((path, locale) => {
         return Promise.reject(new Error(''))
       })
 
-      return rbInstance.loadI18n('testPath', 'test').then(i18n => {
+      return rbInstance['loadI18n']('testPath', 'test').then(i18n => {
         expect(i18n).toEqual({})
         const context = rbInstance.getContext()
         expect(context.i18ns['test']['en']).toEqual({})
-        const mockedFetchI18n = rbInstance.fetchI18n as jest.Mock<Promise<IRBI18nRaw>, [string, string]>
+        const mockedFetchI18n = rbInstance['fetchI18n'] as jest.Mock<Promise<IRBI18nRaw>, [string, string]>
         expect(mockedFetchI18n.mock.calls.length).toBe(1)
         expect(mockedFetchI18n.mock.calls[0][0]).toEqual('testPath')
         expect(mockedFetchI18n.mock.calls[0][1]).toEqual('en')
@@ -83,21 +80,21 @@ describe('core/index', () => {
   describe('fetchI18n', () => {
     it('fetch json successful', () => {
       const rbInstance = RBCore.create({})
-      rbInstance.fetchI18nJSON = jest.fn((path, locale) => {
+      rbInstance['fetchI18nJSON'] = jest.fn((path, locale) => {
         return Promise.resolve({
           default: {
             a: 'test'
           }
         })
       })
-      return rbInstance.fetchI18n('testPath', 'en').then((i18n) => {
+      return rbInstance['fetchI18n']('testPath', 'en').then((i18n) => {
         expect(i18n).toEqual({
           default: {
             a: 'test'
           }
         })
 
-        const mockedFetchI18nJSON = rbInstance.fetchI18nJSON as jest.Mock<Promise<IRBI18nRaw>, [string, string]>
+        const mockedFetchI18nJSON = rbInstance['fetchI18nJSON'] as jest.Mock<Promise<IRBI18nRaw>, [string, string]>
         expect(mockedFetchI18nJSON.mock.calls.length).toBe(1)
         expect(mockedFetchI18nJSON.mock.calls[0][0]).toEqual('testPath')
         expect(mockedFetchI18nJSON.mock.calls[0][1]).toEqual('en')
@@ -107,25 +104,25 @@ describe('core/index', () => {
 
     it('fetch json failed', () => {
       const rbInstance = RBCore.create({})
-      rbInstance.fetchI18nJSON = jest.fn((path, locale) => {
+      rbInstance['fetchI18nJSON'] = jest.fn((path, locale) => {
         return Promise.reject(new Error(''))
       })
-      rbInstance.fetchI18nJS = jest.fn((path, locale) => {
+      rbInstance['fetchI18nJS'] = jest.fn((path, locale) => {
         return Promise.resolve({
           default: {
             a: 'test'
           }
         })
       })
-      return rbInstance.fetchI18n('testPath', 'en').then((i18n) => {
+      return rbInstance['fetchI18n']('testPath', 'en').then((i18n) => {
         expect(i18n).toEqual({
           default: {
             a: 'test'
           }
         })
 
-        const mockedFetchI18nJSON = rbInstance.fetchI18nJSON as jest.Mock<Promise<IRBI18nRaw>, [string, string]>
-        const mockedFetchI18nJS = rbInstance.fetchI18nJS as jest.Mock<Promise<IRBI18nRaw>, [string, string]>
+        const mockedFetchI18nJSON = rbInstance['fetchI18nJSON'] as jest.Mock<Promise<IRBI18nRaw>, [string, string]>
+        const mockedFetchI18nJS = rbInstance['fetchI18nJS'] as jest.Mock<Promise<IRBI18nRaw>, [string, string]>
 
         expect(mockedFetchI18nJSON.mock.calls.length).toBe(1)
         expect(mockedFetchI18nJSON.mock.calls[0][0]).toEqual('testPath')
@@ -140,15 +137,15 @@ describe('core/index', () => {
 
     it('fetch failed', () => {
       const rbInstance = RBCore.create({})
-      rbInstance.fetchI18nJSON = jest.fn((path, locale) => {
+      rbInstance['fetchI18nJSON'] = jest.fn((path, locale) => {
         return Promise.reject(new Error(''))
       })
-      rbInstance.fetchI18nJS = jest.fn((path, locale) => {
+      rbInstance['fetchI18nJS'] = jest.fn((path, locale) => {
         return Promise.reject(new Error(''))
       })
-      return rbInstance.fetchI18n('testPath', 'en').catch(() => {
-        const mockedFetchI18nJSON = rbInstance.fetchI18nJSON as jest.Mock<Promise<IRBI18nRaw>, [string, string]>
-        const mockedFetchI18nJS = rbInstance.fetchI18nJS as jest.Mock<Promise<IRBI18nRaw>, [string, string]>
+      return rbInstance['fetchI18n']('testPath', 'en').catch(() => {
+        const mockedFetchI18nJSON = rbInstance['fetchI18nJSON'] as jest.Mock<Promise<IRBI18nRaw>, [string, string]>
+        const mockedFetchI18nJS = rbInstance['fetchI18nJS'] as jest.Mock<Promise<IRBI18nRaw>, [string, string]>
 
         expect(mockedFetchI18nJSON.mock.calls.length).toBe(1)
         expect(mockedFetchI18nJSON.mock.calls[0][0]).toEqual('testPath')
@@ -165,7 +162,7 @@ describe('core/index', () => {
   describe('fetchI18nJSON', () => {
     it('fetch failed', () => {
       const rbInstance = RBCore.create({})
-      return rbInstance.fetchI18nJSON('testPath', 'en').catch(() => {
+      return rbInstance['fetchI18nJSON']('testPath', 'en').catch(() => {
         expect(1).toBe(1)
       })
     })
@@ -174,7 +171,7 @@ describe('core/index', () => {
   describe('fetchI18nJS', () => {
     it('fetch failed', () => {
       const rbInstance = RBCore.create({})
-      return rbInstance.fetchI18nJS('testPath', 'en').catch(() => {
+      return rbInstance['fetchI18nJS']('testPath', 'en').catch(() => {
         expect(1).toBe(1)
       })
     })
@@ -183,7 +180,7 @@ describe('core/index', () => {
   describe('loadTheme', () => {
     it('fetch successful', () => {
       const rbInstance = RBCore.create({})
-      rbInstance.fetchTheme = jest.fn((path, locale) => {
+      rbInstance['fetchTheme'] = jest.fn((path, locale) => {
         return Promise.resolve({
           default: {
             a: 'test'
@@ -191,7 +188,7 @@ describe('core/index', () => {
         })
       })
 
-      return rbInstance.loadTheme('testPath', 'test').then(i18n => {
+      return rbInstance['loadTheme']('testPath', 'test').then(i18n => {
         expect(i18n).toEqual({
           default: {
             a: 'test'
@@ -203,7 +200,7 @@ describe('core/index', () => {
           a: 'test'
         })
 
-        const mockedFetchTheme = rbInstance.fetchTheme as jest.Mock<Promise<IRBThemeRaw>, [string, string]>
+        const mockedFetchTheme = rbInstance['fetchTheme'] as jest.Mock<Promise<IRBThemeRaw>, [string, string]>
         expect(mockedFetchTheme.mock.calls.length).toBe(1)
         expect(mockedFetchTheme.mock.calls[0][0]).toEqual('testPath')
         expect(mockedFetchTheme.mock.calls[0][1]).toEqual('default')
@@ -215,21 +212,21 @@ describe('core/index', () => {
   describe('fetchTheme', () => {
     it('fetch local successful', () => {
       const rbInstance = RBCore.create({})
-      rbInstance.fetchLocalTheme = jest.fn((path, locale) => {
+      rbInstance['fetchLocalTheme'] = jest.fn((path, locale) => {
         return Promise.resolve({
           default: {
             a: 'test'
           }
         })
       })
-      return rbInstance.fetchTheme('testPath', 'default').then((i18n) => {
+      return rbInstance['fetchTheme']('testPath', 'default').then((i18n) => {
         expect(i18n).toEqual({
           default: {
             a: 'test'
           }
         })
 
-        const mockedFetchLocalTheme = rbInstance.fetchLocalTheme as jest.Mock<Promise<IRBThemeRaw>, [string, string]>
+        const mockedFetchLocalTheme = rbInstance['fetchLocalTheme'] as jest.Mock<Promise<IRBThemeRaw>, [string, string]>
         expect(mockedFetchLocalTheme.mock.calls.length).toBe(1)
         expect(mockedFetchLocalTheme.mock.calls[0][0]).toEqual('testPath')
         expect(mockedFetchLocalTheme.mock.calls[0][1]).toEqual('default')
@@ -239,25 +236,25 @@ describe('core/index', () => {
 
     it('fetch local and global successful', () => {
       const rbInstance = RBCore.create({})
-      rbInstance.fetchLocalTheme = jest.fn((path, locale) => {
+      rbInstance['fetchLocalTheme'] = jest.fn((path, locale) => {
         return Promise.resolve({
           default: {
             a: 'test'
           }
         })
       })
-      rbInstance.fetchGlobalTheme = jest.fn((path, locale) => {
+      rbInstance['fetchGlobalTheme'] = jest.fn((path, locale) => {
         return Promise.resolve({})
       })
-      return rbInstance.fetchTheme('testPath', 'default').then((i18n) => {
+      return rbInstance['fetchTheme']('testPath', 'default').then((i18n) => {
         expect(i18n).toEqual({
           default: {
             a: 'test'
           }
         })
 
-        const mockedFetchLocalTheme = rbInstance.fetchLocalTheme as jest.Mock<Promise<IRBThemeRaw>, [string, string]>
-        const mockedFetchGlobalTheme = rbInstance.fetchGlobalTheme as jest.Mock<Promise<unknown>, [string, string]>
+        const mockedFetchLocalTheme = rbInstance['fetchLocalTheme'] as jest.Mock<Promise<IRBThemeRaw>, [string, string]>
+        const mockedFetchGlobalTheme = rbInstance['fetchGlobalTheme'] as jest.Mock<Promise<unknown>, [string, string]>
         expect(mockedFetchLocalTheme.mock.calls.length).toBe(1)
         expect(mockedFetchLocalTheme.mock.calls[0][0]).toEqual('testPath')
         expect(mockedFetchLocalTheme.mock.calls[0][1]).toEqual('default')
@@ -273,7 +270,7 @@ describe('core/index', () => {
   describe('fetchLocalTheme', () => {
     it('fetch failed', () => {
       const rbInstance = RBCore.create({})
-      return rbInstance.fetchLocalTheme('testPath', 'default').then((res) => {
+      return rbInstance['fetchLocalTheme']('testPath', 'default').then((res) => {
         expect(res).toEqual({
           default: {}
         })
@@ -284,7 +281,7 @@ describe('core/index', () => {
   describe('fetchGlobalTheme', () => {
     it('fetch failed', () => {
       const rbInstance = RBCore.create({})
-      return rbInstance.fetchGlobalTheme('testPath', 'default').then(() => {
+      return rbInstance['fetchGlobalTheme']('testPath', 'default').then(() => {
         expect(1).toBe(1)
       })
     })
@@ -293,16 +290,16 @@ describe('core/index', () => {
   describe('loadModule', () => {
     it('process successful', () => {
       const rbInstance = RBCore.create({})
-      rbInstance.loadI18n = jest.fn((path, name) => {
+      rbInstance['loadI18n'] = jest.fn((path, name) => {
         return Promise.resolve({})
       })
-      rbInstance.loadTheme = jest.fn((path, name) => {
+      rbInstance['loadTheme'] = jest.fn((path, name) => {
         return Promise.resolve({})
       })
-      rbInstance.packModule = jest.fn((name) => {
+      rbInstance['packModule'] = jest.fn((name) => {
         return Promise.resolve(() => null)
       })
-      rbInstance.fetchModule = jest.fn((path) => {
+      rbInstance['fetchModule'] = jest.fn((path) => {
         return Promise.resolve({
           default: (RB_CONTEXT) => {
             const { options } = RB_CONTEXT
@@ -313,15 +310,13 @@ describe('core/index', () => {
         })
       })
 
-      return rbInstance.loadModule('testPath', 'test').then(res => {
-        expect(res).toEqual({
-          default: {}
-        })
+      return rbInstance['loadModule']('testPath', 'test').then(res => {
+        expect(typeof res.default).toEqual('function')
 
-        const mockedLoadI18n = rbInstance.loadI18n as jest.Mock<Promise<IRBI18nRaw | unknown>, [string, string]>
-        const mockedLoadTheme = rbInstance.loadTheme as jest.Mock<Promise<IRBThemeRaw | unknown>, [string, string]>
-        const mockedPackModule = rbInstance.packModule as jest.Mock<Promise<IRBModule>, [string]>
-        const mockedFetchModule = rbInstance.fetchModule as jest.Mock<Promise<{ default: IRBModuleFactory }>, [string]>
+        const mockedLoadI18n = rbInstance['loadI18n'] as jest.Mock<Promise<IRBI18nRaw | unknown>, [string, string]>
+        const mockedLoadTheme = rbInstance['loadTheme'] as jest.Mock<Promise<IRBThemeRaw | unknown>, [string, string]>
+        const mockedPackModule = rbInstance['packModule'] as jest.Mock<Promise<IRBModule>, [string]>
+        const mockedFetchModule = rbInstance['fetchModule'] as jest.Mock<Promise<{ default: IRBModuleFactory }>, [string]>
         expect(mockedLoadI18n.mock.calls.length).toBe(1)
         expect(mockedLoadI18n.mock.calls[0][0]).toEqual('testPath')
         expect(mockedLoadI18n.mock.calls[0][1]).toEqual('test')
@@ -348,7 +343,7 @@ describe('core/index', () => {
   describe('fetchModule', () => {
     it('fetch failed', () => {
       const rbInstance = RBCore.create({})
-      return rbInstance.fetchModule('testPath').catch(() => {
+      return rbInstance['fetchModule']('testPath').catch(() => {
         expect(1).toBe(1)
       })
     })
@@ -408,7 +403,7 @@ describe('core/index', () => {
       context.modulesConfig['@i18n'] = { name: '@i18n' }
       context.modulesConfig['@theme'] = { name: '@theme' }
 
-      return rbInstance.packModule('test').then((comp: IRBModule) => {
+      return rbInstance['packModule']('test').then((comp: IRBModule) => {
         const Comp = comp as IRBCompModule
         const wrapper = mount(
           <Comp />
@@ -440,7 +435,7 @@ describe('core/index', () => {
     it('first loaded', () => {
       const rbInstance = RBCore.create({})
       const context = rbInstance.getContext()
-      rbInstance.loadModule = jest.fn((key, name) => {
+      rbInstance['loadModule'] = jest.fn((key, name) => {
         context.packedModules[name] = () => { return null }
         return Promise.resolve({
           default: () => { return null }
@@ -452,7 +447,7 @@ describe('core/index', () => {
       }
       return rbInstance.getModule('test').then((module) => {
         expect(module).not.toBe(undefined)
-        const mockedLoadModule = rbInstance.loadModule as jest.Mock<Promise<{ default: IRBModule }>, [string, string]>
+        const mockedLoadModule = rbInstance['loadModule'] as jest.Mock<Promise<{ default: IRBModule }>, [string, string]>
         expect(mockedLoadModule.mock.calls.length).toBe(1)
         expect(mockedLoadModule.mock.calls[0][0]).toEqual('testPath')
         expect(mockedLoadModule.mock.calls[0][1]).toEqual('test')
@@ -465,7 +460,7 @@ describe('core/index', () => {
     it('create successful', () => {
       const rbInstance = RBCore.create({})
       const context = rbInstance.getContext()
-      context.modulesConfig = {
+      const modulesConfig = {
         home: {
           name: 'home',
           route: {
@@ -489,7 +484,12 @@ describe('core/index', () => {
           name: 'test1'
         }
       }
-      const routes = rbInstance.createRoute()
+
+      Object.keys(modulesConfig).forEach(key => {
+        context.modulesConfig[key] = modulesConfig[key]
+      })
+
+      const routes = rbInstance['createRoute']()
       expect(routes).toEqual([{
         name: 'home',
         route: {
@@ -514,7 +514,7 @@ describe('core/index', () => {
     it('load successful', () => {
       const rbInstance = RBCore.create({})
       const context = rbInstance.getContext()
-      context.modulesConfig = {
+      const modulesConfig = {
         test: {
           name: 'test',
           key: 'testPath'
@@ -525,9 +525,14 @@ describe('core/index', () => {
           lazy: false
         }
       }
-      rbInstance.loadModule = jest.fn((key, name) => { return null })
-      return rbInstance.loadSyncModule().then(() => {
-        const mockedLoadModule = rbInstance.loadModule as jest.Mock<Promise<{ default: IRBModule }>, [string, string]>
+
+      Object.keys(modulesConfig).forEach(key => {
+        context.modulesConfig[key] = modulesConfig[key]
+      })
+
+      rbInstance['loadModule'] = jest.fn((key, name) => { return null })
+      return rbInstance['loadSyncModule']().then(() => {
+        const mockedLoadModule = rbInstance['loadModule'] as jest.Mock<Promise<{ default: IRBModule }>, [string, string]>
         expect(mockedLoadModule.mock.calls.length).toBe(1)
         expect(mockedLoadModule.mock.calls[0][0]).toEqual('test1Path')
         expect(mockedLoadModule.mock.calls[0][1]).toEqual('test1')
@@ -562,17 +567,17 @@ describe('core/index', () => {
       context.packedModules['loading'] = Loading
       context.packedModules['app'] = App
       context.packedModules['home'] = Home
-      context.routes = [{
+      context.routes.push({
         name: 'home',
         lazy: false,
         route: {
           path: '/'
         }
-      }]
-      rbInstance.loadSyncModule = jest.fn(() => {
+      })
+      rbInstance['loadSyncModule'] = jest.fn(() => {
         return Promise.resolve()
       })
-      rbInstance.asyncRoute = jest.fn((config) => {
+      rbInstance['asyncRoute'] = jest.fn((config) => {
         const { name, route } = config
         const component = context.packedModules['home'] as IRBCompModule
         return <Route key={name} {...route} component={component} />
@@ -582,8 +587,8 @@ describe('core/index', () => {
           <Container />
         )
 
-        const mockedLoadSyncModule = rbInstance.loadSyncModule as jest.Mock<Promise<void>, []>
-        const mockedAsyncRoute = rbInstance.asyncRoute as jest.Mock<ReactNode, [IRBConfig]>
+        const mockedLoadSyncModule = rbInstance['loadSyncModule'] as jest.Mock<Promise<void>, []>
+        const mockedAsyncRoute = rbInstance['asyncRoute'] as jest.Mock<ReactNode, [IRBConfig]>
 
         expect(mockedLoadSyncModule.mock.calls.length).toBe(1)
         expect(mockedAsyncRoute.mock.calls.length).toBe(2)
@@ -617,14 +622,20 @@ describe('core/index', () => {
           path: '/'
         }
       }
-      const route = rbInstance.asyncRoute(config)
-      expect(route.key).toEqual('home')
-      expect(route.props.path).toEqual('/')
-      expect(typeof route.props.component).toEqual('function')
+      const RouteComp = rbInstance['asyncRoute'](config)
+      const wrapper = mount(
+        <Router>
+          {
+            RouteComp
+          }
+        </Router>
+      )
+
+      expect(wrapper.find('.home').text()).toEqual('home')
     })
 
-    it('async component', () => {
-      const rbInstance = RBCore.create()
+    it('async component', async () => {
+      const rbInstance = RBCore.create({})
       const config = {
         key: 'homePath',
         name: 'home',
@@ -632,9 +643,35 @@ describe('core/index', () => {
           path: '/'
         }
       }
-      const route = rbInstance.asyncRoute(config)
-      expect(route.key).toEqual('home')
-      expect(route.props.path).toEqual('/')
+
+      rbInstance['lazyLoadModule'] = jest.fn((path, name) => {
+        return Promise.resolve({
+          default: () => { return <div className='home'>home</div> }
+        })
+      })
+
+      const RouteComp = rbInstance['asyncRoute'](config)
+      const Loading = () => {
+        return <div className='loading'>loading</div>
+      }
+      const wrapper = mount(
+        <Router>
+          <Suspense fallback={<Loading />}>
+            {
+              RouteComp
+            }
+          </Suspense>
+        </Router>
+      )
+
+      expect(wrapper.find('.loading').text()).toEqual('loading')
+
+      return tools.delay(() => {
+        wrapper.update()
+        const mockedLazyLoadModule = rbInstance['lazyLoadModule'] as jest.Mock<Promise<{ default: React.FC }>, [string, string]>
+        expect(mockedLazyLoadModule.mock.calls.length).toBe(1)
+        expect(wrapper.find('.home').text()).toEqual('home')
+      }, 100)
     })
   })
 })

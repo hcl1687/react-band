@@ -1,8 +1,18 @@
 {
   "root": true,
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
   "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": "./"
+  },
   "plugins": [
     "@typescript-eslint",
+    "import",
     "react"
   ],
   "extends": [
@@ -24,6 +34,8 @@
   },
   "rules": {
     "no-use-before-define": "off",
+    "no-unused-vars": "off",
+    "no-undef": "off",
     "@typescript-eslint/no-use-before-define": "off", // Allows us to hoist variables and functions which I am a fan of, functions not variables that is.
     "@typescript-eslint/no-explicit-any": "off", // Too strict for my case, sometimes I need an any type
     "@typescript-eslint/member-delimiter-style": ["error", { // Prevents us from using any delimiter for interface properties.
@@ -38,7 +50,6 @@
     }],
     "@typescript-eslint/indent": "off", // This is the job of StandardJS, they are competing rules so we turn off the Typescript one. 
     "@typescript-eslint/no-empty-function": "off",
-    "@typescript-eslint/no-unused-vars": "off",
     "camelcase": 0,
     "no-debugger": 0,
     "prefer-const": 2,
