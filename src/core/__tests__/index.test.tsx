@@ -1,3 +1,4 @@
+import React, { Suspense } from 'react'
 import { Route, HashRouter as Router } from 'react-router-dom'
 import RBCore from '../index'
 import { mount } from 'enzyme'
