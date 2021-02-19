@@ -274,7 +274,7 @@ export default class RBCore {
       component = (
         React.lazy(() => (
           this.loadModule(key, name)
-        ), 'default')
+        ))
       )
     }
 

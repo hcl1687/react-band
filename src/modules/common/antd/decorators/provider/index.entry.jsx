@@ -9,7 +9,7 @@ export default async ({ getModule }) => {
   return (config, decoConfig, RB_CONTEXT) => async WrappedComponent => {
     // eslint-disable-next-line
     await getModule('antd') || {}
-    const { locale, i18ns } = RB_CONTEXT
+    const { options: { locale }, i18ns } = RB_CONTEXT
     const i18n = get(i18ns, `antd.${locale}`)
     class antdProviderDeco extends Component {
       render () {
