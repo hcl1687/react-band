@@ -8,7 +8,7 @@
     "start:mock": "concurrently \"npm run server\" \"better-npm-run start\"",
     "server": "json-server --watch -c ./json-server.json ./server/db.js",
     "dev": "better-npm-run start",
-    "lint": "eslint ./src/core/*.{js,jsx,ts,tsx}",
+    "lint": "eslint ./src/**/*.{js,jsx,ts,tsx}",
     "lint:debug": "eslint --debug ./src/**/*.jsx",
     "lint:write": "eslint --debug ./src --fix",
     "stylelint": "stylelint src/**/*.css",

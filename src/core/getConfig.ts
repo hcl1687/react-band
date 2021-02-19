@@ -1,3 +1,5 @@
+import { IRBConfig, IRBConfigFunctionMap, IRBConfigMap, IRBConfigReq, IRBOptions } from '~/interface'
+
 // mock context in test env
 if (process.env.NODE_ENV === 'test') {
   require.context = function () {

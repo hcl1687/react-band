@@ -1,3 +1,5 @@
+import { IRBCompModule, IRBConfig, IRBDecoModule, IRBI18nRaw,
+  IRBModule, IRBModuleFactory, IRBTheme, IRBThemeRaw } from '~/interface'
 import React, { Suspense } from 'react'
 import { Route, HashRouter as Router } from 'react-router-dom'
 import RBCore from '../index'
