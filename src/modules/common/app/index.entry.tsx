@@ -1,7 +1,8 @@
+import { IRBModule } from '~/interface'
 import PropTypes from 'prop-types'
 import React from 'react'
 
-export default () => {
+export default (): IRBModule => {
   function App (props) {
     const { children } = props
     return <div className='app'>{children}</div>

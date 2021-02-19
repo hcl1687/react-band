@@ -1,5 +1,5 @@
-import { IRBCompModule, IRBConfig, IRBConfigMap, IRBContext, IRBCore, IRBDecoConfig, IRBDecoModule, IRBI18n, IRBI18nRaw,
-  IRBI18nsMap, IRBModule, IRBModuleFactory, IRBModulesMap, IRBOptions, IRBTheme, IRBThemeRaw, IRBThemesMap } from '~/interface'
+import { IRBCompModule, IRBConfig, IRBConfigMap, IRBContext, IRBCore, IRBDecoModule, IRBI18n, IRBI18nRaw,
+  IRBI18nsMap, IRBModule, IRBModuleConfig, IRBModuleFactory, IRBModulesMap, IRBOptions, IRBTheme, IRBThemeRaw, IRBThemesMap } from '~/interface'
 import React, { ReactNode, Suspense } from 'react'
 import { Route, HashRouter as Router, Switch } from 'react-router-dom'
 import ReactDOM from 'react-dom'
@@ -165,18 +165,18 @@ export default class RBCore {
         const decoConfig = this._modulesConfig[deco]
         const decoI18n = this._i18ns[deco][locale]
         const decoThemeObj = this._themes[deco][theme]
-        const moduleConfig: IRBConfig = {
+        const moduleCompConfig: IRBModuleConfig = {
           ...config,
           i18n,
           theme: themeObj
         }
-        const moduleDecoConfig: IRBDecoConfig = {
+        const moduleDecoConfig: IRBModuleConfig = {
           ...decoConfig,
           i18n: decoI18n,
           theme: decoThemeObj
         }
         if (decoModule) {
-          module = (decoModule as IRBDecoModule)(moduleConfig, moduleDecoConfig, RB_CONTEXT)(module as IRBCompModule)
+          module = await (decoModule as IRBDecoModule)(moduleCompConfig, moduleDecoConfig, RB_CONTEXT)(module as IRBCompModule)
         }
       }
     }

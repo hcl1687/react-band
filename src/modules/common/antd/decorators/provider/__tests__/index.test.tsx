@@ -1,15 +1,23 @@
 import React, { Component } from 'react'
 import { mount, render } from 'enzyme'
 import { ConfigContext } from 'antd/lib/config-provider'
+import { IRBContext } from '~/interface'
 import providerDecoFactory from '../index.entry'
 import utils from '~/../tests/utils/mockUtils'
 
-const context = {
-  getModule: async (key) => {
+const context: IRBContext = {
+  options: {},
+  modules: {},
+  i18ns: {},
+  themes: {},
+  packedModules: {},
+  modulesConfig: {},
+  routes: [],
+  getModule: async (key: string) => {
     if (key === 'utils') {
-      return utils
+      return Promise.resolve(utils)
     } else if (key === 'antd') {
-      return {}
+      return Promise.resolve({})
     }
   }
 }
@@ -27,13 +35,23 @@ describe('common/antd/provider', () => {
   it('should render correctly', async () => {
     const ProviderDeco = await providerDecoFactory(context)
     const RB_CONTEXT = {
-      locale: 'en',
+      options: {
+        locale: 'en'
+      },
       i18ns: {
         antd: {
           en: {
             test: 'Test'
           }
         }
+      },
+      modules: {},
+      themes: {},
+      packedModules: {},
+      modulesConfig: {},
+      routes: [],
+      getModule: async () => {
+        return Promise.resolve({})
       }
     }
     const TestWithProviderDeco = await ProviderDeco(undefined, undefined, RB_CONTEXT)(Test)
@@ -44,13 +62,23 @@ describe('common/antd/provider', () => {
   it('should mount correctly', async () => {
     const ProviderDeco = await providerDecoFactory(context)
     const RB_CONTEXT = {
-      locale: 'en',
+      options: {
+        locale: 'en'
+      },
       i18ns: {
         antd: {
           en: {
             test: 'Test'
           }
         }
+      },
+      modules: {},
+      themes: {},
+      packedModules: {},
+      modulesConfig: {},
+      routes: [],
+      getModule: async () => {
+        return Promise.resolve({})
       }
     }
     const TestWithProviderDeco = await ProviderDeco(undefined, undefined, RB_CONTEXT)(Test)
@@ -72,13 +100,23 @@ describe('common/antd/provider/production', () => {
   it('should render correctly in production env', async () => {
     const ProviderDeco = await providerDecoFactory(context)
     const RB_CONTEXT = {
-      locale: 'en',
+      options: {
+        locale: 'en'
+      },
       i18ns: {
         antd: {
           en: {
             test: 'Test'
           }
         }
+      },
+      modules: {},
+      themes: {},
+      packedModules: {},
+      modulesConfig: {},
+      routes: [],
+      getModule: async () => {
+        return Promise.resolve({})
       }
     }
     const TestWithProviderDeco = await ProviderDeco(undefined, undefined, RB_CONTEXT)(Test)

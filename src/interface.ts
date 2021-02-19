@@ -7,23 +7,28 @@ export interface IRBOptions {
   exclude?: boolean | RegExp | ((key: string) => boolean)
 }
 
-export interface IRBConfig {
-  name: string
+export type IRBConfig = IRBInnerConfig & IRBRootConfig & IRBLeafConfig
+
+export interface IRBInnerConfig {
   key?: string
   category?: string
-  disabled?: boolean
+}
+export type IRBLeafConfig = {
+  name: string
   type?: string
-  decorators?: Array<string>
-  i18n?: IRBI18n
-  theme?: IRBTheme
   route?: RouteProps
+} & IRBRootConfig
+
+export interface IRBRootConfig {
+  disabled?: boolean
   lazy?: boolean
+  decorators?: Array<string>
 }
 
-export interface IRBDecoConfig {
+export type IRBModuleConfig = {
   i18n?: IRBI18n
   theme?: IRBTheme
-}
+} & IRBConfig
 
 export interface IRBConfigMap {
   [propName: string]: IRBConfig
@@ -75,17 +80,19 @@ export interface IRBThemesMap {
 export interface IRBCore {
   getContext: () => IRBContext
   getModule: (name: string) => Promise<IRBModule | undefined>
-  mount: () => Promise<React.FC>
+  mount: () => Promise<IRBComponent>
 }
 
 export interface IRBDecoModule {
-  (config: IRBConfig, decoConfig: IRBDecoConfig, RB_CONTEXT: IRBContext): IRBDecoFactory
+  (config: IRBModuleConfig, decoConfig: IRBModuleConfig, RB_CONTEXT: IRBContext): IRBDecoFactory
 }
 
-export type IRBCompModule = React.FC
+export type IRBCompModule = IRBComponent
 export interface IRBDecoFactory {
-  (WrappedComponent: React.FC): React.FC
+  (WrappedComponent: IRBComponent): IRBComponent | Promise<IRBComponent>
 }
+
+export type IRBComponent = React.ElementType
 
 export interface IRBContext {
   options: IRBOptions
