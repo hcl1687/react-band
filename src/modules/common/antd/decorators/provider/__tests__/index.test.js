@@ -27,7 +27,9 @@ describe('common/antd/provider', () => {
   it('should render correctly', async () => {
     const ProviderDeco = await providerDecoFactory(context)
     const RB_CONTEXT = {
-      locale: 'en',
+      options: {
+        locale: 'en'
+      },
       i18ns: {
         antd: {
           en: {
@@ -44,7 +46,9 @@ describe('common/antd/provider', () => {
   it('should mount correctly', async () => {
     const ProviderDeco = await providerDecoFactory(context)
     const RB_CONTEXT = {
-      locale: 'en',
+      options: {
+        locale: 'en'
+      },
       i18ns: {
         antd: {
           en: {
@@ -72,7 +76,9 @@ describe('common/antd/provider/production', () => {
   it('should render correctly in production env', async () => {
     const ProviderDeco = await providerDecoFactory(context)
     const RB_CONTEXT = {
-      locale: 'en',
+      options: {
+        locale: 'en'
+      },
       i18ns: {
         antd: {
           en: {

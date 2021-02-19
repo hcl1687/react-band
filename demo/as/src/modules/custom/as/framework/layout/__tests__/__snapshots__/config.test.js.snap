@@ -10,6 +10,9 @@ Object {
   "decoratorsConfig": Object {
     "@reduxStore": Object {
       "layoutStore": Object {
+        "actions": Array [
+          "showLeft",
+        ],
         "state": Array [
           "LEFT_STATUS",
           "LAYOUT_MODE",
