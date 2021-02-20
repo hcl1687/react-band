@@ -39,7 +39,7 @@ const cssLoaders = cssLoadersFactory()
 const cssGlobalLoaders = cssLoadersFactory(true)
 
 module.exports = (env) => {
-  const entry = env !== 'production' ? './src/index.jsx' : './src_build/index.jsx'
+  const entry = env !== 'production' ? './src/index.tsx' : './src_build/index.tsx'
   const srcPath = env !== 'production' ? src : src_build
   const filename = env !== 'production' ? '[name].bundle.js' : '[name].[contenthash].bundle.js'
   const chunkFilename = env !== 'production' ? '[name].chunk.bundle.js' : '[name].[contenthash].chunk.bundle.js'

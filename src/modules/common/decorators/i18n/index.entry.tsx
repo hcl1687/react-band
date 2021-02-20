@@ -8,7 +8,7 @@ export default async ({ getModule, options }: IRBContext): Promise<IRBDecoModule
   const { locale } = options
 
   return ({ i18n }: IRBModuleConfig) => (WrappedComponent: IRBComponent) => {
-    const __ = (key: string, values: Record<string, PrimitiveType>) => {
+    const __ = (key: string, values: Record<string | number, string | number>) => {
       if (!i18n[key]) {
         return key
       }

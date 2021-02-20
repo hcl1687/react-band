@@ -17,12 +17,16 @@ export type IRBLeafConfig = {
   name: string
   type?: string
   route?: RouteProps
+  [propName: string]: any
 } & IRBRootConfig
 
 export interface IRBRootConfig {
   disabled?: boolean
   lazy?: boolean
   decorators?: Array<string>
+  decoratorsConfig?: {
+    [propName: string]: any
+  }
 }
 
 export type IRBModuleConfig = {
@@ -92,7 +96,7 @@ export interface IRBDecoFactory {
   (WrappedComponent: IRBComponent): IRBComponent | Promise<IRBComponent>
 }
 
-export type IRBComponent = React.ElementType
+export type IRBComponent = React.FC | React.ComponentClass
 
 export interface IRBContext {
   options: IRBOptions

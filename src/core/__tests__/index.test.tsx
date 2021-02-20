@@ -34,7 +34,7 @@ describe('core/index', () => {
   describe('loadI18n', () => {
     it('fetch successful', () => {
       const rbInstance = RBCore.create({})
-      rbInstance['fetchI18n'] = jest.fn((path, locale) => {
+      rbInstance['fetchI18n'] = jest.fn(() => {
         return Promise.resolve({
           default: {
             a: 'test'
@@ -63,7 +63,7 @@ describe('core/index', () => {
 
     it('fetch failed', () => {
       const rbInstance = RBCore.create({})
-      rbInstance['fetchI18n'] = jest.fn((path, locale) => {
+      rbInstance['fetchI18n'] = jest.fn(() => {
         return Promise.reject(new Error(''))
       })
 
@@ -83,7 +83,7 @@ describe('core/index', () => {
   describe('fetchI18n', () => {
     it('fetch json successful', () => {
       const rbInstance = RBCore.create({})
-      rbInstance['fetchI18nJSON'] = jest.fn((path, locale) => {
+      rbInstance['fetchI18nJSON'] = jest.fn(() => {
         return Promise.resolve({
           default: {
             a: 'test'
@@ -107,10 +107,10 @@ describe('core/index', () => {
 
     it('fetch json failed', () => {
       const rbInstance = RBCore.create({})
-      rbInstance['fetchI18nJSON'] = jest.fn((path, locale) => {
+      rbInstance['fetchI18nJSON'] = jest.fn(() => {
         return Promise.reject(new Error(''))
       })
-      rbInstance['fetchI18nJS'] = jest.fn((path, locale) => {
+      rbInstance['fetchI18nJS'] = jest.fn(() => {
         return Promise.resolve({
           default: {
             a: 'test'
@@ -140,10 +140,10 @@ describe('core/index', () => {
 
     it('fetch failed', () => {
       const rbInstance = RBCore.create({})
-      rbInstance['fetchI18nJSON'] = jest.fn((path, locale) => {
+      rbInstance['fetchI18nJSON'] = jest.fn(() => {
         return Promise.reject(new Error(''))
       })
-      rbInstance['fetchI18nJS'] = jest.fn((path, locale) => {
+      rbInstance['fetchI18nJS'] = jest.fn(() => {
         return Promise.reject(new Error(''))
       })
       return rbInstance['fetchI18n']('testPath', 'en').catch(() => {
@@ -183,7 +183,7 @@ describe('core/index', () => {
   describe('loadTheme', () => {
     it('fetch successful', () => {
       const rbInstance = RBCore.create({})
-      rbInstance['fetchTheme'] = jest.fn((path, locale) => {
+      rbInstance['fetchTheme'] = jest.fn(() => {
         return Promise.resolve({
           default: {
             a: 'test'
@@ -215,7 +215,7 @@ describe('core/index', () => {
   describe('fetchTheme', () => {
     it('fetch local successful', () => {
       const rbInstance = RBCore.create({})
-      rbInstance['fetchLocalTheme'] = jest.fn((path, locale) => {
+      rbInstance['fetchLocalTheme'] = jest.fn(() => {
         return Promise.resolve({
           default: {
             a: 'test'
@@ -239,14 +239,14 @@ describe('core/index', () => {
 
     it('fetch local and global successful', () => {
       const rbInstance = RBCore.create({})
-      rbInstance['fetchLocalTheme'] = jest.fn((path, locale) => {
+      rbInstance['fetchLocalTheme'] = jest.fn(() => {
         return Promise.resolve({
           default: {
             a: 'test'
           }
         })
       })
-      rbInstance['fetchGlobalTheme'] = jest.fn((path, locale) => {
+      rbInstance['fetchGlobalTheme'] = jest.fn(() => {
         return Promise.resolve({})
       })
       return rbInstance['fetchTheme']('testPath', 'default').then((i18n) => {
@@ -293,16 +293,16 @@ describe('core/index', () => {
   describe('loadModule', () => {
     it('process successful', () => {
       const rbInstance = RBCore.create({})
-      rbInstance['loadI18n'] = jest.fn((path, name) => {
+      rbInstance['loadI18n'] = jest.fn(() => {
         return Promise.resolve({})
       })
-      rbInstance['loadTheme'] = jest.fn((path, name) => {
+      rbInstance['loadTheme'] = jest.fn(() => {
         return Promise.resolve({})
       })
-      rbInstance['packModule'] = jest.fn((name) => {
+      rbInstance['packModule'] = jest.fn(() => {
         return Promise.resolve(() => null)
       })
-      rbInstance['fetchModule'] = jest.fn((path) => {
+      rbInstance['fetchModule'] = jest.fn(() => {
         return Promise.resolve({
           default: (RB_CONTEXT) => {
             const { options } = RB_CONTEXT
@@ -379,7 +379,7 @@ describe('core/index', () => {
         if (type === '@i18n') {
           return (({ i18n }) => WrappedComponent => {
             const i18nDeco = (props) => {
-              const __ = (key: string, values: Array<any>) => {
+              const __ = (key: string) => {
                 return i18n[key]
               }
 
@@ -533,7 +533,7 @@ describe('core/index', () => {
         context.modulesConfig[key] = modulesConfig[key]
       })
 
-      rbInstance['loadModule'] = jest.fn((key, name) => { return null })
+      rbInstance['loadModule'] = jest.fn(() => { return null })
       return rbInstance['loadSyncModule']().then(() => {
         const mockedLoadModule = rbInstance['loadModule'] as jest.Mock<Promise<{ default: IRBModule }>, [string, string]>
         expect(mockedLoadModule.mock.calls.length).toBe(1)
@@ -591,7 +591,7 @@ describe('core/index', () => {
         )
 
         const mockedLoadSyncModule = rbInstance['loadSyncModule'] as jest.Mock<Promise<void>, []>
-        const mockedAsyncRoute = rbInstance['asyncRoute'] as jest.Mock<ReactNode, [IRBConfig]>
+        const mockedAsyncRoute = rbInstance['asyncRoute'] as jest.Mock<React.ReactNode, [IRBConfig]>
 
         expect(mockedLoadSyncModule.mock.calls.length).toBe(1)
         expect(mockedAsyncRoute.mock.calls.length).toBe(2)
@@ -647,7 +647,7 @@ describe('core/index', () => {
         }
       }
 
-      rbInstance['lazyLoadModule'] = jest.fn((path, name) => {
+      rbInstance['lazyLoadModule'] = jest.fn(() => {
         return Promise.resolve({
           default: () => { return <div className='home'>home</div> }
         })
