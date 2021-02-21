@@ -1,4 +1,4 @@
-import { IRBConfig, IRBConfigFunctionMap, IRBConfigMap, IRBConfigReq, IRBOptions } from '~/interface'
+import { IRBConfig, IRBConfigFunctionMap, IRBConfigMap, IRBConfigReq, IRBObject, IRBOptions } from '~/interface'
 
 // mock context in test env
 if (process.env.NODE_ENV === 'test') {
@@ -59,7 +59,7 @@ export default function getConfig (options: IRBOptions): IRBConfigMap {
     // items like: ['.', 'common', 'home']
     const items: Array<string> = key.split('/')
     const category = items.length > 1 ? items[1] : ''
-    let config: (IRBConfig | any) = {}
+    let config: (IRBConfig | IRBObject) = {}
     let id: string = key
     config = items.reverse().reduce((obj, item) => {
       let ret: IRBConfig

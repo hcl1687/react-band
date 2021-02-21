@@ -109,7 +109,11 @@ export interface IRBContext {
   getModule: (name: string) => Promise<IRBModule | undefined>
 }
 
-export type IRBModule = IRBCompModule | IRBDecoModule | any
+export interface IRBObject {
+  [propName: string]: any
+}
+
+export type IRBModule = IRBCompModule | IRBDecoModule | IRBObject
 
 export interface IRBModuleFactory {
   (RB_CONTEXT: IRBContext): IRBModule

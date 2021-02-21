@@ -81,7 +81,7 @@ export default class RBCore {
   }
 
   private fetchI18nJS (path: string, locale: string): Promise<IRBI18nRaw> {
-    return import(`~/modules/${path}/i18n/${locale}.js`)
+    return import(`~/modules/${path}/i18n/${locale}.ts`)
   }
 
   private loadTheme (path: string, name: string): Promise<IRBThemeRaw | unknown> {

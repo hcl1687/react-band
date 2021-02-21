@@ -2,61 +2,61 @@ import getConfig, { createCONFIGS } from '../getConfig'
 
 const configReq = function (key: string) {
   const factory = {
-    './common/antd/components/config.js': {
+    './common/antd/components/config.ts': {
       default: () => {}
     },
-    './common/antd/decorators/provider/config.js': {
+    './common/antd/decorators/provider/config.ts': {
       default: () => {}
     },
-    './common/app/config.js': {
+    './common/app/config.ts': {
       default: () => {}
     },
-    './common/config.js': {
+    './common/config.ts': {
       default: () => {}
     },
-    './common/constants/config.js': {
+    './common/constants/config.ts': {
       default: () => {}
     },
-    './common/decorators/config.js': {
+    './common/decorators/config.ts': {
       default: () => {}
     },
-    './common/decorators/i18n/config.js': {
+    './common/decorators/i18n/config.ts': {
       default: () => {}
     },
-    './common/decorators/layout/config.js': {
+    './common/decorators/layout/config.ts': {
       default: () => {}
     },
-    './common/decorators/localStore/config.js': {
+    './common/decorators/localStore/config.ts': {
       default: () => {}
     },
-    './common/decorators/notice/config.js': {
+    './common/decorators/notice/config.ts': {
       default: () => {}
     },
-    './common/decorators/theme/config.js': {
+    './common/decorators/theme/config.ts': {
       default: () => {}
     },
-    './common/home/config.js': {
+    './common/home/config.ts': {
       default: () => {}
     },
-    './common/layout/config.js': {
+    './common/layout/config.ts': {
       default: () => {}
     },
-    './common/loading/config.js': {
+    './common/loading/config.ts': {
       default: () => {}
     },
-    './common/notFound/config.js': {
+    './common/notFound/config.ts': {
       default: () => {}
     },
-    './common/redux/provider/config.js': {
+    './common/redux/provider/config.ts': {
       default: () => {}
     },
-    './common/redux/store/config.js': {
+    './common/redux/store/config.ts': {
       default: () => {}
     },
-    './common/redux/utils/config.js': {
+    './common/redux/utils/config.ts': {
       default: () => {}
     },
-    './common/utils/config.js': {
+    './common/utils/config.ts': {
       default: () => {}
     }
   }
@@ -65,25 +65,25 @@ const configReq = function (key: string) {
 }
 
 configReq.keys = () => ([
-  './common/antd/components/config.js',
-  './common/antd/decorators/provider/config.js',
-  './common/app/config.js',
-  './common/config.js',
-  './common/constants/config.js',
-  './common/decorators/config.js',
-  './common/decorators/i18n/config.js',
-  './common/decorators/layout/config.js',
-  './common/decorators/localStore/config.js',
-  './common/decorators/notice/config.js',
-  './common/decorators/theme/config.js',
-  './common/home/config.js',
-  './common/layout/config.js',
-  './common/loading/config.js',
-  './common/notFound/config.js',
-  './common/redux/provider/config.js',
-  './common/redux/store/config.js',
-  './common/redux/utils/config.js',
-  './common/utils/config.js'
+  './common/antd/components/config.ts',
+  './common/antd/decorators/provider/config.ts',
+  './common/app/config.ts',
+  './common/config.ts',
+  './common/constants/config.ts',
+  './common/decorators/config.ts',
+  './common/decorators/i18n/config.ts',
+  './common/decorators/layout/config.ts',
+  './common/decorators/localStore/config.ts',
+  './common/decorators/notice/config.ts',
+  './common/decorators/theme/config.ts',
+  './common/home/config.ts',
+  './common/layout/config.ts',
+  './common/loading/config.ts',
+  './common/notFound/config.ts',
+  './common/redux/provider/config.ts',
+  './common/redux/store/config.ts',
+  './common/redux/utils/config.ts',
+  './common/utils/config.ts'
 ])
 
 describe('core/getConfig', () => {
@@ -96,10 +96,10 @@ describe('core/getConfig', () => {
   it('only show leaf config', () => {
     const configReq1 = function (key: string) {
       const factory = {
-        './common/config.js': {
+        './common/config.ts': {
           default: () => ({ name: 'common' })
         },
-        './common/home/config.js': {
+        './common/home/config.ts': {
           default: () => ({ name: 'home' })
         }
       }
@@ -107,8 +107,8 @@ describe('core/getConfig', () => {
       return factory[key]
     }
     configReq1.keys = () => ([
-      './common/config.js',
-      './common/home/config.js'
+      './common/config.ts',
+      './common/home/config.ts'
     ])
     createCONFIGS(configReq1)
     const config = getConfig({})
@@ -119,10 +119,10 @@ describe('core/getConfig', () => {
   it('support exclude option by function', () => {
     const configReq1 = function (key: string) {
       const factory = {
-        './common/config.js': {
+        './common/config.ts': {
           default: () => ({ name: 'common' })
         },
-        './common/home/config.js': {
+        './common/home/config.ts': {
           default: () => ({ name: 'home' })
         }
       }
@@ -130,8 +130,8 @@ describe('core/getConfig', () => {
       return factory[key]
     }
     configReq1.keys = () => ([
-      './common/config.js',
-      './common/home/config.js'
+      './common/config.ts',
+      './common/home/config.ts'
     ])
     createCONFIGS(configReq1)
     const config = getConfig({
@@ -146,10 +146,10 @@ describe('core/getConfig', () => {
   it('support exclude option by regular expression', () => {
     const configReq1 = function (key) {
       const factory = {
-        './common/config.js': {
+        './common/config.ts': {
           default: () => ({ name: 'common' })
         },
-        './common/home/config.js': {
+        './common/home/config.ts': {
           default: () => ({ name: 'home' })
         }
       }
@@ -157,8 +157,8 @@ describe('core/getConfig', () => {
       return factory[key]
     }
     configReq1.keys = () => ([
-      './common/config.js',
-      './common/home/config.js'
+      './common/config.ts',
+      './common/home/config.ts'
     ])
     createCONFIGS(configReq1)
     const config = getConfig({
@@ -171,7 +171,7 @@ describe('core/getConfig', () => {
   it('should not return root config', () => {
     const configReq1 = function (key: string) {
       const factory = {
-        './config.js': {
+        './config.ts': {
           default: () => ({ name: 'root' })
         }
       }
@@ -179,7 +179,7 @@ describe('core/getConfig', () => {
       return factory[key]
     }
     configReq1.keys = () => ([
-      './config.js'
+      './config.ts'
     ])
     createCONFIGS(configReq1)
     const config = getConfig({})
@@ -189,13 +189,13 @@ describe('core/getConfig', () => {
   it('should inherit config', () => {
     const configReq1 = function (key) {
       const factory = {
-        './config.js': {
+        './config.ts': {
           default: () => ({ name: 'root', a: 1 })
         },
-        './common/config.js': {
+        './common/config.ts': {
           default: () => ({ name: 'common', b: 2 })
         },
-        './common/home/config.js': {
+        './common/home/config.ts': {
           default: () => ({ name: 'home' })
         }
       }
@@ -203,9 +203,9 @@ describe('core/getConfig', () => {
       return factory[key]
     }
     configReq1.keys = () => ([
-      './config.js',
-      './common/config.js',
-      './common/home/config.js'
+      './config.ts',
+      './common/config.ts',
+      './common/home/config.ts'
     ])
     createCONFIGS(configReq1)
     const config = getConfig({})
@@ -222,10 +222,10 @@ describe('core/getConfig', () => {
   it('support disable module', () => {
     const configReq1 = function (key: string) {
       const factory = {
-        './common/config.js': {
+        './common/config.ts': {
           default: () => ({ disabled: true })
         },
-        './common/home/config.js': {
+        './common/home/config.ts': {
           default: () => ({ name: 'home' })
         }
       }
@@ -233,8 +233,8 @@ describe('core/getConfig', () => {
       return factory[key]
     }
     configReq1.keys = () => ([
-      './common/config.js',
-      './common/home/config.js'
+      './common/config.ts',
+      './common/home/config.ts'
     ])
     createCONFIGS(configReq1)
     const config = getConfig({})
