@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'test') {
   }
 }
 
-const configReq = require && require.context('../modules', true, /^(.*)\/config.js$/)
+const configReq = require && require.context('../modules', true, /^(.*)\/config.ts$/)
 let CONFIGS: IRBConfigFunctionMap = {}
 let MERGED_CONFIGS: IRBConfigMap = {}
 
@@ -16,7 +16,7 @@ export function createCONFIGS (configReq: IRBConfigReq): IRBConfigFunctionMap {
   CONFIGS = {}
   MERGED_CONFIGS = {}
   configReq && configReq.keys && configReq.keys().forEach((key: string) => {
-    const name = key.replace('config.js', '').replace(/\/$/, '')
+    const name = key.replace('config.ts', '').replace(/\/$/, '')
     if (!name) {
       return
     }
