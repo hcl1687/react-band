@@ -12,7 +12,7 @@ function Test (props: InferProps<typeof Test.propTypes>) {
     increase(count)
   }
   const handleBtn2 = () => {
-    decrease().catch(err => {
+    decrease().catch((err: Error) => {
       setMsg(err.message)
     })
   }

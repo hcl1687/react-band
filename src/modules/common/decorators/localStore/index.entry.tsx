@@ -1,3 +1,4 @@
+import * as Interface from './interface'
 import { IRBComponent, IRBContext, IRBDecoModule, IRBModuleConfig } from '~/interface'
 import React, { useState } from 'react'
 import get from 'lodash/get'
@@ -8,16 +9,16 @@ export default async (RB_CONTEXT: IRBContext): Promise<IRBDecoModule> => {
   const utils = await getModule('utils') || {}
   const { promisify, setDisplayName, wrapDisplayName } = utils
 
-  return ({ decoratorsConfig }: IRBModuleConfig) => (WrappedComponent: IRBComponent) => {
-    const localStoreFactory = get(decoratorsConfig, '@localStore')
-    const localStore = localStoreFactory(RB_CONTEXT)
+  const decoModule = ({ decoratorsConfig }: IRBModuleConfig) => (WrappedComponent: IRBComponent) => {
+    const localStoreFactory = get(decoratorsConfig, '@localStore') as Interface.ILocalStoreFactory
+    const localStore = localStoreFactory(RB_CONTEXT) as Interface.ILocalStore
     const { actions = {}, state = {}, reducers = {} } = localStore
     const _reducer = handleActions(reducers, state)
 
     const _actionsImp = {}
     Object.keys(actions).forEach(key => {
       const fun = promisify(actions[key])
-      _actionsImp[key] = (_state: { property: string }, _setState: React.Dispatch<any>, ...args: any[]) => {
+      _actionsImp[key] = (_state: Interface.ILocalState, _setState: React.Dispatch<Interface.ILocalState>, ...args: any[]) => {
         return fun(...args).then((data: any) => {
           const action = {
             type: key,
@@ -27,7 +28,7 @@ export default async (RB_CONTEXT: IRBContext): Promise<IRBDecoModule> => {
           _setState(newState)
 
           return action
-        }).catch(err => {
+        }).catch((err: Error) => {
           const action = {
             type: key,
             error: true,
@@ -59,4 +60,6 @@ export default async (RB_CONTEXT: IRBContext): Promise<IRBDecoModule> => {
 
     return localStoreDeco
   }
+
+  return decoModule
 }
