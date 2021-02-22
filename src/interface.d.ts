@@ -99,7 +99,7 @@ declare global {
       (WrappedComponent: IRBComponent): IRBComponent | Promise<IRBComponent>
     }
 
-    type IRBComponent = React.FC | React.ComponentClass
+    type IRBComponent = React.FC<any> | React.ComponentClass<any>
 
     interface IRBContext {
       options: IRBOptions

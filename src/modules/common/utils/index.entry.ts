@@ -26,7 +26,7 @@ function wrapDisplayName (BaseComponent: React.FC|React.ComponentClass|string, h
 }
 
 function promisify (fun: (...args: Array<any>) => any) {
-  return (...args) => {
+  return (...args: Array<any>) => {
     return new Promise((resolve, reject) => {
       try {
         const ret = fun(...args)

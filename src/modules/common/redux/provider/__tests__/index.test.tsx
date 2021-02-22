@@ -4,7 +4,7 @@ import { ReactReduxContext } from 'react-redux'
 import providerDecoFactory from '../index.entry'
 import utils from '~/../tests/utils/mockUtils'
 
-const context = {
+const context: RB.IRBContext = {
   options: {},
   modules: {},
   i18ns: {},
@@ -22,7 +22,7 @@ class Test extends Component {
   static contextType = ReactReduxContext
 
   render () {
-    const storeState = this.context.store.getState()
+    const storeState: DecoRedux.IReduxState = this.context.store.getState()
     const keys = Object.keys(storeState)
     return <div>{keys[0]}</div>
   }

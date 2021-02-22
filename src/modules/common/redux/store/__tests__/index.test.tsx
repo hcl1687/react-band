@@ -7,7 +7,7 @@ import storeDecoFactory from '../index.entry'
 import tools from '~/../tests/utils/index'
 import utils from '~/../tests/utils/mockUtils'
 
-const store = getStore()
+const store: DecoRedux.IReduxStore = getStore()
 
 class Test extends Component<InferProps<typeof Test.propTypes>> {
   static propTypes = {
@@ -36,45 +36,41 @@ class Test extends Component<InferProps<typeof Test.propTypes>> {
   }
 }
 
-interface IState {
-  [propName: string]: any
-}
-
-const state = {
+const state: DecoRedux.IReduxState = {
   count: 0
 }
-const actions = {
+const actions: DecoRedux.IReduxActionFactories = {
   increase: (data: number) => data,
   decrease: (data: number) => data
 }
-const reducers = {
+const reducers: DecoRedux.IReduxReducers = {
   increase: {
-    next (state: IState) {
+    next (state: DecoRedux.IReduxState) {
       const { count } = state
       return {
         ...state,
         count: count + 1
       }
     },
-    throw (state: IState) {
+    throw (state: DecoRedux.IReduxState) {
       return state
     }
   },
   decrease: {
-    next (state: IState) {
+    next (state: DecoRedux.IReduxState) {
       const { count } = state
       return {
         ...state,
         count: count - 1
       }
     },
-    throw (state: IState) {
+    throw (state: DecoRedux.IReduxState) {
       return state
     }
   }
 }
 
-function mathStoreFactory () {
+function mathStoreFactory (): DecoRedux.IReduxModule {
   return {
     state,
     actions,

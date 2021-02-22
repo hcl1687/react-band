@@ -1,31 +1,23 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux'
 import middlewares from './middleware'
 
-export interface IState {
-  [propName: string]: any
-}
-
-export interface IReducer {
-  (state: IState, payload?: any): IState
-}
-
-const staticReducers = {
+const staticReducers: DecoRedux.IReduxPlainReducers = {
   // fix error:
   // Store does not have a valid reducer. Make sure the argument passed to combineReducers is an object whose values are reducers.
   '@ini': (state = {}) => (state)
 }
-let store: IState
+let store: DecoRedux.IReduxStore | DecoRedux.IReduxObject
 
-function createReducer (asyncReducers: { [propName: string]: IReducer } = {}) {
+function createReducer (asyncReducers: DecoRedux.IReduxPlainReducers = {}) {
   return combineReducers({
     ...staticReducers,
     ...asyncReducers
   })
 }
 
-export default function getStore (initialState = {}): IState {
+export default function getStore (initialState: DecoRedux.IReduxState = {}): DecoRedux.IReduxStore {
   if (store) {
-    return store
+    return store as DecoRedux.IReduxStore
   }
 
   store = createStore(createReducer(), initialState, applyMiddleware(
@@ -33,7 +25,7 @@ export default function getStore (initialState = {}): IState {
   ))
   store.asyncReducers = {}
 
-  store.injectReducer = (key: string, asyncReducer: IReducer) => {
+  store.injectReducer = (key: string, asyncReducer: DecoRedux.IReduxPlainReducer): void => {
     if (!key || store.asyncReducers[key]) {
       return
     }
@@ -42,5 +34,5 @@ export default function getStore (initialState = {}): IState {
     store.replaceReducer(createReducer(store.asyncReducers))
   }
 
-  return store
+  return store as DecoRedux.IReduxStore
 }

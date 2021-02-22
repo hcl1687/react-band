@@ -7,7 +7,7 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> =
   const { setDisplayName, wrapDisplayName } = utils
 
   return () => async (WrappedComponent: RB.IRBComponent) => {
-    const store = getStore()
+    const store: DecoRedux.IReduxStore = getStore()
     function reduxProviderDeco (props) {
       return <Provider store={store}>
         <WrappedComponent {...props} />

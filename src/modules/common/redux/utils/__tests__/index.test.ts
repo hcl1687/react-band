@@ -1,6 +1,6 @@
 import utilsFactory from '../index.entry'
 
-const utils = utilsFactory()
+const utils: RB.IRBModule = utilsFactory()
 
 describe('common/redux/utils', () => {
   it('should render correctly', () => {

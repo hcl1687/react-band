@@ -20,10 +20,6 @@ const context: RB.IRBContext = {
   }
 }
 
-interface IResolve {
-  (value?: any | PromiseLike<any>): void
-}
-
 async function TestFactory () {
   class ChildTest extends Component<any, { text: string }> {
     constructor (props, context) {
@@ -40,7 +36,7 @@ async function TestFactory () {
       })
     }
 
-    show2 = (text: string, resolve: IResolve) => {
+    show2 = (text: string, resolve: DecoNotice.INoticeResovle) => {
       this.setState({
         text
       }, () => {
@@ -64,7 +60,7 @@ async function TestFactory () {
   }
 
   class Test extends Component<InferProps<typeof Test.propTypes>, { msg: string }> {
-    constructor (props, context) {
+    constructor (props: DecoNotice.INoticeProps, context) {
       super(props, context)
 
       this.state = {
@@ -216,28 +212,28 @@ async function Test1Factory () {
 
   interface ITest1Ref {
     current?: {
-      show1Resolve?: IResolve
-      show2Resolve?: IResolve
+      show1Resolve?: DecoNotice.INoticeResovle
+      show2Resolve?: DecoNotice.INoticeResovle
     }
   }
 
-  function ChildTest1 (props, ref) {
+  function ChildTest1 (props: DecoNotice.INoticeProps, ref: React.Ref<unknown>) {
     const { setNotifyHandler } = props
     const [text, setText] = useState('')
     const thisRef: ITest1Ref = useRef({})
 
-    const show1 = (text) => {
+    const show1 = (text: string) => {
       setText(text)
     }
 
-    const show2 = (text, resolve) => {
+    const show2 = (text: string, resolve: DecoNotice.INoticeResovle) => {
       setText(text)
       if (thisRef && thisRef.current) {
         thisRef.current.show1Resolve = resolve
       }
     }
 
-    const show3 = (text) => {
+    const show3 = (text: string) => {
       return new Promise(resolve => {
         setText(text)
         if (thisRef && thisRef.current) {

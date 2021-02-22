@@ -1,48 +1,10 @@
 import React, { Component, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 
-type IArgs = [IParams] | [
-  IParams,
-  IResovle,
-  IReject
-]
-
-type IObject = { [propName: string]: any }
-
-interface IParams {
-  [propName: string]: any
-}
-
-interface IResovle {
-  (value?: any | PromiseLike<any>): void
-}
-
-type IReject = IResovle
-
-interface ITarget {
-  current: IObject
-  [propName: string]: any
-}
-
-interface IProps {
-  notification?: IObject
-}
-
-interface IInst {
-  state: IObject
-  setState?: (val: IObject) => void
-}
-
-type IUseNotice = [
-  (childName: string) => { notification: any },
-  (childName: string, methodName: string, params: IParams) => Promise<unknown>,
-  (handlers: IObject, ref: any) => void
-]
-
-function _callMethod (methodName: string, args: IArgs, target: ITarget) {
+function _callMethod (methodName: string, args: DecoNotice.INoticeArgs, target: DecoNotice.INoticeTarget) {
   // args = [params, resolve, reject]
-  const callbacks = args.slice(1) as [IResovle, IReject]
-  args = args.slice(0, 1) as IArgs
+  const callbacks = args.slice(1) as [DecoNotice.INoticeResovle, DecoNotice.INoticeReject]
+  args = args.slice(0, 1) as DecoNotice.INoticeArgs
   const comp = target && target.current
   const methodFunc = comp && comp[methodName]
   if (!methodFunc) {
@@ -59,7 +21,7 @@ function _callMethod (methodName: string, args: IArgs, target: ITarget) {
   if (definedParams.length > 1) {
     // have resolve or reject params in the method's arguments
     new Promise((resolve, reject) => {
-      args = args.concat([resolve, reject]) as IArgs
+      args = args.concat([resolve, reject]) as DecoNotice.INoticeArgs
       methodFunc.call(comp, ...args)
     }).then(callbacks[0]).catch(callbacks[1])
 
@@ -101,9 +63,9 @@ function _getMethodParams (method: string) {
 }
 
 function _handleNotification (
-  { notification = {} }: IProps,
-  preProps: IProps = {},
-  target: ITarget
+  { notification = {} }: DecoNotice.INoticeProps,
+  preProps: DecoNotice.INoticeProps = {},
+  target: DecoNotice.INoticeTarget
 ) {
   const { notification: pre } = preProps
   Object.keys(notification).forEach(methodName => {
@@ -114,7 +76,7 @@ function _handleNotification (
   })
 }
 
-function _getNotification (instance: IInst = { state: {} }) {
+function _getNotification (instance: DecoNotice.INoticeInst = { state: {} }) {
   return (childName: string) => {
     const { state } = instance
     const { childrenNotification } = state
@@ -126,8 +88,8 @@ function _getNotification (instance: IInst = { state: {} }) {
   }
 }
 
-function _notify (instance: IInst = { state: {}, setState: () => {} }) {
-  return (childName: string, methodName: string, params: IParams) => {
+function _notify (instance: DecoNotice.INoticeInst = { state: {}, setState: () => {} }) {
+  return (childName: string, methodName: string, params: DecoNotice.INoticeParams): Promise<any> => {
     const { state } = instance
     const { childrenNotification } = state
 
@@ -167,12 +129,12 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> =
   const { setDisplayName, wrapDisplayName } = utils
 
   return () => (WrappedComponent: RB.IRBComponent) => {
-    class noticeClassDeco extends Component<IProps> {
+    class noticeClassDeco extends Component<DecoNotice.INoticeProps> {
       private target: React.RefObject<HTMLInputElement>
 
-      private getNotification: (childName: string) => { notification: any }
+      private getNotification: (childName: string) => { notification: DecoNotice.INoticeObject }
 
-      private notify: (childName: string, methodName: string, params: IParams) => Promise<unknown>
+      private notify: (childName: string, methodName: string, params: DecoNotice.INoticeParams) => Promise<unknown>
 
       static propTypes = {
         notification: PropTypes.object
@@ -182,7 +144,7 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> =
         notification: {}
       }
 
-      constructor (props, context) {
+      constructor (props: DecoNotice.INoticeProps, context) {
         super(props, context)
         this.state = {
           childrenNotification: {}
@@ -193,7 +155,7 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> =
         this.notify = _notify(this)
       }
 
-      componentWillReceiveProps (nextProps) {
+      componentWillReceiveProps (nextProps: DecoNotice.INoticeProps) {
         _handleNotification(nextProps, this.props, this.target)
       }
 
@@ -233,9 +195,9 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> =
         }
       }
     }
-    function noticeFunctionDeco (props) {
-      const targetRef = useRef()
-      const prevPropsRef = useRef()
+    function noticeFunctionDeco (props: DecoNotice.INoticeObject) {
+      const targetRef: DecoNotice.INoticeTarget = useRef()
+      const prevPropsRef: DecoNotice.INoticeTarget = useRef()
       useEffect(() => {
         prevPropsRef.current = props
       })
@@ -265,12 +227,12 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> =
   }
 }
 
-export function useNotice (): IUseNotice {
+export function useNotice (): DecoNotice.INoticeUseNotice {
   const [state, setState] = useState({ childrenNotification: {} })
 
   const getNotification = _getNotification({ state, setState })
   const notify = _notify({ state, setState })
-  const setNotifyHandler = (handlers: IObject, ref: React.Ref<unknown>) => {
+  const setNotifyHandler = (handlers: DecoNotice.INoticeObject, ref: React.Ref<unknown>) => {
     useImperativeHandle(ref, () => (handlers))
   }
 

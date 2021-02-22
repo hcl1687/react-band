@@ -1,25 +1,25 @@
 import { createAction, handleActions } from 'redux-actions'
-import getStore, { IState } from '../getStore'
 import React from 'react'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
+import getStore from '../getStore'
 
 export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
 
   return ({ decoratorsConfig }: RB.IRBModuleConfig) => async (WrappedComponent: RB.IRBComponent) => {
-    const storeConfig = get(decoratorsConfig, '@reduxStore') || {}
+    const storeConfig: DecoRedux.IReduxConfig = get(decoratorsConfig, '@reduxStore') || {}
     // fetch store component
-    const { injectReducer } = getStore()
+    const { injectReducer }: DecoRedux.IReduxStore = getStore()
     const keys = Object.keys(storeConfig)
     const comps = {}
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i]
       comps[key] = await getModule(key)
       // register store
-      const { state = {}, reducers = {} } = comps[key]
-      const reducer = handleActions(reducers, state)
+      const { state = {}, reducers = {} }: DecoRedux.IReduxModule = comps[key]
+      const reducer: DecoRedux.IReduxPlainReducer = handleActions(reducers, state)
       injectReducer(key, reducer)
     }
 
@@ -27,7 +27,7 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> =
     const selectedActions = {}
     keys.forEach(key => {
       const comp = comps[key] || {}
-      const actions = comp.actions || []
+      const actions: DecoRedux.IReduxActionFactories = comp.actions || {}
       const actionsKey = storeConfig[key].actions || []
       actionsKey.forEach((akey: string) => {
         if (!actions[akey]) {
@@ -37,9 +37,9 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> =
       })
     })
 
-    const mapDispatchToProps = dispatch => {
+    const mapDispatchToProps = (dispatch: (action: DecoRedux.IReduxAction) => void) => {
       return Object.keys(selectedActions).reduce((obj, key) => {
-        obj[key] = (...args) => {
+        obj[key] = (...args: Array<any>) => {
           const action = selectedActions[key](...args)
           dispatch(action)
           return Promise.resolve(action.payload)
@@ -48,7 +48,7 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> =
       }, {})
     }
 
-    const mapStateToProps = (state: IState) => {
+    const mapStateToProps = (state: DecoRedux.IReduxStore): DecoRedux.IReduxState => {
       const selectedState = {}
       keys.forEach(key => {
         const subState = state[key]

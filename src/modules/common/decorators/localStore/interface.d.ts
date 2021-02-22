@@ -1,37 +1,37 @@
 declare namespace DecoLocalStore {
-  export interface ILocalState {
+  interface ILocalState {
     [propName: string]: any
   }
 
-  export interface ILocalActionFactory {
+  interface ILocalActionFactory {
     (...args: Array<any>): any
   }
 
-  export interface ILocalActionFactories {
+  interface ILocalActionFactories {
     [propName: string]: ILocalActionFactory
   }
 
-  export interface ILocalAction {
+  interface ILocalAction {
     type: string
     payload?: any
   }
 
-  export interface ILocalReducer {
+  interface ILocalReducer {
     next: (state: ILocalState, action: ILocalAction) => ILocalState
     throw: (state: ILocalState, action: ILocalAction) => ILocalState
   }
 
-  export interface ILocalReducers {
+  interface ILocalReducers {
     [propName: string]: ILocalReducer
   }
 
-  export interface ILocalStore {
+  interface ILocalStore {
     state: ILocalState
     actions: ILocalActionFactories
     reducers: ILocalReducers
   }
 
-  export interface ILocalStoreFactory {
+  interface ILocalStoreFactory {
     (RB_CONTEXT: RB.IRBContext): ILocalStore
   }
 }

@@ -31,18 +31,18 @@ Test.propTypes = {
   decrease: PropTypes.any
 }
 
-const state = {
+const state: DecoLocalStore.ILocalState = {
   count: 0
 }
-const actions = {
+const actions: DecoLocalStore.ILocalActionFactories = {
   increase: (data: number) => ++data,
   decrease: () => {
     throw new Error('error')
   }
 }
-const reducers = {
+const reducers: DecoLocalStore.ILocalReducers = {
   increase: {
-    next (state: { property: string }, action: { payload: any }) {
+    next (state: DecoLocalStore.ILocalState, action: DecoLocalStore.ILocalAction) {
       const count = action.payload
 
       return {
@@ -50,12 +50,12 @@ const reducers = {
         count
       }
     },
-    throw (state: { property: string }) {
+    throw (state: DecoLocalStore.ILocalState) {
       return state
     }
   },
   decrease: {
-    next (state: { property: string }, action: { payload: any }) {
+    next (state: DecoLocalStore.ILocalState, action: DecoLocalStore.ILocalAction) {
       const count = action.payload
 
       return {
@@ -63,7 +63,7 @@ const reducers = {
         count
       }
     },
-    throw (state: { property: string }) {
+    throw (state: DecoLocalStore.ILocalState) {
       return {
         ...state,
         count: -1
@@ -72,7 +72,7 @@ const reducers = {
   }
 }
 
-function localStoreFactory () {
+function localStoreFactory (): DecoLocalStore.ILocalStore {
   return {
     state,
     actions,
@@ -80,7 +80,7 @@ function localStoreFactory () {
   }
 }
 
-const context = {
+const context: RB.IRBContext = {
   options: {},
   modules: {},
   i18ns: {},
