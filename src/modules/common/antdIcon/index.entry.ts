@@ -1,6 +1,5 @@
 import * as antdIcon from '@ant-design/icons'
-import { IRBModule } from '~/interface'
 
-export default (): IRBModule => {
+export default (): RB.IRBModule => {
   return antdIcon
 }

@@ -1,11 +1,10 @@
-import { IRBModule, IRBTheme } from '~/interface'
 import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
 
-export default (): IRBModule => {
+export default (): RB.IRBModule => {
   function Loading (props: InferProps<typeof Loading.propTypes>) {
     const { __ } = props
-    const theme = props.theme as IRBTheme
+    const theme = props.theme as RB.IRBTheme
     return <div className={theme.loading}>{__('loading')}</div>
   }
 

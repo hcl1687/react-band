@@ -1,13 +1,12 @@
-import { IRBComponent, IRBContext, IRBDecoModule, IRBModuleConfig } from '~/interface'
 import IntlMessageFormat from 'intl-messageformat'
 import React from 'react'
 
-export default async ({ getModule, options }: IRBContext): Promise<IRBDecoModule> => {
+export default async ({ getModule, options }: RB.IRBContext): Promise<RB.IRBDecoModule> => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
   const { locale } = options
 
-  return ({ i18n }: IRBModuleConfig) => (WrappedComponent: IRBComponent) => {
+  return ({ i18n }: RB.IRBModuleConfig) => (WrappedComponent: RB.IRBComponent) => {
     const __ = (key: string, values: Record<string | number, string | number>) => {
       if (!i18n[key]) {
         return key

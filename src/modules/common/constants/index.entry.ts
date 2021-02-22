@@ -1,6 +1,4 @@
-import { IRBModule } from '~/interface'
-
-export default (): IRBModule => {
+export default (): RB.IRBModule => {
   const LOCALE = {
     'en-US': 'en-US',
     'es-MX': 'es-MX',

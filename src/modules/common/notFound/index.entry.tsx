@@ -1,11 +1,10 @@
-import { IRBModule, IRBTheme } from '~/interface'
 import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
 
-export default (): IRBModule => {
+export default (): RB.IRBModule => {
   function Test (props: InferProps<typeof Test.propTypes>) {
     const { __ } = props
-    const theme = props.theme as IRBTheme
+    const theme = props.theme as RB.IRBTheme
     return <div className={theme.notFound}>{__('notFound')}</div>
   }
 

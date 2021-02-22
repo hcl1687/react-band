@@ -1,14 +1,13 @@
-import { IRBComponent, IRBContext, IRBDecoModule } from '~/interface'
 import React, { Component } from 'react'
 import { ConfigProvider } from 'antd'
 import { Locale } from 'antd/lib/locale-provider'
 import get from 'lodash/get'
 
-export default async ({ getModule }: IRBContext): Promise<IRBDecoModule> => {
+export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
 
-  return (config, decoConfig, RB_CONTEXT: IRBContext) => async (WrappedComponent: IRBComponent) => {
+  return (config, decoConfig, RB_CONTEXT: RB.IRBContext) => async (WrappedComponent: RB.IRBComponent) => {
     // eslint-disable-next-line
     await getModule('antd') || {}
     const { options: { locale }, i18ns } = RB_CONTEXT

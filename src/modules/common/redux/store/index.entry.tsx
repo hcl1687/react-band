@@ -1,15 +1,14 @@
-import { IRBComponent, IRBContext, IRBDecoModule, IRBModuleConfig } from '~/interface'
 import { createAction, handleActions } from 'redux-actions'
 import getStore, { IState } from '../getStore'
 import React from 'react'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
 
-export default async ({ getModule }: IRBContext): Promise<IRBDecoModule> => {
+export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
 
-  return ({ decoratorsConfig }: IRBModuleConfig) => async (WrappedComponent: IRBComponent) => {
+  return ({ decoratorsConfig }: RB.IRBModuleConfig) => async (WrappedComponent: RB.IRBComponent) => {
     const storeConfig = get(decoratorsConfig, '@reduxStore') || {}
     // fetch store component
     const { injectReducer } = getStore()

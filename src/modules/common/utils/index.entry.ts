@@ -1,5 +1,3 @@
-import { IRBModule } from '~/interface'
-
 function setStatic (key: string, value: string) {
   return BaseComponent => {
     BaseComponent[key] = value
@@ -52,7 +50,7 @@ function getUrlParameter (url: string, name: string) {
   return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '))
 }
 
-export default (): IRBModule => {
+export default (): RB.IRBModule => {
   return {
     setStatic,
     setDisplayName,

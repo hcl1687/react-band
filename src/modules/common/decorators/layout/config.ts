@@ -1,6 +1,4 @@
-import { IRBLeafConfig } from '~/interface'
-
-export default (): IRBLeafConfig => {
+export default (): RB.IRBLeafConfig => {
   return {
     name: '@layout',
     type: 'decorator',

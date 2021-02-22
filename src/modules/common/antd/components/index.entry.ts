@@ -1,7 +1,6 @@
 
 import * as antd from 'antd'
-import { IRBModule } from '~/interface'
 
-export default (): IRBModule => {
+export default (): RB.IRBModule => {
   return antd
 }

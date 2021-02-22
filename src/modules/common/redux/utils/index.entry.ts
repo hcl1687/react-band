@@ -1,7 +1,6 @@
-import { IRBModule } from '~/interface'
 import getStore from '../getStore'
 
-export default (): IRBModule => {
+export default (): RB.IRBModule => {
   return {
     getStore
   }

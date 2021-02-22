@@ -1,6 +1,5 @@
 import PropTypes, { InferProps } from 'prop-types'
 import { mount, render } from 'enzyme'
-import { IRBContext } from '~/interface'
 import React from 'react'
 import layoutDecoFactory from '../index.entry'
 import utils from '~/../tests/utils/mockUtils'
@@ -16,7 +15,7 @@ TestWrapper.propTypes = {
   children: PropTypes.any
 }
 
-const context: IRBContext = {
+const context: RB.IRBContext = {
   options: {},
   modules: {},
   i18ns: {},

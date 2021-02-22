@@ -1,4 +1,3 @@
-import { IRBComponent, IRBContext, IRBDecoModule } from '~/interface'
 import React, { Component, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 
@@ -154,7 +153,7 @@ function _notify (instance: IInst = { state: {}, setState: () => {} }) {
   }
 }
 
-function shouldConstruct (Component: IRBComponent) {
+function shouldConstruct (Component: RB.IRBComponent) {
   const prototype = Component.prototype
   return !!(prototype && prototype.isReactComponent)
 }
@@ -163,11 +162,11 @@ function setFakeNotifyHandler () {
   console.error('only functions that accept exactly two parameters: props and ref are support setNotifyHandler.')
 }
 
-export default async ({ getModule }: IRBContext): Promise<IRBDecoModule> => {
+export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
 
-  return () => (WrappedComponent: IRBComponent) => {
+  return () => (WrappedComponent: RB.IRBComponent) => {
     class noticeClassDeco extends Component<IProps> {
       private target: React.RefObject<HTMLInputElement>
 
@@ -252,7 +251,7 @@ export default async ({ getModule }: IRBContext): Promise<IRBDecoModule> => {
         : <WrappedComponent {...props} getNotification={getNotification} notify={notify} setNotifyHandler={setFakeNotifyHandler} />
     }
 
-    let noticeDeco: IRBComponent = noticeFunctionDeco
+    let noticeDeco: RB.IRBComponent = noticeFunctionDeco
     // if it's react component
     if (typeof WrappedComponent === 'function' && shouldConstruct(WrappedComponent)) {
       noticeDeco = noticeClassDeco

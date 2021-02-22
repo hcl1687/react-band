@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { mount, render } from 'enzyme'
 import { ConfigContext } from 'antd/lib/config-provider'
-import { IRBContext } from '~/interface'
 import providerDecoFactory from '../index.entry'
 import utils from '~/../tests/utils/mockUtils'
 
-const context: IRBContext = {
+const context: RB.IRBContext = {
   options: {},
   modules: {},
   i18ns: {},

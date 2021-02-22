@@ -1,10 +1,9 @@
-import { IRBComponent, IRBContext, IRBDecoModule, IRBModuleConfig } from '~/interface'
 import React from 'react'
 
-export default async ({ getModule }: IRBContext): Promise<IRBDecoModule> => {
+export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
-  return ({ theme }: IRBModuleConfig) => (WrappedComponent: IRBComponent) => {
+  return ({ theme }: RB.IRBModuleConfig) => (WrappedComponent: RB.IRBComponent) => {
     function themeDeco (props) {
       return <WrappedComponent {...props} theme={theme} />
     }

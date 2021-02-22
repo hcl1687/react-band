@@ -1,7 +1,6 @@
 import PropTypes, { InferProps } from 'prop-types'
 import React, { Component } from 'react'
 import { mount, render } from 'enzyme'
-import { IRBContext } from '~/interface'
 import { Provider } from 'react-redux'
 import getStore from '../../getStore'
 import storeDecoFactory from '../index.entry'
@@ -83,7 +82,7 @@ function mathStoreFactory () {
   }
 }
 
-const context: IRBContext = {
+const context: RB.IRBContext = {
   options: {},
   modules: {},
   i18ns: {},

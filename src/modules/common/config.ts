@@ -1,6 +1,4 @@
-import { IRBRootConfig } from '~/interface'
-
-export default (): IRBRootConfig => {
+export default (): RB.IRBRootConfig => {
   return {
   }
 }

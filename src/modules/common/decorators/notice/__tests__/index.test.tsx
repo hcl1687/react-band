@@ -1,12 +1,11 @@
 import PropTypes, { InferProps } from 'prop-types'
 import React, { Component, useEffect, useRef, useState } from 'react'
 import { mount, render } from 'enzyme'
-import { IRBContext } from '~/interface'
 import noticeDecoFactory from '../index.entry'
 import tools from '~/../tests/utils/index'
 import utils from '~/../tests/utils/mockUtils'
 
-const context: IRBContext = {
+const context: RB.IRBContext = {
   options: {},
   modules: {},
   i18ns: {},
