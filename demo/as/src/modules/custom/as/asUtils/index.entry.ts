@@ -1,9 +1,9 @@
 import getRemoteComponent from './getRemoteComponent'
 import getRequestProvider from './request'
 
-export default async (RB_CONTEXT) => {
+export default async (RB_CONTEXT: RB.IRBContext): Promise<RB.IRBModule> => {
   const { getModule } = RB_CONTEXT
-  const asConstants = await getModule('asConstants')
+  const asConstants = await getModule('asConstants') as AsConstants.IConsts
   const { ENV, LOCAL_STORAGE_PREFIX } = asConstants
 
   function getUrlByKey (key = '', type = '') {
@@ -18,17 +18,17 @@ export default async (RB_CONTEXT) => {
     return `${ENV.MEDIA_URL}${type}${key}`
   }
 
-  function getLocalStorageItem (key) {
+  function getLocalStorageItem (key: string) {
     key = `${LOCAL_STORAGE_PREFIX}${key}`
     return localStorage.getItem(key)
   }
 
-  function setLocalStorageItem (key, value) {
+  function setLocalStorageItem (key: string, value: string) {
     key = `${LOCAL_STORAGE_PREFIX}${key}`
     localStorage.setItem(key, value)
   }
 
-  function removeLocalStorageItem (key) {
+  function removeLocalStorageItem (key: string) {
     key = `${LOCAL_STORAGE_PREFIX}${key}`
     localStorage.removeItem(key)
   }

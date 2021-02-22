@@ -7,8 +7,9 @@ const ASSETS_PREFIX = {
   imageList: '/cudos/activity/images/'
 }
 
-export default (RB_CONTEXT) => {
-  const ENV = require(`./env/${process.env.RB_ENV}`)
+export default (): RB.IRBModule => {
+  /* eslint-disable-next-line @typescript-eslint/no-var-requires */
+  const ENV: AsConstants.IENV = require(`./env/${process.env.RB_ENV}`)
   return {
     LOCAL_STORAGE_PREFIX,
     ASSETS_PREFIX,

@@ -37,7 +37,9 @@ const REMOTE_COMPS = {}
  *   'react-dom': ReactDOM
  * }
  */
-export default function getRemoteComponent (componentInfo = {}, dependencies = {}) {
+export default function getRemoteComponent (
+  componentInfo: AsUtils.IComponentInfo = {}, dependencies: AsUtils.IDependencies = {}
+): Promise<any> {
   const { name, libraryName, externals = {}, path = '', entries, version = '' } = componentInfo
   const entriesIsArray = isArray(entries)
 
@@ -89,7 +91,7 @@ export default function getRemoteComponent (componentInfo = {}, dependencies = {
   // if is loading, reigister a funciton to subscribe the component
   if (compObj.state === 'loading') {
     return new Promise((resolve, reject) => {
-      compObj.subscribes.push((err, comp) => {
+      compObj.subscribes.push((err: Error, comp: any) => {
         if (err) {
           reject(err)
         } else {
@@ -100,7 +102,7 @@ export default function getRemoteComponent (componentInfo = {}, dependencies = {
   }
 
   // load files
-  const callback = (val) => {
+  const callback = (val: string|AsUtils.IObject) => {
     if (typeof val === 'string') {
       let src = path[path.length - 1] === '/' ? `${path}${val}` : `${path}/${val}`
 
@@ -133,20 +135,20 @@ export default function getRemoteComponent (componentInfo = {}, dependencies = {
     compObj.component = comp
     // public
     if (compObj.subscribes && compObj.subscribes.length > 0) {
-      compObj.subscribes.forEach((fun) => {
+      compObj.subscribes.forEach((fun: AsUtils.ISubscribeFun) => {
         fun(null, comp)
       })
       compObj.subscribes = []
     }
 
     return comp
-  }).catch((err) => {
+  }).catch((err: Error) => {
     compObj.state = 'failed'
     compObj.component = undefined
 
     // public
     if (compObj.subscribes && compObj.subscribes.length > 0) {
-      compObj.subscribes.forEach((fun) => {
+      compObj.subscribes.forEach((fun: AsUtils.ISubscribeFun) => {
         fun(err)
       })
       compObj.subscribes = []
@@ -182,7 +184,7 @@ function getFileNameFromUrl (url = '') {
   return url.replace(/(.*\/)([^/]+)$/, ($1, $2, $3) => ($3))
 }
 
-function loadScript (name, src) {
+function loadScript (name: string, src: string) {
   const fileName = getFileNameFromUrl(src)
   const hash = hashCode(src)
   const id = `${name}/${fileName}/${hash}`
@@ -194,7 +196,7 @@ function loadScript (name, src) {
 
   return new Promise((resolve, reject) => {
     const onload = () => {
-      resolve()
+      resolve(null)
     }
     const onerror = () => {
       reject(new Error(`${errorPrefix}${id} load failed`))
@@ -206,17 +208,17 @@ function loadScript (name, src) {
   })
 }
 
-function loadCss (name, src) {
+function loadCss (name: string, src: string) {
   const fileName = getFileNameFromUrl(src)
   const hash = hashCode(src)
   const id = `${name}/${fileName}/${hash}`
 
-  let link = document.getElementById(id)
+  let link: HTMLLinkElement = document.getElementById(id) as HTMLLinkElement
   if (link) {
     link.parentNode.removeChild(link)
   }
 
-  link = document.createElement('link')
+  link = document.createElement('link') as HTMLLinkElement
   link.id = id
   link.rel = 'stylesheet'
   link.type = 'text/css'
@@ -226,11 +228,11 @@ function loadCss (name, src) {
   return Promise.resolve()
 }
 
-function hashCode (str) {
+function hashCode (str: string) {
   str = str || ''
   let hash = 0
-  let i
-  let chr
+  let i: number
+  let chr: number
   if (str.length === 0) {
     return hash
   }
