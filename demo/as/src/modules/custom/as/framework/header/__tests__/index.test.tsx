@@ -18,7 +18,13 @@ jest.mock('../factories/user', () => {
   }
 })
 
-const RB_CONTEXT = {
+const RB_CONTEXT: RB.IRBContext = {
+  modules: {},
+  i18ns: {},
+  themes: {},
+  packedModules: {},
+  modulesConfig: {},
+  routes: [],
   options: {
     themes: [
       'default',
@@ -30,7 +36,7 @@ const RB_CONTEXT = {
     ],
     locale: 'en'
   },
-  getModule: (type) => {
+  getModule: async (type: string) => {
     if (type === 'antd') {
       const Button = ({ onClick, ...rest }) => <div className='antd-button' onClick={onClick} data-props={rest} />
       Button.propTypes = {
@@ -58,17 +64,19 @@ const RB_CONTEXT = {
         children: PropTypes.any
       }
 
-      Menu.Item = ({ children, onClick, ...rest }) => <div className='antd-menu-item' onClick={onClick} data-props={rest}>{children}</div>
-      Menu.Item.propTypes = {
+      const Item = ({ children, onClick, ...rest }) => <div className='antd-menu-item' onClick={onClick} data-props={rest}>{children}</div>
+      Item.propTypes = {
         children: PropTypes.any,
         onClick: PropTypes.func
       }
+      Menu.Item = Item
 
       const Radio = (props) => <div className='antd-radio' data-props={props} />
-      Radio.Group = ({ onChange, ...rest }) => <div className='antd-radio-group' onChange={onChange} data-props={rest} />
-      Radio.Group.propTypes = {
+      const Group = ({ onChange, ...rest }) => <div className='antd-radio-group' onChange={onChange} data-props={rest} />
+      Group.propTypes = {
         onChange: PropTypes.func
       }
+      Radio.Group = Group
 
       return {
         Button,
@@ -101,7 +109,7 @@ const RB_CONTEXT = {
 }
 
 const DEFAULT_PROPS = {
-  __: (val) => (val),
+  __: (val: string) => (val),
   theme: {
     userItem: 'userItem',
     loginOverlay: 'loginOverlay',
@@ -180,12 +188,12 @@ describe('custom/as/framework/header', () => {
     const wrapper = mount(<Header {...props} />)
 
     expect(wrapper.find('.antd-drawer').length).toBe(1)
-    expect(wrapper.find('.antd-drawer').prop('data-props').visible).toBe(false)
+    expect(wrapper.find('.antd-drawer').prop('data-props')['visible']).toBe(false)
     expect(wrapper.find('.antdicon-SettingOutlined').length).toBe(1)
     wrapper.find('.antdicon-SettingOutlined').simulate('click')
-    expect(wrapper.find('.antd-drawer').prop('data-props').visible).toBe(true)
+    expect(wrapper.find('.antd-drawer').prop('data-props')['visible']).toBe(true)
     wrapper.find('.drawer-close').simulate('click')
-    expect(wrapper.find('.antd-drawer').prop('data-props').visible).toBe(false)
+    expect(wrapper.find('.antd-drawer').prop('data-props')['visible']).toBe(false)
   })
 
   it('should toggle menu correctly', async () => {

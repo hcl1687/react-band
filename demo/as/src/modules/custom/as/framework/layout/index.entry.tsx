@@ -1,13 +1,14 @@
-import PropTypes from 'prop-types'
+import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
 import classnames from 'classnames'
 
-export default async ({ getModule }) => {
-  const Menu = await getModule('menu')
-  const Header = await getModule('header')
-  const Breadcrumb = await getModule('breadcrumb')
-  function Layout (props) {
-    const { LEFT_STATUS, LAYOUT_MODE, theme, children, showLeft } = props
+export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBComponent> => {
+  const Menu = await getModule('menu') as RB.IRBComponent
+  const Header = await getModule('header') as RB.IRBComponent
+  const Breadcrumb = await getModule('breadcrumb') as RB.IRBComponent
+  function Layout (props: InferProps<typeof Layout.propTypes>) {
+    const { LEFT_STATUS, LAYOUT_MODE, children, showLeft } = props
+    const theme = props.theme as RB.IRBTheme
 
     const isTopMode = LAYOUT_MODE === 'top'
     const layoutClassName = classnames('layout', {

@@ -3,7 +3,14 @@ import layoutFactory from '../index.entry'
 import { mount } from 'enzyme'
 
 const RB_CONTEXT = {
-  getModule: (type) => {
+  options: {},
+  modules: {},
+  i18ns: {},
+  themes: {},
+  packedModules: {},
+  modulesConfig: {},
+  routes: [],
+  getModule: async (type: string) => {
     if (type === 'menu') {
       return (props) => <div className='menu-comp' data-props={props} />
     } else if (type === 'header') {
@@ -44,7 +51,7 @@ describe('custom/as/framework/layout', () => {
     expect(wrapper.find('.layout').prop('className')).toBe('layout')
     expect(wrapper.find('.left').prop('className')).toBe('left')
     expect(wrapper.find('.right').prop('className')).toBe('right')
-    expect(wrapper.find('.menu-comp').prop('data-props').expand).toBe(true)
+    expect(wrapper.find('.menu-comp').prop('data-props')['expand']).toBe(true)
   })
 
   it('should render top mode correctly', async () => {
@@ -68,8 +75,8 @@ describe('custom/as/framework/layout', () => {
     expect(wrapper.find('.test').length).toBe(1)
 
     expect(wrapper.find('.layout').prop('className')).toBe('layout top-mode')
-    expect(wrapper.find('.menu-comp').prop('data-props').expand).toBe(true)
-    expect(wrapper.find('.menu-comp').prop('data-props').mode).toBe('horizontal')
+    expect(wrapper.find('.menu-comp').prop('data-props')['expand']).toBe(true)
+    expect(wrapper.find('.menu-comp').prop('data-props')['mode']).toBe('horizontal')
   })
 
   it('should render top mode correctly', async () => {
@@ -93,7 +100,7 @@ describe('custom/as/framework/layout', () => {
     expect(wrapper.find('.test').length).toBe(1)
 
     expect(wrapper.find('.layout').prop('className')).toBe('layout top-mode')
-    expect(wrapper.find('.menu-comp').prop('data-props').expand).toBe(true)
-    expect(wrapper.find('.menu-comp').prop('data-props').mode).toBe('horizontal')
+    expect(wrapper.find('.menu-comp').prop('data-props')['expand']).toBe(true)
+    expect(wrapper.find('.menu-comp').prop('data-props')['mode']).toBe('horizontal')
   })
 })

@@ -1,11 +1,11 @@
+import PropTypes, { InferProps } from 'prop-types'
 import React, { useRef, useState } from 'react'
-import PropTypes from 'prop-types'
 
-export default async ({ getModule }) => {
-  const antd = await getModule('antd')
+export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBComponent> => {
+  const antd = await getModule('antd') as ANTD.IANTD
   const { Form, Input, Button, Modal } = antd
 
-  function Login (props, ref) {
+  function Login (props: InferProps<typeof Login.propTypes>, ref) {
     const [visible, setVisible] = useState(false)
     const [errMsg, setErrMsg] = useState('')
     const [loading, setLoading] = useState(false)
@@ -15,7 +15,7 @@ export default async ({ getModule }) => {
     const show = ({ visible }) => {
       return new Promise((resolve) => {
         setVisible(visible)
-        resolve()
+        resolve(null)
       })
     }
 

@@ -115,7 +115,7 @@ export default async (RB_CONTEXT: RB.IRBContext): Promise<RB.IRBComponent> => {
       const menu = <Menu>
         {
           languages.map((item: string, i: number) => {
-            return <Menu.Item key={i} value={item} onClick={() => { handleLocaleChange(item) }}>
+            return <Menu.Item key={i} onClick={() => { handleLocaleChange(item) }}>
               <div className={theme.localeItem}>
                 <div className={theme.localeName}>{__(item)}</div>
                 { item === locale ? <CheckOutlined className={theme.localeIndicator} /> : null }

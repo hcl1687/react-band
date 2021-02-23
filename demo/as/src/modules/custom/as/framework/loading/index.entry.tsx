@@ -1,10 +1,10 @@
+import PropTypes, { InferProps } from 'prop-types'
 import React, { useEffect, useRef } from 'react'
-import PropTypes from 'prop-types'
 
-export default async ({ getModule }) => {
+export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBComponent> => {
   const lottie = await getModule('lottie')
 
-  function Loading (props) {
+  function Loading (props: InferProps<typeof Loading.propTypes>) {
     const lottieDom = useRef(null)
 
     useEffect(() => {
@@ -22,7 +22,8 @@ export default async ({ getModule }) => {
       }, 100)
     }, [])
 
-    const { __, theme } = props
+    const { __ } = props
+    const theme = props.theme as RB.IRBTheme
     return <div className={theme.loading}>
       <div ref={lottieDom} className={theme.lottie} />
       <div className={theme.tip}>{__('loading')}</div>

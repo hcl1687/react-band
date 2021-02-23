@@ -6,7 +6,14 @@ import tools from '~/../tests/utils/index'
 describe('common/loading', () => {
   it('should render correctly', async () => {
     const context = {
-      getModule: (type) => {
+      options: {},
+      modules: {},
+      i18ns: {},
+      themes: {},
+      packedModules: {},
+      modulesConfig: {},
+      routes: [],
+      getModule: async (type: string) => {
         if (type === 'lottie') {
           return {
             loadAnimation: () => {}
@@ -15,7 +22,7 @@ describe('common/loading', () => {
       }
     }
     const Loading = await loadingFactory(context)
-    const __ = key => key
+    const __ = (key: string) => key
     const theme = {
       loading: '',
       lottie: '',
@@ -29,7 +36,14 @@ describe('common/loading', () => {
   it('should invoke i18n translator', async () => {
     const loadAnimation = jest.fn()
     const context = {
-      getModule: (type) => {
+      options: {},
+      modules: {},
+      i18ns: {},
+      themes: {},
+      packedModules: {},
+      modulesConfig: {},
+      routes: [],
+      getModule: async (type: string) => {
         if (type === 'lottie') {
           return {
             loadAnimation
