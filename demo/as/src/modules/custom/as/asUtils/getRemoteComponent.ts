@@ -159,7 +159,7 @@ export default function getRemoteComponent (
 }
 
 // expose createScript for unit test's mocking.
-getRemoteComponent.createScript = ({ id, src, onload, onerror }) => {
+getRemoteComponent.createScript = ({ id, src, onload, onerror }): HTMLScriptElement => {
   const scriptDom = document.createElement('script')
   scriptDom.id = id
   scriptDom.onload = () => {

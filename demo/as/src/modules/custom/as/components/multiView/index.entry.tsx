@@ -1,15 +1,15 @@
+import PropTypes, { InferProps } from 'prop-types'
 import React, { cloneElement, useEffect, useRef } from 'react'
-import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import get from 'lodash/get'
 
-export default async ({ getModule }) => {
+export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBComponent> => {
   const asUtils = await getModule('asUtils')
-  const { getQueryParams } = asUtils
+  const { getQueryParams } = asUtils as AsUtils.IUtils
 
-  function MultiView (props) {
+  function MultiView (props: InferProps<typeof MultiView.propTypes>) {
     const { className, children, location, viewField = 'view', viewNames = [], onChange } = props
-    const prevPropsRef = useRef()
+    const prevPropsRef = useRef<InferProps<typeof MultiView.propTypes>>()
     useEffect(() => {
       prevPropsRef.current = props
     })
@@ -35,7 +35,7 @@ export default async ({ getModule }) => {
       }
     }
 
-    const handleChange = (index, name, opts) => {
+    const handleChange = (index: number, name: string, opts: RB.IRBObject) => {
       onChange && onChange(index, name, opts)
     }
 
@@ -57,7 +57,7 @@ export default async ({ getModule }) => {
 
     return <div className={classnames('multiview', className)}>
       {
-        childArray.map((child, index) => {
+        childArray.map((child: React.ReactElement, index) => {
           const display = view === index ? 'block' : 'none'
           const multiview_actived = view === index ? 'true' : 'false'
           return <div key={index} className='multiview-item' style={{ display }}>

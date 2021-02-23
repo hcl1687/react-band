@@ -62,4 +62,45 @@ declare namespace AsUtils {
     method?: string
     [propName: string]: any
   }
+
+  interface IGetRemoteCreateScriptParams {
+    id: string
+    src: string
+    onload: () => void
+    onerror: () => void
+  }
+
+  interface IGetRemoteCreateScript {
+    (params: IGetRemoteCreateScriptParams): HTMLScriptElement
+  }
+
+  interface IAuth {
+    expiry: number
+    uid: string
+    role: string
+    token: string
+  }
+
+  interface IUser {
+    id: string
+    token: string
+    userName: string
+    userId: string
+    email: string
+    userType: string
+    avatar?: string
+  }
+
+  interface IUtils {
+    getUrlByKey: (key?: string, type?: string) => string
+    getLocalStorageItem: (key: string) => string
+    setLocalStorageItem: (key: string, value: string) => void
+    removeLocalStorageItem: (key: string) => void
+    request: (config: string | IReqConfig) => Promise<unknown>
+    safeParse: (str: string) => unknown
+    getUser: () => IUser
+    getAuth: () => IAuth
+    getRemoteComponent: (componentInfo: IComponentInfo, dependencies: IDependencies) => Promise<any>
+    getQueryParams: (qs: string) => AsUtils.IObject
+  }
 }
