@@ -1,4 +1,4 @@
-export default () => {
+export default (): RB.IRBConfig => {
   return {
     name: 'breadcrumb',
     decoratorsConfig: {

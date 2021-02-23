@@ -1,20 +1,21 @@
-import PropTypes from 'prop-types'
+import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
 import classnames from 'classnames'
 
-export default async function (RB_CONTEXT) {
+export default async function (RB_CONTEXT: RB.IRBContext): Promise<RB.IRBComponent> {
   const { getModule, options } = RB_CONTEXT
   const { theme: themeType } = options
   const asUtils = await getModule('asUtils')
-  const { getUrlByKey } = asUtils
+  const { getUrlByKey } = asUtils as AsUtils.IUtils
 
-  function Avatar (props) {
-    const handleError = (e) => {
-      e.target.src = getDefaultSrc()
+  function Avatar (props: InferProps<typeof Avatar.propTypes>) {
+    const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+      const target = e.target as HTMLImageElement
+      target.src = getDefaultSrc()
     }
 
     const getDefaultSrc = () => {
-      const { user } = props
+      const user = props.user as AsUtils.IUser
       const role = user.userType
       let src = 'img_Student.png'
       if (role === 'Teacher') {
@@ -24,7 +25,9 @@ export default async function (RB_CONTEXT) {
       return `themes/${themeType}/${src}`
     }
 
-    const { user, theme, className } = props
+    const { className } = props
+    const theme = props.theme as RB.IRBTheme
+    const user = props.user as AsUtils.IUser
     const { avatar } = user
     const imgUrl = avatar ? getUrlByKey(avatar) : getDefaultSrc()
     const cName = classnames(className, theme.avatar)

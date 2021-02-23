@@ -10,9 +10,26 @@ jest.mock('../avatar', () => {
   }
 })
 
+const RB_CONTEXT: RB.IRBContext = {
+  modules: {},
+  i18ns: {},
+  themes: {},
+  packedModules: {},
+  modulesConfig: {},
+  routes: [],
+  options: {
+  },
+  getModule: async (type: string) => {
+    if (type === 'asUtils') {
+      return {
+      }
+    }
+  }
+}
+
 describe('custom/as/framework/header/factories/user', () => {
   it('should render correctly', async () => {
-    const User = await userFactory()
+    const User = await userFactory(RB_CONTEXT)
     const props = {
       theme: {
         user: 'user',

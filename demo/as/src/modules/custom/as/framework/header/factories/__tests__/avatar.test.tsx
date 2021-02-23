@@ -4,11 +4,17 @@ import { mount } from 'enzyme'
 
 describe('custom/as/framework/header/factories/avatar', () => {
   it('should render correctly', async () => {
-    const RB_CONTEXT = {
+    const RB_CONTEXT: RB.IRBContext = {
+      modules: {},
+      i18ns: {},
+      themes: {},
+      packedModules: {},
+      modulesConfig: {},
+      routes: [],
       options: {
         theme: 'default'
       },
-      getModule: (type) => {
+      getModule: async (type: string) => {
         if (type === 'asUtils') {
           return {
             getUrlByKey: (key) => {
@@ -37,10 +43,16 @@ describe('custom/as/framework/header/factories/avatar', () => {
 
   it('should show default teacher image', async () => {
     const RB_CONTEXT = {
+      modules: {},
+      i18ns: {},
+      themes: {},
+      packedModules: {},
+      modulesConfig: {},
+      routes: [],
       options: {
         theme: 'default'
       },
-      getModule: (type) => {
+      getModule: async (type: string) => {
         if (type === 'asUtils') {
           return {
             getUrlByKey: (key) => {
@@ -69,10 +81,16 @@ describe('custom/as/framework/header/factories/avatar', () => {
 
   it('should show default student image', async () => {
     const RB_CONTEXT = {
+      modules: {},
+      i18ns: {},
+      themes: {},
+      packedModules: {},
+      modulesConfig: {},
+      routes: [],
       options: {
         theme: 'default'
       },
-      getModule: (type) => {
+      getModule: async (type: string) => {
         if (type === 'asUtils') {
           return {
             getUrlByKey: (key) => {
@@ -104,7 +122,7 @@ describe('custom/as/framework/header/factories/avatar', () => {
         src: ''
       }
     }
-    handleError(fakeE)
+    handleError(fakeE as unknown as React.SyntheticEvent<HTMLImageElement, Event>)
     expect(fakeE.target.src).toBe('themes/default/img_Student.png')
   })
 })

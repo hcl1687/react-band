@@ -1,14 +1,15 @@
-import PropTypes from 'prop-types'
+import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
 import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-export default async ({ getModule }) => {
-  function Breadcrumb (props) {
-    const { className = '', theme, BREADCRUMBS: crumbs = [] } = props
+export default async (): Promise<RB.IRBComponent> => {
+  function Breadcrumb (props: InferProps<typeof Breadcrumb.propTypes>) {
+    const { className = '', BREADCRUMBS: crumbs = [] } = props
+    const theme = props.theme as RB.IRBTheme
     const history = useHistory()
 
-    const handleClick = (i) => {
+    const handleClick = (i: number) => {
       if (i === crumbs.length - 1) {
         // if it is the last crumb, do nothing.
         return

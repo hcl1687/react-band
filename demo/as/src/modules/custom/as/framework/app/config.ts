@@ -1,4 +1,4 @@
-export default (config) => {
+export default (): RB.IRBConfig => {
   return {
     name: 'app',
     lazy: false,

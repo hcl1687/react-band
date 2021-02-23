@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types'
+import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
 
-export default () => {
-  function App (props) {
+export default (): RB.IRBComponent => {
+  function App (props: InferProps<typeof App.propTypes>) {
     const { children } = props
     return <div className='app'>{children}</div>
   }

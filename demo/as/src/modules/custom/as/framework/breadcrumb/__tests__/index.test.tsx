@@ -12,7 +12,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('custom/as/framework/breadcrumb', () => {
   it('should render correctly', async () => {
-    const Breadcrumb = await breadcrumbFactory({})
+    const Breadcrumb = await breadcrumbFactory()
     const props = {
       theme: {
         item: 'item',
@@ -31,7 +31,7 @@ describe('custom/as/framework/breadcrumb', () => {
   })
 
   it('do not show breadcrumb if items length is less than 2', async () => {
-    const Breadcrumb = await breadcrumbFactory({})
+    const Breadcrumb = await breadcrumbFactory()
     const props = {
       theme: {
         item: 'item',
@@ -48,7 +48,7 @@ describe('custom/as/framework/breadcrumb', () => {
   })
 
   it('check onClick with path', async () => {
-    const Breadcrumb = await breadcrumbFactory({})
+    const Breadcrumb = await breadcrumbFactory()
     const props = {
       theme: {
         item: 'item',
@@ -74,7 +74,7 @@ describe('custom/as/framework/breadcrumb', () => {
   })
 
   it('check onClick with onClick', async () => {
-    const Breadcrumb = await breadcrumbFactory({})
+    const Breadcrumb = await breadcrumbFactory()
     const test1Click = jest.fn()
     const test2Click = jest.fn()
     const props = {

@@ -1,12 +1,13 @@
-import PropTypes from 'prop-types'
+import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
 import avatarFactory from './avatar'
 
-export default async function (RB_CONTEXT = {}) {
+export default async function (RB_CONTEXT: RB.IRBContext): Promise<RB.IRBComponent> {
   const Avatar = await avatarFactory(RB_CONTEXT)
 
-  function User (props) {
-    const { user, theme } = props
+  function User (props: InferProps<typeof User.propTypes>) {
+    const user = props.user as AsUtils.IUser
+    const theme = props.theme as RB.IRBTheme
     const { userName, userType } = user
 
     return <div className={theme.user}>

@@ -8,6 +8,7 @@ declare global {
       theme?: string
       container?: string
       exclude?: boolean | RegExp | ((key: string) => boolean)
+      [propName: string]: any
     }
 
     type IRBConfig = IRBInnerConfig & IRBRootConfig & IRBLeafConfig

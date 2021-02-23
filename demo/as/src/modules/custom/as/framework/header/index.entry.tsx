@@ -1,25 +1,27 @@
+import PropTypes, { InferProps } from 'prop-types'
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
 import avatarFactory from './factories/avatar'
 import classnames from 'classnames'
 import queryString from 'query-string'
 import userFactory from './factories/user'
 
-export default async (RB_CONTEXT) => {
+export default async (RB_CONTEXT: RB.IRBContext): Promise<RB.IRBComponent> => {
   const { getModule, options } = RB_CONTEXT
-  const antd = await getModule('antd')
+  const antd = await getModule('antd') as ANTD.IANTD
   const antdIcon = await getModule('antdIcon')
-  const Login = await getModule('login')
-  const Profile = await getModule('profile')
+  const Login = await getModule('login') as RB.IRBComponent
+  const Profile = await getModule('profile') as RB.IRBComponent
   const Avatar = await avatarFactory(RB_CONTEXT)
   const User = await userFactory(RB_CONTEXT)
   const { Button, Drawer, Dropdown, Menu, Radio } = antd
   const { CheckOutlined, EditOutlined, GlobalOutlined, LoginOutlined, LogoutOutlined, MenuFoldOutlined,
     MenuUnfoldOutlined, SettingOutlined } = antdIcon || {}
 
-  function Header (props) {
-    const { theme, showLeft, LEFT_STATUS, LAYOUT_MODE, __, notify, getNotification, logout, AUTH = {},
+  function Header (props: InferProps<typeof Header.propTypes>) {
+    const { showLeft, LEFT_STATUS, LAYOUT_MODE, __, notify, getNotification, logout,
       setLayout, teacher } = props
+    const theme = props.theme as RB.IRBTheme
+    const AUTH = props.AUTH as AsUtils.IAuth
     const [visible, setVisible] = useState(false)
     const showDrawer = () => {
       setVisible(true)
@@ -112,7 +114,7 @@ export default async (RB_CONTEXT) => {
       const { locale } = options
       const menu = <Menu>
         {
-          languages.map((item, i) => {
+          languages.map((item: string, i: number) => {
             return <Menu.Item key={i} value={item} onClick={() => { handleLocaleChange(item) }}>
               <div className={theme.localeItem}>
                 <div className={theme.localeName}>{__(item)}</div>
@@ -130,7 +132,7 @@ export default async (RB_CONTEXT) => {
 
     const createSetting = () => {
       const { theme, themes } = options
-      const themeOpts = themes.map((item, i) => {
+      const themeOpts = themes.map((item: string) => {
         return { label: __(item), value: item }
       })
       const layoutOpts = [{
