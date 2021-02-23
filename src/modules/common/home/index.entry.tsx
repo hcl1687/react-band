@@ -1,7 +1,7 @@
 import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
 
-export default (): RB.IRBModule => {
+export default (): RB.IRBComponent => {
   function Home (props: InferProps<typeof Home.propTypes>) {
     const { __ } = props
     const theme = props.theme as RB.IRBTheme

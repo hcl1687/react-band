@@ -8,7 +8,7 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> =
   return (targetConfig: RB.IRBModuleConfig, decoConfig: RB.IRBModuleConfig) => async (WrappedComponent: RB.IRBComponent) => {
     const component = get(targetConfig, 'decoratorsConfig.@layout.component')
     const defaultComp = get(decoConfig, 'component')
-    const Wrapper = await getModule(component || defaultComp)
+    const Wrapper = (await getModule(component || defaultComp)) as RB.IRBComponent
 
     function layoutDeco (props) {
       return <Wrapper>

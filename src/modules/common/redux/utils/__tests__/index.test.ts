@@ -1,6 +1,6 @@
 import utilsFactory from '../index.entry'
 
-const utils: RB.IRBModule = utilsFactory()
+const utils = utilsFactory() as DecoRedux.IUtils
 
 describe('common/redux/utils', () => {
   it('should render correctly', () => {

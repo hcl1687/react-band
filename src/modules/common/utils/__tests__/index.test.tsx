@@ -1,11 +1,12 @@
+import React from 'react'
 import utilsFactory from '../index.entry'
 
-const utils = utilsFactory()
+const utils = utilsFactory() as Utils.IUtils
 
 describe('common/utils', () => {
   it('setStatic should work correctly', () => {
     const { setStatic } = utils
-    const test = function () {}
+    const test = function () { return <div /> }
     const ret = setStatic('a', 'b')(test)
     expect(ret.a).toEqual('b')
     expect(ret).toEqual(test)
@@ -13,7 +14,7 @@ describe('common/utils', () => {
 
   it('setDisplayName should work correctly', () => {
     const { setDisplayName } = utils
-    const test = function () {}
+    const test = function () { return <div /> }
     const ret = setDisplayName('test')(test)
     expect(ret.displayName).toEqual('test')
     expect(ret).toEqual(test)
@@ -23,14 +24,14 @@ describe('common/utils', () => {
     const { getDisplayName, setDisplayName } = utils
     expect(getDisplayName('abc')).toEqual('abc')
     expect(getDisplayName()).toBeUndefined()
-    const test = function () {}
+    const test = function () { return <div /> }
     const ret = setDisplayName('test')(test)
     expect(getDisplayName(ret)).toEqual('test')
   })
 
   it('wrapDisplayName should work correctly', () => {
     const { wrapDisplayName, setDisplayName } = utils
-    const test = function () {}
+    const test = function () { return <div /> }
     const ret = setDisplayName('test')(test)
     const name = wrapDisplayName(ret, 'abc')
     expect(name).toEqual('abc(test)')

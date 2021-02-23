@@ -55,4 +55,8 @@ declare namespace DecoRedux {
     reducers: IReduxReducers
     state: IReduxState
   }
+
+  interface IUtils {
+    getStore: (initialState: DecoRedux.IReduxState) => DecoRedux.IReduxStore
+  }
 }
