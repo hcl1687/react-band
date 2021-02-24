@@ -52,11 +52,17 @@ jest.mock('../menus', () => {
   }]
 })
 
-const RB_CONTEXT = {
+const RB_CONTEXT: RB.IRBContext = {
+  modules: {},
+  i18ns: {},
+  themes: {},
+  packedModules: {},
+  modulesConfig: {},
+  routes: [],
   options: {
     theme: 'default'
   },
-  getModule: (type) => {
+  getModule: async (type: string) => {
     if (type === 'antd') {
       const Menu = ({ children, onClick, ...rest }) => <div className='antd-menu' data-props={rest}>
         {children}
@@ -67,11 +73,12 @@ const RB_CONTEXT = {
         onClick: PropTypes.any
       }
 
-      Menu.Item = ({ children, onClick, ...rest }) => <div className='antd-menu-item' onClick={onClick} data-props={rest}>{children}</div>
-      Menu.Item.propTypes = {
+      const Item = ({ children, onClick, ...rest }) => <div className='antd-menu-item' onClick={onClick} data-props={rest}>{children}</div>
+      Item.propTypes = {
         children: PropTypes.any,
         onClick: PropTypes.func
       }
+      Menu.Item = Item
 
       return {
         Menu
@@ -108,8 +115,8 @@ describe('custom/as/framework/menu', () => {
     expect(wrapper.find('.antd-menu').length).toBe(1)
     expect(wrapper.find('.antd-menu-item').length).toBe(2)
 
-    expect(wrapper.find('.antd-menu').prop('data-props').inlineCollapsed).toBe(false)
-    expect(wrapper.find('.antd-menu').prop('data-props').selectedKeys).toEqual(['1'])
+    expect(wrapper.find('.antd-menu').prop('data-props')['inlineCollapsed']).toBe(false)
+    expect(wrapper.find('.antd-menu').prop('data-props')['selectedKeys']).toEqual(['1'])
     expect(wrapper.find('.menu').prop('style').display).toBe('block')
   })
 
@@ -145,7 +152,7 @@ describe('custom/as/framework/menu', () => {
 
     expect(wrapper.find('.menu').length).toBe(1)
     expect(wrapper.find('.antd-menu').length).toBe(1)
-    expect(wrapper.find('.antd-menu').prop('data-props').theme).toBe('dark')
+    expect(wrapper.find('.antd-menu').prop('data-props')['theme']).toBe('dark')
   })
 
   it('should toggle correctly', async () => {
@@ -159,7 +166,7 @@ describe('custom/as/framework/menu', () => {
     }
 
     const MenuCompWrapper = (props) => {
-      const menuRef = useRef()
+      const menuRef = useRef<Menu.IMenuHandle>()
       const toggle = () => {
         menuRef.current.toggleMenu()
       }

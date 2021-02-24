@@ -1,5 +1,5 @@
-declare namespace Login {
-  interface ILoginHandle {
+declare namespace Profile {
+  interface IProfileHandle {
     show: (params: IShowParams) => void
   }
 

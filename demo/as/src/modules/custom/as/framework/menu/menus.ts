@@ -6,4 +6,4 @@ export default [{
   path: '/assignment',
   name: 'assignment',
   icon: 'AppstoreOutlined'
-}]
+}] as Array<Menu.IMenu>

@@ -1,4 +1,4 @@
-export default () => {
+export default (): RB.IRBLeafConfig => {
   return {
     name: 'profile',
     decoratorsConfig: {

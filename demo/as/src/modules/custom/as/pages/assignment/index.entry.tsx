@@ -1,18 +1,20 @@
+import PropTypes, { InferProps } from 'prop-types'
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 
-export default async ({ getModule }) => {
-  const antd = await getModule('antd')
-  const antdIcon = await getModule('antdIcon')
-  const MultiView = await getModule('multiView')
-  const AssignmentDetail = await getModule('assignmentDetail')
-  const moment = await getModule('moment')
+export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBComponent> => {
+  const antd = await getModule('antd') as ANTD.IANTD
+  const antdIcon = await getModule('antdIcon') as AntdIcon.IAntdIcon
+  const MultiView = await getModule('multiView') as RB.IRBComponent
+  const AssignmentDetail = await getModule('assignmentDetail') as RB.IRBComponent
+  const moment = await getModule('moment') as Moment.IMoment
   const { Table } = antd
   const { UnorderedListOutlined } = antdIcon
 
-  function Assignment (props) {
-    const { theme, assignments: items, history, getAssignmentList, __ } = props
-    const [pagination, setPagination] = useState({
+  function Assignment (props: InferProps<typeof Assignment.propTypes>) {
+    const { assignments: items, getAssignmentList, __ } = props
+    const theme = props.theme as RB.IRBTheme
+    const history = props.history as RB.IRBHistory
+    const [pagination, setPagination] = useState<Assignment.IPaginationState>({
       current: 1,
       pageSize: 10,
       total: 0
@@ -23,18 +25,16 @@ export default async ({ getModule }) => {
       getData(pagination)
     }, [])
 
-    const getData = (pagination) => {
+    const getData = (pagination: AssignmentStore.IGetListParams) => {
       setLoading(true)
-      getAssignmentList(pagination).then(data => {
+      getAssignmentList(pagination).then((data: AssignmentStore.IGetListData) => {
         setPagination({
-          pagination: {
-            ...pagination,
-            total: data.count
-          }
+          ...pagination,
+          total: data.count
         })
         setLoading(false)
         return data
-      }).catch(err => {
+      }).catch((err: Error) => {
         setLoading(false)
         return err
       })
@@ -69,7 +69,7 @@ export default async ({ getModule }) => {
       }]
     }
 
-    const hanldeType = (text) => {
+    const hanldeType = (text: string) => {
       if (text === 'HomeWork') {
         return 'Hw'
       } else {
@@ -77,33 +77,33 @@ export default async ({ getModule }) => {
       }
     }
 
-    const handleDate = (text) => {
-      const value = text ? getDateText(text * 1000) : ''
+    const handleDate = (text: number|null) => {
+      const value = typeof text === 'number' ? getDateText(text * 1000) : ''
       return value
     }
 
-    const handleDetail = (text, record) => {
+    const handleDetail = (text: string, record: AssignmentStore.IAssignment) => {
       return <UnorderedListOutlined onClick={() => { toDetailPage(record) }} />
     }
 
-    const toDetailPage = (record) => {
+    const toDetailPage = (record: AssignmentStore.IAssignment) => {
       const path = `assignment?view=detail&id=${record.id}`
       history.push(path)
     }
 
-    const handleQuestions = (text) => {
+    const handleQuestions = (text: string) => {
       return __('qsText', [text])
     }
 
-    const handleTableChange = (pagination) => {
+    const handleTableChange = (pagination: Assignment.IPaginationState) => {
       getData(pagination)
     }
 
-    const getDateText = (datetime) => {
+    const getDateText = (datetime: number) => {
       return moment(datetime).format('MM/DD/YYYY hh:mm:ss A')
     }
 
-    const handleMultiViewChange = (index, name) => {
+    const handleMultiViewChange = (index: number) => {
       if (index === 0) {
         // refresh list
         getData(pagination)

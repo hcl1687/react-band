@@ -3,8 +3,15 @@ import React from 'react'
 import assignmentFactory from '../index.entry'
 import { mount } from 'enzyme'
 
-const RB_CONTEXT = {
-  getModule: (type) => {
+const RB_CONTEXT: RB.IRBContext = {
+  options: {},
+  modules: {},
+  i18ns: {},
+  themes: {},
+  packedModules: {},
+  modulesConfig: {},
+  routes: [],
+  getModule: async (type: string) => {
     if (type === 'antd') {
       const Table = ({ onChange, rowKey, columns, dataSource, ...rest }) => {
         return <div className='antd-table' data-props={rest}>
@@ -69,7 +76,7 @@ const RB_CONTEXT = {
 }
 
 const DEFAULT_PROPS = {
-  __: (val) => (val),
+  __: (val: string) => (val),
   theme: {
     wrapper: 'wrapper'
   },
@@ -157,8 +164,10 @@ describe('custom/as/pages/assignment', () => {
 
     wrapper.find('.table-pagination').simulate('click')
 
-    expect(props.getAssignmentList.mock.calls.length).toBe(2)
-    expect(props.getAssignmentList.mock.calls[0][0]).toEqual({
+    const mockedGetAssignmentList = props.getAssignmentList as jest.Mock<Promise<any>, [Assignment.IPaginationState?]>
+
+    expect(mockedGetAssignmentList.mock.calls.length).toBe(2)
+    expect(mockedGetAssignmentList.mock.calls[0][0]).toEqual({
       current: 1,
       pageSize: 10,
       total: 0
@@ -185,8 +194,10 @@ describe('custom/as/pages/assignment', () => {
 
     wrapper.find('.multiview').simulate('click')
 
-    expect(props.getAssignmentList.mock.calls.length).toBe(2)
-    expect(props.getAssignmentList.mock.calls[0][0]).toEqual({
+    const mockedGetAssignmentList = props.getAssignmentList as jest.Mock<Promise<any>, [Assignment.IPaginationState?]>
+
+    expect(mockedGetAssignmentList.mock.calls.length).toBe(2)
+    expect(mockedGetAssignmentList.mock.calls[0][0]).toEqual({
       current: 1,
       pageSize: 10,
       total: 0

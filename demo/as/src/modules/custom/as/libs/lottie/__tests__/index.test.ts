@@ -1,10 +1,17 @@
 import lottieFactory from '../index.entry'
 
 const RB_CONTEXT = {
-  getModule: (type) => {
+  options: {},
+  modules: {},
+  i18ns: {},
+  themes: {},
+  packedModules: {},
+  modulesConfig: {},
+  routes: [],
+  getModule: async (type: string) => {
     if (type === 'asUtils') {
       return {
-        getRemoteComponent: (val) => (val)
+        getRemoteComponent: (val: string) => (val)
       }
     }
   }

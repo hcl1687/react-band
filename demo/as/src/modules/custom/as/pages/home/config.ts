@@ -1,4 +1,4 @@
-export default (config) => {
+export default (): RB.IRBLeafConfig => {
   return {
     name: 'home',
     route: {

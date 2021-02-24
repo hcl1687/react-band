@@ -1,5 +1,5 @@
+import PropTypes, { InferProps } from 'prop-types'
 import React, { Component, forwardRef, useImperativeHandle, useRef } from 'react'
-import PropTypes from 'prop-types'
 import { mount } from 'enzyme'
 import profileFactory from '../index.entry'
 import tools from '~/../tests/utils/index'
@@ -36,14 +36,21 @@ const message = {
 }
 
 const RB_CONTEXT = {
-  getModule: (type) => {
+  options: {},
+  modules: {},
+  i18ns: {},
+  themes: {},
+  packedModules: {},
+  modulesConfig: {},
+  routes: [],
+  getModule: async (type: string) => {
     if (type === 'antd') {
       const Button = ({ onClick, ...rest }) => <div className='antd-button' onClick={onClick} data-props={rest} />
       Button.propTypes = {
         onClick: PropTypes.func
       }
 
-      class Form extends Component {
+      class Form extends Component<InferProps<typeof Form.propTypes>> {
         static propTypes = {
           children: PropTypes.any,
           onFinish: PropTypes.func
@@ -61,13 +68,14 @@ const RB_CONTEXT = {
         }
       }
 
-      Form.Item = ({ children, ...rest }) => <div className='antd-form-item' data-props={rest}>
+      const Item = ({ children, ...rest }) => <div className='antd-form-item' data-props={rest}>
         {children}
       </div>
-      Form.Item.propTypes = {
+      Item.propTypes = {
         children: PropTypes.any
       }
-      Form.useForm = () => {
+      Form['Item'] = Item
+      Form['useForm'] = () => {
         return [{
           setFieldsValue: () => {},
           resetFields: () => {}
@@ -106,7 +114,7 @@ const RB_CONTEXT = {
 }
 
 const DEFAULT_PROPS = {
-  __: (val) => (val),
+  __: (val: string) => (val),
   theme: {
     profileModal: 'profileModal'
   },
@@ -142,8 +150,8 @@ describe('custom/as/framework/profile', () => {
     expect(wrapper.find('.antd-input').length).toBe(5)
     expect(wrapper.find('.antd-button').length).toBe(1)
 
-    expect(wrapper.find('.antd-modal').prop('data-props').visible).toBe(false)
-    expect(wrapper.find('.antd-form').prop('data-props').initialValues).toEqual({
+    expect(wrapper.find('.antd-modal').prop('data-props')['visible']).toBe(false)
+    expect(wrapper.find('.antd-form').prop('data-props')['initialValues']).toEqual({
       id: 'bc747106-df91-48c0-a0b8-15ac66b891a5',
       userName: 'Janardan Behara',
       userId: 'bc747106-df91-48c0-a0b8-15ac66b891a5',
@@ -165,7 +173,7 @@ describe('custom/as/framework/profile', () => {
 
     let visible = false
     const ProfileWrapper = (props) => {
-      const profileRef = useRef()
+      const profileRef = useRef<Profile.IProfileHandle>()
       const toggle = () => {
         visible = !visible
         profileRef.current.show({
@@ -187,11 +195,11 @@ describe('custom/as/framework/profile', () => {
     expect(wrapper.find('.antd-button').length).toBe(1)
 
     expect(wrapper.find('.toggle').length).toBe(1)
-    expect(wrapper.find('.antd-modal').prop('data-props').visible).toBe(false)
+    expect(wrapper.find('.antd-modal').prop('data-props')['visible']).toBe(false)
     wrapper.find('.toggle').simulate('click')
-    expect(wrapper.find('.antd-modal').prop('data-props').visible).toBe(true)
+    expect(wrapper.find('.antd-modal').prop('data-props')['visible']).toBe(true)
     wrapper.find('.toggle').simulate('click')
-    expect(wrapper.find('.antd-modal').prop('data-props').visible).toBe(false)
+    expect(wrapper.find('.antd-modal').prop('data-props')['visible']).toBe(false)
   })
 
   it('should cancel correctly', async () => {
@@ -206,7 +214,7 @@ describe('custom/as/framework/profile', () => {
 
     let visible = false
     const ProfileWrapper = (props) => {
-      const profileRef = useRef()
+      const profileRef = useRef<Profile.IProfileHandle>()
       const toggle = () => {
         visible = !visible
         profileRef.current.show({
@@ -228,19 +236,19 @@ describe('custom/as/framework/profile', () => {
     expect(wrapper.find('.antd-button').length).toBe(1)
 
     expect(wrapper.find('.toggle').length).toBe(1)
-    expect(wrapper.find('.antd-modal').prop('data-props').visible).toBe(false)
+    expect(wrapper.find('.antd-modal').prop('data-props')['visible']).toBe(false)
     wrapper.find('.toggle').simulate('click')
-    expect(wrapper.find('.antd-modal').prop('data-props').visible).toBe(true)
+    expect(wrapper.find('.antd-modal').prop('data-props')['visible']).toBe(true)
     wrapper.find('.modal-close').simulate('click')
-    expect(wrapper.find('.antd-modal').prop('data-props').visible).toBe(false)
-    expect(wrapper.find('.antd-button').prop('data-props').loading).toBe(false)
+    expect(wrapper.find('.antd-modal').prop('data-props')['visible']).toBe(false)
+    expect(wrapper.find('.antd-button').prop('data-props')['loading']).toBe(false)
   })
 
   it('check edit successfully', async () => {
     const Profile = await profileFactory(RB_CONTEXT)
     const props = {
       ...DEFAULT_PROPS,
-      editTeacher: jest.fn((uid) => Promise.resolve())
+      editTeacher: jest.fn((uid) => Promise.resolve(uid))
     }
     const profileRef = React.createRef()
     const wrapper = mount(<Profile {...props} ref={profileRef} />)
@@ -256,10 +264,11 @@ describe('custom/as/framework/profile', () => {
 
     return tools.delay(() => {
       wrapper.update()
-      expect(props.editTeacher.mock.calls.length).toBe(1)
-      expect(props.editTeacher.mock.calls[0][0]).toBe('xxx')
+      const mockedEditTeacher = props.editTeacher as jest.Mock<Promise<any>, [string?]>
+      expect(mockedEditTeacher.mock.calls.length).toBe(1)
+      expect(mockedEditTeacher.mock.calls[0][0]).toBe('xxx')
       expect(message.success.mock.calls.length).toBe(1)
-      expect(wrapper.find('.antd-button').prop('data-props').loading).toBe(false)
+      expect(wrapper.find('.antd-button').prop('data-props')['loading']).toBe(false)
     }, 100)
   })
 
@@ -283,11 +292,12 @@ describe('custom/as/framework/profile', () => {
 
     return tools.delay(() => {
       wrapper.update()
-      expect(props.editTeacher.mock.calls.length).toBe(1)
-      expect(props.editTeacher.mock.calls[0][0]).toBe('xxx')
+      const mockedEditTeacher = props.editTeacher as jest.Mock<Promise<Error>, [string?]>
+      expect(mockedEditTeacher.mock.calls.length).toBe(1)
+      expect(mockedEditTeacher.mock.calls[0][0]).toBe('xxx')
       expect(message.error.mock.calls.length).toBe(1)
       expect(message.error.mock.calls[0][0]).toBe('failed')
-      expect(wrapper.find('.antd-button').prop('data-props').loading).toBe(false)
+      expect(wrapper.find('.antd-button').prop('data-props')['loading']).toBe(false)
     }, 500)
   })
 })

@@ -1,25 +1,28 @@
+import PropTypes, { InferProps } from 'prop-types'
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 
-export default async ({ getModule }) => {
-  const antd = await getModule('antd')
+export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBComponent> => {
+  const antd = await getModule('antd') as ANTD.IANTD
   const { Form, Input, Button, Modal, Spin, message } = antd
 
-  function Profile (props, ref) {
+  function Profile (props: InferProps<typeof Profile.propTypes>, ref) {
     const [visible, setVisible] = useState(false)
     const [loading, setLoading] = useState(false)
     const [commitLoading, setCommitLoading] = useState(false)
     const [form] = Form.useForm()
-    const { AUTH, teacher, setNotifyHandler, getTeacher, editTeacher, __, theme } = props
+    const { setNotifyHandler, getTeacher, editTeacher, __ } = props
+    const AUTH = props.AUTH as AsUtils.IAuth
+    const teacher = props.teacher as AsUtils.IUser
+    const theme = props.theme as RB.IRBTheme
 
     const show = ({ visible }) => {
-      const getUser = AUTH.role === 'Teacher' ? getTeacher : Promise.resolve()
+      const getUser = AUTH.role === 'Teacher' ? getTeacher : () => Promise.resolve()
       return new Promise((resolve) => {
         setVisible(visible)
         setLoading(true)
         getUser(AUTH.uid).finally(() => {
           setLoading(false)
-          resolve()
+          resolve(null)
         })
       })
     }
@@ -39,14 +42,14 @@ export default async ({ getModule }) => {
       setCommitLoading(false)
     }
 
-    const handleFinish = (values) => {
+    const handleFinish = (values: TeacherStore.IEditData) => {
       setCommitLoading(true)
-      const editUser = AUTH.role === 'Teacher' ? editTeacher : Promise.resolve()
+      const editUser = AUTH.role === 'Teacher' ? editTeacher : () => Promise.resolve()
       editUser(AUTH.uid, values).then(() => {
         handleCancel()
         setCommitLoading(false)
         message.success(__('success'))
-      }).catch(err => {
+      }).catch((err: Error) => {
         message.error(err.message)
         setCommitLoading(false)
       })

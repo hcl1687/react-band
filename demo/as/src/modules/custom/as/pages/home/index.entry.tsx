@@ -1,9 +1,10 @@
-import PropTypes from 'prop-types'
+import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
 
-export default () => {
-  function Home (props) {
-    const { __, theme } = props
+export default (): RB.IRBComponent => {
+  function Home (props: InferProps<typeof Home.propTypes>) {
+    const { __ } = props
+    const theme = props.theme as RB.IRBTheme
 
     let tip = __('home')
     if (process.env.NODE_ENV === 'production') {

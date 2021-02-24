@@ -5,7 +5,15 @@ declare namespace BreadcrumbStore {
     onClick?: () => void
   }
 
+  interface ISetBreadcrumbAction {
+    (params: Array<IBreadcrumb>): Array<IBreadcrumb>
+  }
+
+  interface ISetBreadcrumb {
+    (params: Array<IBreadcrumb>): void
+  }
+
   interface IActions {
-    setBreadcrumb: (params: Array<IBreadcrumb>) => Array<IBreadcrumb>
+    setBreadcrumb: ISetBreadcrumbAction
   }
 }

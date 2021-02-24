@@ -1,4 +1,5 @@
 // https://stackoverflow.com/questions/45099605/ambient-declaration-with-an-imported-type-in-typescript
+import { History } from 'history'
 import { RouteProps } from 'react-router-dom'
 
 declare global {
@@ -122,5 +123,7 @@ declare global {
     interface IRBModuleFactory {
       (RB_CONTEXT: IRBContext): IRBModule
     }
+
+    type IRBHistory = History
   }
 }

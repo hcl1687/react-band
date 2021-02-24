@@ -139,7 +139,7 @@ describe('custom/as/framework/login', () => {
 
     let visible = false
     const LoginWrapper = (props) => {
-      const loginRef = useRef<Login.LoginHandle>()
+      const loginRef = useRef<Login.ILoginHandle>()
       const toggle = () => {
         visible = !visible
         loginRef.current.show({
@@ -181,7 +181,7 @@ describe('custom/as/framework/login', () => {
 
     let visible = false
     const LoginWrapper = (props) => {
-      const loginRef = useRef<Login.LoginHandle>()
+      const loginRef = useRef<Login.ILoginHandle>()
       const toggle = () => {
         visible = !visible
         loginRef.current.show({

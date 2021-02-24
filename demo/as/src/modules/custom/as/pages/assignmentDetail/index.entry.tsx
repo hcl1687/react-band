@@ -1,24 +1,26 @@
+import PropTypes, { InferProps } from 'prop-types'
 import React, { useEffect, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
 import get from 'lodash/get'
 import { useHistory } from 'react-router-dom'
 
-export default async ({ getModule }) => {
-  const asUtils = await getModule('asUtils')
-  const antd = await getModule('antd')
-  const moment = await getModule('moment')
+export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBComponent> => {
+  const asUtils = await getModule('asUtils') as AsUtils.IUtils
+  const antd = await getModule('antd') as ANTD.IANTD
+  const moment = await getModule('moment') as Moment.IMoment
   const { DatePicker, Form, Input, InputNumber, Button, Select, Spin, message } = antd
   const { Option } = Select
   const { getQueryParams } = asUtils
 
-  function AssignmentDetail (props) {
-    const { theme, assignment, getAssignment, editAssignment, __, setBreadcrumb,
-      multiview_actived } = props
+  function AssignmentDetail (props: InferProps<typeof AssignmentDetail.propTypes>) {
+    const { getAssignment, editAssignment, __, multiview_actived } = props
+    const theme = props.theme as RB.IRBTheme
+    const assignment = props.assignment as AssignmentStore.IAssignment
+    const setBreadcrumb = props.setBreadcrumb as BreadcrumbStore.ISetBreadcrumb
     const [form] = Form.useForm()
     const history = useHistory()
     const [loading, setLoading] = useState(false)
     const [commitLoading, setCommitLoading] = useState(false)
-    const prevPropsRef = useRef()
+    const prevPropsRef = useRef<InferProps<typeof AssignmentDetail.propTypes>>()
     useEffect(() => {
       prevPropsRef.current = props
     })
@@ -62,7 +64,7 @@ export default async ({ getModule }) => {
       history.goBack()
     }
 
-    const getQueryParam = (props, key) => {
+    const getQueryParam = (props: InferProps<typeof AssignmentDetail.propTypes>, key: string) => {
       const search = get(props, 'location.search')
       const query = getQueryParams(search) || {}
 
@@ -70,11 +72,15 @@ export default async ({ getModule }) => {
     }
 
     const handleFinish = (values) => {
-      values.CreatedTime = Math.floor(values.CreatedTime.valueOf() / 1000)
-      values.DeadlineTime = Math.floor(values.DeadlineTime.valueOf() / 1000)
+      const ret = {
+        ...values,
+        CreatedTime: Math.floor(values.CreatedTime.valueOf() / 1000),
+        DeadlineTime: Math.floor(values.DeadlineTime.valueOf() / 1000)
+      }
+
       setCommitLoading(true)
       const id = getQueryParam(props, 'id')
-      editAssignment(id, values).then(() => {
+      editAssignment(id, ret).then(() => {
         handleCancel()
         setCommitLoading(false)
         message.success(__('success'))
@@ -84,28 +90,30 @@ export default async ({ getModule }) => {
       })
     }
 
-    const getDetail = (id) => {
+    const getDetail = (id: string) => {
       setLoading(true)
       getAssignment(id).finally(() => {
         setLoading(false)
       })
     }
 
-    const playTypeFormatter = (value) => {
+    const playTypeFormatter = (value: number|null|undefined|'') => {
       if (!value) {
         value = 0
       }
       return `${value}%`
     }
 
-    const playTypeParser = (value) => {
+    const playTypeParser = (value: string) => {
       return value.replace('%', '')
     }
 
-    const handleValues = (values) => {
-      var ret = { ...values }
-      ret.CreatedTime = moment((ret.CreatedTime || 0) * 1000)
-      ret.DeadlineTime = moment((ret.DeadlineTime || 0) * 1000)
+    const handleValues = (values: AssignmentStore.IAssignment) => {
+      const ret = {
+        ...values,
+        CreatedTime: moment((values.CreatedTime || 0) * 1000),
+        DeadlineTime: moment((values.DeadlineTime || 0) * 1000)
+      }
 
       return ret
     }
