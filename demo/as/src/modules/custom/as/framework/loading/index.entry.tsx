@@ -2,7 +2,7 @@ import PropTypes, { InferProps } from 'prop-types'
 import React, { useEffect, useRef } from 'react'
 
 export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBComponent> => {
-  const lottie = await getModule('lottie')
+  const lottie = await getModule('lottie') as Lottie.ILottie
 
   function Loading (props: InferProps<typeof Loading.propTypes>) {
     const lottieDom = useRef(null)

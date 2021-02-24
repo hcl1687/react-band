@@ -172,7 +172,7 @@ describe('custom/as/pages/assignment', () => {
       pageSize: 10,
       total: 0
     })
-    expect(props.getAssignmentList.mock.calls[1][0]).toEqual({
+    expect(mockedGetAssignmentList.mock.calls[1][0]).toEqual({
       current: 1,
       pageSize: 10,
       total: 2
@@ -202,7 +202,7 @@ describe('custom/as/pages/assignment', () => {
       pageSize: 10,
       total: 0
     })
-    expect(props.getAssignmentList.mock.calls[1][0]).toEqual({
+    expect(mockedGetAssignmentList.mock.calls[1][0]).toEqual({
       current: 1,
       pageSize: 10,
       total: 0
