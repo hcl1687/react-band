@@ -33,23 +33,24 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBComponent> =>
       setErrMsg('')
     }
 
-    const handleFinish = (values) => {
+    const handleFinish = (values: AuthStore.ILoginData) => {
       const { login, getTeacher } = props
       setLoading(true)
-      login(values).then((auth) => {
-        const getUser = auth.role === 'Teacher' ? getTeacher : Promise.resolve()
+      login(values).then((auth: AsUtils.IAuth) => {
+        const getUser = auth.role === 'Teacher' ? getTeacher : () => Promise.resolve()
         return getUser(auth.uid)
       }).then(() => {
         handleCancel()
         setLoading(false)
-      }).catch(err => {
+      }).catch((err: Error) => {
         setErrMsg(err.message)
         setLoading(false)
       })
     }
 
     function createForm () {
-      const { __, theme } = props
+      const { __ } = props
+      const theme = props.theme as RB.IRBTheme
       const layout = {
         labelCol: { span: 6 },
         wrapperCol: { span: 18 }
@@ -88,7 +89,8 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBComponent> =>
       </Form>
     }
 
-    const { theme, __ } = props
+    const { __ } = props
+    const theme = props.theme as RB.IRBTheme
     return <Modal className={theme.loginModal} title={__('loginTitle')} visible={visible}
       footer={null} maskClosable={false} onCancel={handleCancel}>
       {createForm()}

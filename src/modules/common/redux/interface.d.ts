@@ -20,7 +20,7 @@ declare namespace DecoRedux {
 
   interface IReduxReducer {
     next: (state: IReduxState, action: IReduxAction) => IReduxState
-    throw: (state: IReduxState, action: IReduxAction) => IReduxState
+    throw?: (state: IReduxState, action: IReduxAction) => IReduxState
   }
 
   interface IReduxReducers {
