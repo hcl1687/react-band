@@ -9,7 +9,6 @@ const pkgPath = path.resolve(process.cwd(), 'package.json')
 const fileContent = fs.readFileSync(pkgPath, 'utf-8')
 const pkg = JSON.parse(fileContent)
 const src = path.resolve(__dirname, './src')
-const src_build = path.resolve(__dirname, './src_build')
 const dist = path.resolve(__dirname, './dist')
 const staticDir = path.resolve(__dirname, './static')
 const NODE_ENV = process.env.NODE_ENV
@@ -39,8 +38,7 @@ const cssLoaders = cssLoadersFactory()
 const cssGlobalLoaders = cssLoadersFactory(true)
 
 module.exports = (env) => {
-  const entry = env !== 'production' ? './src/index.tsx' : './src_build/index.tsx'
-  const srcPath = env !== 'production' ? src : src_build
+  const entry = './src/index.tsx'
   const filename = env !== 'production' ? '[name].bundle.js' : '[name].[contenthash].bundle.js'
   const chunkFilename = env !== 'production' ? '[name].chunk.bundle.js' : '[name].[contenthash].chunk.bundle.js'
 
@@ -96,7 +94,7 @@ module.exports = (env) => {
     resolve: {
       extensions: ['*', '.js', '.jsx', '.ts', '.tsx', '.css', '.json'],
       alias: {
-        '~': srcPath
+        '~': src
       }
     },
     plugins: [
@@ -110,7 +108,7 @@ module.exports = (env) => {
         filename: './index.html'
       }),
       new StyleLintPlugin({
-        context: srcPath,
+        context: src,
         files: '**/*.css',
         failOnError: false,
         quiet: true,
