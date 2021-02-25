@@ -1,5 +1,5 @@
-# react-band
-A portable react scaffold with webpack, babel, less, eslint, stylelint, jest and enzyme.
+# react-band with Typescript
+A portable react scaffold with typescript, webpack, babel, less, eslint, stylelint, jest and enzyme.
 
 # Motivation
 
@@ -25,13 +25,17 @@ and international resources, and improve the loading speed of the page.
 
 # Demo
 
-<a href="https://www.hcl1687.com/react-band-as" target="_blank">as - a backstage management system</a>
+<a href="https://www.hcl1687.com/react-band-typescript-as" target="_blank">as - a backstage management system</a>
 
 # Document
 
 [en](./document/en/tutorial.md)
 
 [zh-CN](./document/zh-CN/tutorial.md)
+
+# Plain javascript version
+
+[react-band](https://github.com/hcl1687/react-band)
 
 # Quick Start
 
@@ -44,10 +48,12 @@ npm install react-band-cli -g
 ## Initiate project
 
 ```bash
-react-band-cli init my-app -d as
+react-band-cli init my-app -t typescript -d as
 ```
 
 init my-app: create my-app folder in the current directory, and initiate project.
+
+-t typescript: create my-app project with Typescript.
 
 -d as: add as demo after initiate the project. Currently, react-band provide these demos：
 
@@ -68,8 +74,8 @@ If init with the basic demo. After the initialization is complete, a basic folde
         |-home
           |-__test__
             |-__snapshots__
-            |-config.test.js
-            |-index.test.js
+            |-config.test.ts
+            |-index.test.tsx
           |-i18n
             |-en.json
             |-zh-CN.json
@@ -78,15 +84,15 @@ If init with the basic demo. After the initialization is complete, a basic folde
               |-index.css
             |-default
               |-index.css
-          |-config.js
-          |-index.entry.jsx
+          |-config.ts
+          |-index.entry.tsx
         |-test
           |-__test__/
           |-i18n/
           |-themes/
-          |-config.js
-          |-index.entry.jsx
-        |-config.js
+          |-config.ts
+          |-index.entry.tsx
+        |-config.ts
 ```
 
 ## Run

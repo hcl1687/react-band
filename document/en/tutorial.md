@@ -38,9 +38,9 @@ and internationalized resources are placed in the locale folder. Something like 
 |-src
   |-js
     |-module1
-      |-index.js
+      |-index.ts
     |-module2
-      |-index.js
+      |-index.ts
   |-themes
     |-module1
     |-module2
@@ -59,15 +59,15 @@ structure is as follows:
   |-modules
     |-custom
       |-module1
-        |-config.js
-        |-index.entry.js
+        |-config.ts
+        |-index.entry.ts
         |-themes
         |-i18n
         |-document
         |-__test__
       |-module2
-        |-config.js
-        |-index.entry.js
+        |-config.ts
+        |-index.entry.ts
         |-themes
         |-i18n
         |-document
@@ -78,11 +78,11 @@ structure is as follows:
 
 Although we organize files according to modules and improve the cohesion of modules, the coupling 
 between modules still exists. For example: module1 depends on module2, then module2 needs to be directly 
-referenced in the index.js file of module1, Something like this:
+referenced in the index.ts file of module1, Something like this:
 
 ```javascript
-// moduel1/index.js
-import Module2 from '../module2/index.js'
+// moduel1/index.tsx
+import Module2 from '../module2/index.tsx'
 ```
 
 In this case, when porting module1, also need to port module2, and at the same time should ensure that 
@@ -91,7 +91,7 @@ through asynchronous loading. As follows:
 
 ```javascript
 // react-band
-// src/modules/custom/module1/index.entry.js
+// src/modules/custom/module1/index.entry.tsx
 export default async ({ getModule }) => {
   const Module2 = await getModule('module2')
 
@@ -101,7 +101,7 @@ export default async ({ getModule }) => {
 }
 ```
 
-react-band will collect the config.js file under each module and maintain a list of modules for the 
+react-band will collect the config.ts file under each module and maintain a list of modules for the 
 current project. Each module uses the getModule function to load other modules asynchronously. In this way, the path dependence between modules is cancelled, and because it is asynchronously loaded on demand, the page loading speed is also improved.
 
 ## How to achieve progressive component development?
@@ -140,7 +140,7 @@ The initial directory structure of the react-band project is as follows:
     |-custom/
   |-config/
   |-core/
-  |-index.jsx
+  |-index.tsx
 |-static/
 |-template/
 |-tests/
@@ -155,7 +155,7 @@ The functions of each directory file are as follows:
       * custom: store custom modules code.
    * config: store configuration of react-band.
    * core: core code of react-band. It is mainly responsible for asynchronously loading the modules in the modules folder, and creating routes through React-Router, and finally rendering the modules through React.
-   * index.jsx: Project's entry file. It creates an RBCore object through the RBCore.create method, and calls the mount method of the RBCore object to render the page.
+   * index.tsx: Project's entry file. It creates an RBCore object through the RBCore.create method, and calls the mount method of the RBCore object to render the page.
 * static: store static resources. These files will be copied to the dist folder after building.
 * template: template of index.html
 * tests: store configuration for testing and e2e test cases。
@@ -181,18 +181,18 @@ css code, internationalized resources, etc.
           |-__test__/
           |-i18n/
           |-themes/
-          |-config.js
-          |-index.entry.jsx
+          |-config.ts
+          |-index.entry.tsx
         |-test
           |-__test__/
           |-i18n/
           |-themes/
-          |-config.js
-          |-index.entry.jsx
-        |-config.js
+          |-config.ts
+          |-index.entry.tsx
+        |-config.ts
 ```
 
-Modules in react-band usually include configuration files (config.js), entry files (index.entry.jsx), theme files (themes/), internationalized resource files (i18n/), unit test files (\_\_test\_\_/) etc.
+Modules in react-band usually include configuration files (config.ts), entry files (index.entry.tsx), theme files (themes/), internationalized resource files (i18n/), unit test files (\_\_test\_\_/) etc.
 
 ## Type
 There are two types of modules in react-band: component and decorator. Specify the type of the module 
@@ -202,7 +202,7 @@ below is the configuration file of the i18n module in react-band. The type field
 > ***Convention: The name of the module of the decorator type must start with'@'***
 
 ```javascript
-// src/modules/common/i18n/config.js
+// src/modules/common/i18n/config.ts
 export default () => {
   return {
     name: '@i18n',
@@ -215,18 +215,18 @@ The decorator type module is used to decorate the component type module. Specify
 applied by setting the decoratorsConfig and decorators fields in the configuration file of the component 
 type module. During the runtime, react-band is responsible for loading related modules and assembling them.
 
-## Configuration file (config.js)
-Each module must have a config.js file. When react-band is building, it will traverse the src/modules directory, 
-collect all the configuration information in the config.js file and save it. During the runtime, react-band 
+## Configuration file (config.ts)
+Each module must have a config.ts file. When react-band is building, it will traverse the src/modules directory, 
+collect all the configuration information in the config.ts file and save it. During the runtime, react-band 
 dynamically loads and assembles modules through these configuration information.
 
-> ***The config.js file is inherited. After react-band collects config.js, it will merge the configuration information in config.js in a directory with the configuration information in the parent directory of the directory to form the final configuration information.***
+> ***The config.ts file is inherited. After react-band collects config.ts, it will merge the configuration information in config.ts in a directory with the configuration information in the parent directory of the directory to form the final configuration information.***
 
 Shown below is the configuration information of the home module.
 
 ```javascript
 // demo: basic
-// src/modules/custom/basic/home/config.js
+// src/modules/custom/basic/home/config.ts
 export default (config) => {
   return {
     name: 'home',
@@ -241,7 +241,7 @@ export default (config) => {
 
 ```javascript
 // demo: as
-// src/modules/custom/as/test/config.js
+// src/modules/custom/as/test/config.ts
 export default (config) => {
   return {
     name: 'demo/test',
@@ -271,12 +271,12 @@ Configuration field description:
 | decoratorsConfig | Decorator configuration information. Optional. Some decorators may need to specify configuration information. In the configuration file of the decorator module, this field is invalid. |  |
 | decorators | List of decorators. Optional. Declare the decorator that the module needs to apply. In the configuration file of the decorator module, this field is invalid. |  |
 
-## Entry file (index.entry.jsx)
-Each module must have an index.entry.jsx or index.entry.js file. react-band uses this file to split the code into modules.
+## Entry file (index.entry.tsx)
+Each module must have an index.entry.tsx or index.entry.ts file. react-band uses this file to split the code into modules.
 
 ```javascript
 // demo: basic
-// src/modules/custom/basic/home/index.entry.jsx
+// src/modules/custom/basic/home/index.entry.tsx
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -304,32 +304,32 @@ export default (RB_CONTEXT) => {
 }
 ```
 
-During the runtime of react-band, after the module is dynamically loaded, the code in index.entry.jsx is 
+During the runtime of react-band, after the module is dynamically loaded, the code in index.entry.tsx is 
 executed and the RB_CONTEXT object is passed in to create the React Component object corresponding to 
 the module. The RB_CONTEXT object fields are as follows:
 
 | field | description | example |
 | -              | -                                          | -                 |
 | options | The configuration information passed in when creating a react-band instance. | { locale: 'en', theme: 'default' } |
-| modules | The list of React Component objects returned after index.entry.jsx is executed. |  |
+| modules | The list of React Component objects returned after index.entry.tsx is executed. |  |
 | i18ns | Store i18n resources of each module. |  |
 | themes | Store the theme resources of each module. |  |
 | packedModules | The React Component object list generated after add their decorators according to the configuration file. |  |
-| modulesConfig | The config.js configuration information list of each module. |  |
-| routes | Config.js configuration information list with route information. |  |
+| modulesConfig | The config.ts configuration information list of each module. |  |
+| routes | Config.ts configuration information list with route information. |  |
 | getModule | Get modules asynchronously | const Test = await getModule('test')  |
 
 react-band provides getModule method to get module object asynchronously. Thereby reducing the strong 
 dependence between modules. As follows:
 
 ```javascript
-// moduel1/index.js
-import Module2 from '../module2/index.js'
+// moduel1/index.ts
+import Module2 from '../module2/index.ts'
 ```
 
 ```javascript
 // react-band
-// src/modules/custom/module1/index.entry.js
+// src/modules/custom/module1/index.entry.ts
 export default async ({ getModule }) => {
   const Module2 = await getModule('module2')
 
@@ -364,7 +364,7 @@ the module object. As follows:
 
 ```javascript
 // demo: basic
-// src/modules/custom/basic/home/config.js
+// src/modules/custom/basic/home/config.ts
 export default (config) => {
   return {
     name: 'home',
@@ -379,7 +379,7 @@ export default (config) => {
 
 ```javascript
 // demo: basic
-// src/modules/custom/basic/home/index.entry.jsx
+// src/modules/custom/basic/home/index.entry.tsx
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -433,7 +433,7 @@ to parse internationalized resources. As follows:
 
 ```javascript
 // demo: basic
-// src/modules/custom/basic/home/config.js
+// src/modules/custom/basic/home/config.ts
 export default (config) => {
   return {
     name: 'home',
@@ -448,7 +448,7 @@ export default (config) => {
 
 ```javascript
 // demo: basic
-// src/modules/custom/basic/home/index.entry.jsx
+// src/modules/custom/basic/home/index.entry.tsx
 import PropTypes from 'prop-types'
 import React from 'react'
 

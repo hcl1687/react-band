@@ -28,9 +28,9 @@
 |-src
   |-js
     |-module1
-      |-index.js
+      |-index.ts
     |-module2
-      |-index.js
+      |-index.ts
   |-themes
     |-module1
     |-module2
@@ -48,15 +48,15 @@
   |-modules
     |-custom
       |-module1
-        |-config.js
-        |-index.entry.js
+        |-config.ts
+        |-index.entry.tsx
         |-themes
         |-i18n
         |-document
         |-__test__
       |-module2
-        |-config.js
-        |-index.entry.js
+        |-config.ts
+        |-index.entry.tsx
         |-themes
         |-i18n
         |-document
@@ -66,11 +66,11 @@
 ### 异步加载
 
 虽然我们按照模块组织文件，提高了模块的内聚性，但是模块与模块间的耦合还存在。比如：module1依赖module2，
-那么在module1的index.js文件中，需要直接引用module2，类似这样：
+那么在module1的index.ts文件中，需要直接引用module2，类似这样：
 
 ```javascript
-// moduel1/index.js
-import Module2 from '../module2/index.js'
+// moduel1/index.tsx
+import Module2 from '../module2/index.tsx'
 ```
 
 这样的话，在移植module1的时候也要移植module2，同时还要确保module1和module2路径保持一致。react-band通过
@@ -78,7 +78,7 @@ import Module2 from '../module2/index.js'
 
 ```javascript
 // react-band
-// src/modules/custom/module1/index.entry.js
+// src/modules/custom/module1/index.entry.ts
 export default async ({ getModule }) => {
   const Module2 = await getModule('module2')
 
@@ -88,7 +88,7 @@ export default async ({ getModule }) => {
 }
 ```
 
-react-band会搜集每个模块下的config.js文件，维护一个当前项目的模块列表。各模块通过getModule函数，
+react-band会搜集每个模块下的config.ts文件，维护一个当前项目的模块列表。各模块通过getModule函数，
 异步加载其他模块。通过这种方式取消了模块间的路径依赖，并且由于是异步按需加载，也提升了页面的加载速度。
 
 ## 如何实现渐进式组件开发？
@@ -122,7 +122,7 @@ react-band项目初始目录结构如下所示：
     |-custom/
   |-config/
   |-core/
-  |-index.jsx
+  |-index.tsx
 |-static/
 |-template/
 |-tests/
@@ -137,7 +137,7 @@ react-band项目初始目录结构如下所示：
       * custom: 存放非通用模块代码。
    * config: 存放react-band通用配置信息。
    * core: react-band核心代码，主要负责异步加载modules中的模块，并通过React-route创建路由，最终通过React渲染出页面。
-   * index.jsx: 项目入口文件，通过创建RBCore.create方法创建RBCore对象，并调用RBCore对象的mount方法渲染页面。
+   * index.tsx: 项目入口文件，通过创建RBCore.create方法创建RBCore对象，并调用RBCore对象的mount方法渲染页面。
 * static: 存放静态资源，构建的时候该目录下的资源文件将会被复制到dist目录下。
 * template: 首页模板
 * tests: 存放测试相关配置文件，以及e2e测试用例。
@@ -156,18 +156,18 @@ react-band中的模块是指：一个独立的代码和资源的文件集合，�
           |-__test__/
           |-i18n/
           |-themes/
-          |-config.js
-          |-index.entry.jsx
+          |-config.ts
+          |-index.entry.tsx
         |-test
           |-__test__/
           |-i18n/
           |-themes/
-          |-config.js
-          |-index.entry.jsx
-        |-config.js
+          |-config.ts
+          |-index.entry.tsx
+        |-config.ts
 ```
 
-react-band中的模块，通常包含配置文件（config.js）、入口文件（index.entry.jsx）、主题文件（themes/）、国际化资源文件（i18n/）、单元测试文件（\_\_test\_\_/）等。
+react-band中的模块，通常包含配置文件（config.ts）、入口文件（index.entry.tsx）、主题文件（themes/）、国际化资源文件（i18n/）、单元测试文件（\_\_test\_\_/）等。
 
 ## 类型
 react-band中的模块有两种类型：组件型和装饰器型。通过在配置文件中设置type=component|decorator来指定模块的类型， 默认是component类型。下面展示的是react-band中i18n模块的配置文件。其中type字段设置为decorator。
@@ -175,7 +175,7 @@ react-band中的模块有两种类型：组件型和装饰器型。通过在配�
 > ***约定：装饰器类型的模块，其名字必须以'@'开头***
 
 ```javascript
-// src/modules/common/i18n/config.js
+// src/modules/common/i18n/config.ts
 export default () => {
   return {
     name: '@i18n',
@@ -186,16 +186,16 @@ export default () => {
 
 装饰器模块用于装饰component类型的模块。通过在component类型模块的配置文件中设置decoratorsConfig和decorators字段，来指定需要应用的装饰器。在运行期，react-band负责加载相关模块并组装。
 
-## 配置文件（config.js）
-每个模块都必须要有一个config.js文件。react-band在构建的时候，会遍历src/modules目录，搜集所有的config.js文件中的配置信息并保存起来。在运行期，react-band通过这些配置信息，动态加载和组装各模块。
+## 配置文件（config.ts）
+每个模块都必须要有一个config.ts文件。react-band在构建的时候，会遍历src/modules目录，搜集所有的config.ts文件中的配置信息并保存起来。在运行期，react-band通过这些配置信息，动态加载和组装各模块。
 
-> ***config.js文件具有继承性质，react-band在搜集config.js后，会将某个目录下的config.js中的配置信息和该目录的父目录中的配置信息合并，构成最终的配置信息。***
+> ***config.ts文件具有继承性质，react-band在搜集config.ts后，会将某个目录下的config.ts中的配置信息和该目录的父目录中的配置信息合并，构成最终的配置信息。***
 
 下面展示的是home模块的配置信息。
 
 ```javascript
 // demo: basic
-// src/modules/custom/basic/home/config.js
+// src/modules/custom/basic/home/config.ts
 export default (config) => {
   return {
     name: 'home',
@@ -210,7 +210,7 @@ export default (config) => {
 
 ```javascript
 // demo: as
-// src/modules/custom/as/test/config.js
+// src/modules/custom/as/test/config.ts
 export default (config) => {
   return {
     name: 'demo/test',
@@ -240,12 +240,12 @@ export default (config) => {
 | decoratorsConfig | 装饰器配置信息。选填。有些装饰器可能需要指定配置信息。装饰器模块的配置文件中，该字段无效。 |  |
 | decorators | 装饰器列表。选填。声明该模块需要应用的装饰器。装饰器模块的配置文件中，该字段无效。 |  |
 
-## 入口文件（index.entry.jsx）
-每个模块都必须有一个index.entry.jsx或index.entry.js文件。react-band通过该文件实现代码按模块分割。
+## 入口文件（index.entry.tsx）
+每个模块都必须有一个index.entry.tsx或index.entry.ts文件。react-band通过该文件实现代码按模块分割。
 
 ```javascript
 // demo: basic
-// src/modules/custom/basic/home/index.entry.jsx
+// src/modules/custom/basic/home/index.entry.tsx
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -273,29 +273,29 @@ export default (RB_CONTEXT) => {
 }
 ```
 
-react-band在运行期，动态加载模块后，执行index.entry.jsx中的代码，并传入RB_CONTEXT对象，创建模块对应的React Component对象。RB_CONTEXT对象字段如下：
+react-band在运行期，动态加载模块后，执行index.entry.tsx中的代码，并传入RB_CONTEXT对象，创建模块对应的React Component对象。RB_CONTEXT对象字段如下：
 
 | field | description | example |
 | -              | -                                          | -                 |
 | options | 创建react-band时，传入的配置信息。 | { locale: 'en', theme: 'default' } |
-| modules | 执行index.entry.jsx后返回的React Component对象列表。 |  |
+| modules | 执行index.entry.tsx后返回的React Component对象列表。 |  |
 | i18ns | 保存各模块的i18n资源。 |  |
 | themes | 保存各模块的主题资源。 |  |
 | packedModules | 各模块根据配置文件添加装饰器后生成的React Component对象列表。 |  |
-| modulesConfig | 各模块的config.js配置信息列表。 |  |
-| routes | 带有路由信息的config.js配置信息列表。 |  |
+| modulesConfig | 各模块的config.ts配置信息列表。 |  |
+| routes | 带有路由信息的config.ts配置信息列表。 |  |
 | getModule | 异步获取模块 | const Test = await getModule('test')  |
 
 react-band提供getModule方法来异步获取模块对象。从而降低了模块间的强依赖。如下所示：
 
 ```javascript
-// moduel1/index.js
-import Module2 from '../module2/index.js'
+// moduel1/index.ts
+import Module2 from '../module2/index.ts'
 ```
 
 ```javascript
 // react-band
-// src/modules/custom/module1/index.entry.js
+// src/modules/custom/module1/index.entry.ts
 export default async ({ getModule }) => {
   const Module2 = await getModule('module2')
 
@@ -323,7 +323,7 @@ themes目录用于存放模块相关的样式文件。react-band支持多套主�
 
 ```javascript
 // demo: basic
-// src/modules/custom/basic/home/config.js
+// src/modules/custom/basic/home/config.ts
 export default (config) => {
   return {
     name: 'home',
@@ -338,7 +338,7 @@ export default (config) => {
 
 ```javascript
 // demo: basic
-// src/modules/custom/basic/home/index.entry.jsx
+// src/modules/custom/basic/home/index.entry.tsx
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -387,7 +387,7 @@ i18n目录用于存放json格式的国际化资源文件。react-band支持多�
 
 ```javascript
 // demo: basic
-// src/modules/custom/basic/home/config.js
+// src/modules/custom/basic/home/config.ts
 export default (config) => {
   return {
     name: 'home',
@@ -402,7 +402,7 @@ export default (config) => {
 
 ```javascript
 // demo: basic
-// src/modules/custom/basic/home/index.entry.jsx
+// src/modules/custom/basic/home/index.entry.tsx
 import PropTypes from 'prop-types'
 import React from 'react'
 
