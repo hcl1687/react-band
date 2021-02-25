@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`config should render correctly 1`] = `
+Object {
+  "languages": Array [
+    "en",
+    "zh-CN",
+  ],
+  "themes": Array [
+    "default",
+    "darkgray",
+  ],
+}
+`;
