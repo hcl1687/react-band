@@ -178,7 +178,7 @@ describe('common/decorators/localStore', () => {
       <TestWithLocalStoreDeco />
     )
 
-    const { children } = wrapper.find('#test').props('data-props')
+    const { children } = wrapper.find('#test').props()
     expect(children.length).toEqual(4)
   })
 })
