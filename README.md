@@ -29,9 +29,9 @@ and international resources, and improve the loading speed of the page.
 
 # Document
 
-[en](./document/en/tutorial.md)
+[en](https://github.com/hcl1687/react-band/tree/release/typescript/document/en/tutorial.md)
 
-[zh-CN](./document/zh-CN/tutorial.md)
+[zh-CN](https://github.com/hcl1687/react-band/tree/release/typescript/document/zh-CN/tutorial.md)
 
 # Plain javascript version
 
