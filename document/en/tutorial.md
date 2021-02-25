@@ -203,7 +203,7 @@ below is the configuration file of the i18n module in react-band. The type field
 
 ```javascript
 // src/modules/common/i18n/config.ts
-export default () => {
+export default (): RB.IRBLeafConfig => {
   return {
     name: '@i18n',
     type: 'decorator'
@@ -227,7 +227,7 @@ Shown below is the configuration information of the home module.
 ```javascript
 // demo: basic
 // src/modules/custom/basic/home/config.ts
-export default (config) => {
+export default (): RB.IRBLeafConfig => {
   return {
     name: 'home',
     route: {
@@ -241,18 +241,19 @@ export default (config) => {
 
 ```javascript
 // demo: as
-// src/modules/custom/as/test/config.ts
-export default (config) => {
+// src/modules/custom/as/pages/assignment/config.ts
+export default (): RB.IRBLeafConfig => {
   return {
-    name: 'demo/test',
+    name: 'assignment',
     route: {
-      path: '/test'
+      path: '/assignment'
     },
+    // auth: {},
     decoratorsConfig: {
       '@reduxStore': {
         assignmentStore: {
-          actions: ['getList'],
-          state: ['items', 'total']
+          actions: ['getAssignmentList'],
+          state: ['assignments', 'total']
         }
       }
     },
@@ -277,17 +278,18 @@ Each module must have an index.entry.tsx or index.entry.ts file. react-band uses
 ```javascript
 // demo: basic
 // src/modules/custom/basic/home/index.entry.tsx
-import PropTypes from 'prop-types'
+import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
 
-export default (RB_CONTEXT) => {
-  function Home (props) {
+export default (): RB.IRBComponent => {
+  function Home (props: InferProps<typeof Home.propTypes>) {
     const handleClick = () => {
-      const { history } = props
+      const history = props.history as RB.IRBHistory
       history.push('/test')
     }
 
-    const { __, theme } = props
+    const { __ } = props
+    const theme = props.theme as RB.IRBTheme
     return <div className={theme.home}>
       <div className={theme.content}>{__('home')}</div>
       <button onClick={handleClick}>{__('toTest')}</button>
@@ -365,7 +367,7 @@ the module object. As follows:
 ```javascript
 // demo: basic
 // src/modules/custom/basic/home/config.ts
-export default (config) => {
+export default (): RB.IRBLeafConfig => {
   return {
     name: 'home',
     route: {
@@ -380,17 +382,18 @@ export default (config) => {
 ```javascript
 // demo: basic
 // src/modules/custom/basic/home/index.entry.tsx
-import PropTypes from 'prop-types'
+import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
 
-export default (RB_CONTEXT) => {
-  function Home (props) {
+export default (): RB.IRBComponent => {
+  function Home (props: InferProps<typeof Home.propTypes>) {
     const handleClick = () => {
-      const { history } = props
+      const history = props.history as RB.IRBHistory
       history.push('/test')
     }
 
-    const { __, theme } = props
+    const { __ } = props
+    const theme = props.theme as RB.IRBTheme
     return <div className={theme.home}>
       <div className={theme.content}>{__('home')}</div>
       <button onClick={handleClick}>{__('toTest')}</button>
@@ -434,7 +437,7 @@ to parse internationalized resources. As follows:
 ```javascript
 // demo: basic
 // src/modules/custom/basic/home/config.ts
-export default (config) => {
+export default (): RB.IRBLeafConfig => {
   return {
     name: 'home',
     route: {
@@ -449,17 +452,18 @@ export default (config) => {
 ```javascript
 // demo: basic
 // src/modules/custom/basic/home/index.entry.tsx
-import PropTypes from 'prop-types'
+import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
 
-export default (RB_CONTEXT) => {
-  function Home (props) {
+export default (): RB.IRBComponent => {
+  function Home (props: InferProps<typeof Home.propTypes>) {
     const handleClick = () => {
-      const { history } = props
+      const history = props.history as RB.IRBHistory
       history.push('/test')
     }
 
-    const { __, theme } = props
+    const { __ } = props
+    const theme = props.theme as RB.IRBTheme
     return <div className={theme.home}>
       <div className={theme.content}>{__('home')}</div>
       <button onClick={handleClick}>{__('toTest')}</button>

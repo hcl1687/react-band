@@ -176,7 +176,7 @@ react-band中的模块有两种类型：组件型和装饰器型。通过在配�
 
 ```javascript
 // src/modules/common/i18n/config.ts
-export default () => {
+export default (): RB.IRBLeafConfig => {
   return {
     name: '@i18n',
     type: 'decorator'
@@ -196,7 +196,7 @@ export default () => {
 ```javascript
 // demo: basic
 // src/modules/custom/basic/home/config.ts
-export default (config) => {
+export default (): RB.IRBLeafConfig => {
   return {
     name: 'home',
     route: {
@@ -210,18 +210,19 @@ export default (config) => {
 
 ```javascript
 // demo: as
-// src/modules/custom/as/test/config.ts
-export default (config) => {
+// src/modules/custom/as/pages/assignment/config.ts
+export default (): RB.IRBLeafConfig => {
   return {
-    name: 'demo/test',
+    name: 'assignment',
     route: {
-      path: '/test'
+      path: '/assignment'
     },
+    // auth: {},
     decoratorsConfig: {
       '@reduxStore': {
         assignmentStore: {
-          actions: ['getList'],
-          state: ['items', 'total']
+          actions: ['getAssignmentList'],
+          state: ['assignments', 'total']
         }
       }
     },
@@ -246,17 +247,18 @@ export default (config) => {
 ```javascript
 // demo: basic
 // src/modules/custom/basic/home/index.entry.tsx
-import PropTypes from 'prop-types'
+import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
 
-export default (RB_CONTEXT) => {
-  function Home (props) {
+export default (): RB.IRBComponent => {
+  function Home (props: InferProps<typeof Home.propTypes>) {
     const handleClick = () => {
-      const { history } = props
+      const history = props.history as RB.IRBHistory
       history.push('/test')
     }
 
-    const { __, theme } = props
+    const { __ } = props
+    const theme = props.theme as RB.IRBTheme
     return <div className={theme.home}>
       <div className={theme.content}>{__('home')}</div>
       <button onClick={handleClick}>{__('toTest')}</button>
@@ -324,7 +326,7 @@ themes目录用于存放模块相关的样式文件。react-band支持多套主�
 ```javascript
 // demo: basic
 // src/modules/custom/basic/home/config.ts
-export default (config) => {
+export default (): RB.IRBLeafConfig => {
   return {
     name: 'home',
     route: {
@@ -339,17 +341,18 @@ export default (config) => {
 ```javascript
 // demo: basic
 // src/modules/custom/basic/home/index.entry.tsx
-import PropTypes from 'prop-types'
+import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
 
-export default (RB_CONTEXT) => {
-  function Home (props) {
+export default (): RB.IRBComponent => {
+  function Home (props: InferProps<typeof Home.propTypes>) {
     const handleClick = () => {
-      const { history } = props
+      const history = props.history as RB.IRBHistory
       history.push('/test')
     }
 
-    const { __, theme } = props
+    const { __ } = props
+    const theme = props.theme as RB.IRBTheme
     return <div className={theme.home}>
       <div className={theme.content}>{__('home')}</div>
       <button onClick={handleClick}>{__('toTest')}</button>
@@ -388,7 +391,7 @@ i18n目录用于存放json格式的国际化资源文件。react-band支持多�
 ```javascript
 // demo: basic
 // src/modules/custom/basic/home/config.ts
-export default (config) => {
+export default (): RB.IRBLeafConfig => {
   return {
     name: 'home',
     route: {
@@ -403,17 +406,18 @@ export default (config) => {
 ```javascript
 // demo: basic
 // src/modules/custom/basic/home/index.entry.tsx
-import PropTypes from 'prop-types'
+import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
 
-export default (RB_CONTEXT) => {
-  function Home (props) {
+export default (): RB.IRBComponent => {
+  function Home (props: InferProps<typeof Home.propTypes>) {
     const handleClick = () => {
-      const { history } = props
+      const history = props.history as RB.IRBHistory
       history.push('/test')
     }
 
-    const { __, theme } = props
+    const { __ } = props
+    const theme = props.theme as RB.IRBTheme
     return <div className={theme.home}>
       <div className={theme.content}>{__('home')}</div>
       <button onClick={handleClick}>{__('toTest')}</button>
