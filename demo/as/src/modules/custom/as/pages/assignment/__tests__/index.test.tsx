@@ -123,7 +123,7 @@ describe('custom/as/pages/assignment', () => {
     expect(wrapper.find('.table-row').at(0).find('.table-col').at(1).text()).toBe('test assignment')
     expect(wrapper.find('.table-row').at(1).find('.table-col').at(1).text()).toBe('Activity-2')
     expect(wrapper.find('.table-row').at(0).prop('data-key')).toBe('da1b68e5-f022-4906-9bbe-9b94d7bccde1')
-    expect(wrapper.find('.table-row').at(1).find('.table-col').at(5).text()).toBe('')
+    expect(wrapper.find('.table-row').at(1).find('.table-col').at(5).text()).toBe('0')
     expect(wrapper.find('.table-row').at(1).find('.table-col').at(0).text()).toBe('Live')
   })
 

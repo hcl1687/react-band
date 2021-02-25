@@ -279,7 +279,9 @@ describe('custom/as/pages/assignmentDetail', () => {
       wrapper.update()
       expect(mockedEditAssignment.mock.calls.length).toBe(1)
       expect(mockedEditAssignment.mock.calls[0]).toEqual(['xxx', {
-        ...fakeValues
+        CreatedTime: 0,
+        DeadlineTime: 0,
+        name: 'test'
       }])
       expect(message.success.mock.calls[0][0]).toBe('success')
     }, 100)
@@ -310,7 +312,9 @@ describe('custom/as/pages/assignmentDetail', () => {
       wrapper.update()
       expect(mockedEditAssignment.mock.calls.length).toBe(1)
       expect(mockedEditAssignment.mock.calls[0]).toEqual(['xxx', {
-        ...fakeValues
+        CreatedTime: 0,
+        DeadlineTime: 0,
+        name: 'test'
       }])
       expect(message.error.mock.calls[0][0]).toBe('failed')
     }, 100)
