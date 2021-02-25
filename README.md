@@ -35,7 +35,7 @@ and international resources, and improve the loading speed of the page.
 
 # Typescript
 
-[react-band with Typescript](/hcl1687/react-band/tree/release/typescript)
+[react-band with Typescript](https://github.com/hcl1687/react-band/tree/release/typescript)
 
 # Quick Start
 
