@@ -33,6 +33,10 @@ and international resources, and improve the loading speed of the page.
 
 [zh-CN](./document/zh-CN/tutorial.md)
 
+# Typescript
+
+[react-band with Typescript](https://github.com/hcl1687/react-band/tree/release/typescript)
+
 # Quick Start
 
 ## Install react-band-cli
