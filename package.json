@@ -17,8 +17,7 @@
     "test:watch": "better-npm-run test:watch",
     "test:coverage": "better-npm-run test:coverage",
     "test:update": "better-npm-run test:update",
-    "compile": "better-npm-run compile",
-    "build": "node build.js"
+    "build": "better-npm-run compile"
   },
   "betterScripts": {
     "start": {
