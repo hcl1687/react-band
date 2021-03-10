@@ -270,33 +270,41 @@ export default class RBCore {
     if (config.set) {
       // if the target module is in a module set.
       // load the module set instead.
-      name = config.set
-      const moduleSetConfig = this._modulesConfig[name]
-      if (moduleSetConfig) {
-        path = moduleSetConfig.key
-      }
+      const setName = config.set
+      const ret = {}
+      await this.getModule(setName)
+      ret['default'] = this._packedModules[name]
+
+      return ret
     }
 
-    // load i18n
-    const i18nPromise = this.loadI18n(path, name)
-    // load theme
-    const themePromise = this.loadTheme(path, name)
-    // load module
-    const modulePromise = this.fetchModule(path)
-
-    const res = await Promise.all([modulePromise, i18nPromise, themePromise])
-    const moduleFactory = res[0]['default']
-    const RB_CONTEXT = this.getContext()
-    this._modules[name] = await moduleFactory(RB_CONTEXT)
-
     const ret = {}
-    ret['default'] = await this.packModule(name)
+    try {
+      // load i18n
+      const i18nPromise = this.loadI18n(path, name)
+      // load theme
+      const themePromise = this.loadTheme(path, name)
+      // load module
+      const modulePromise = this.fetchModule(path)
+
+      const res = await Promise.all([modulePromise, i18nPromise, themePromise])
+      const moduleFactory = res[0]['default']
+      const RB_CONTEXT = this.getContext()
+      this._modules[name].value = await moduleFactory(RB_CONTEXT)
+
+      ret['default'] = await this.packModule(name)
+      this._modules[name].trigger[0]()
+    } catch (err) {
+      this._modules[name].trigger[1](err)
+      throw err
+    }
+
     return ret
   }
 
   async packModule (name) {
     const { locale, theme } = this._options
-    let module = this._modules[name]
+    let module = this._modules[name].value
     const i18n = this._i18ns[name][locale]
     const themeObj = this._themes[name][theme]
     const RB_CONTEXT = this.getContext()
@@ -330,12 +338,23 @@ export default class RBCore {
       for (let i = 0; i < moduleNames.length; i++) {
         const moduleName = moduleNames[i]
         const moduleFactory = module[moduleName]
-        this._modules[moduleName] = await moduleFactory(RB_CONTEXT)
+        const subModule = await moduleFactory(RB_CONTEXT)
+        if (!this._modules[moduleName]) {
+          this.initInnerModule({ name: moduleName, value: subModule })
+        } else {
+          this._modules[moduleName].value = subModule
+        }
         this._i18ns[moduleName] = this._i18ns[moduleName] || {}
         this._i18ns[moduleName][locale] = i18n[moduleName]
         this._themes[moduleName] = this._themes[moduleName] || {}
         this._themes[moduleName][theme] = themeObj[moduleName]
-        await this.packModule(moduleName)
+        try {
+          await this.packModule(moduleName)
+          this._modules[moduleName].trigger[0]()
+        } catch (err) {
+          this._modules[moduleName].trigger[1]()
+          throw err
+        }
       }
     }
 
@@ -353,17 +372,54 @@ export default class RBCore {
 
       if (this._packedModules[name]) {
         return this._packedModules[name]
+      } else {
+        if (this._modules[name] && this._modules[name].waittingPromise) {
+          await this._modules[name].waittingPromise
+          return this._packedModules[name]
+        } else {
+          this.initInnerModule({ name })
+        }
       }
 
       await this.loadModule(config.key, name, config)
       return this._packedModules[name]
     }
 
-    const m = await _getModule()
+    const m = await _getModule({
+      name
+    })
 
     return wrapped ? {
       default: m
     } : m
+  }
+
+  initInnerModule ({ name, status = 'pending', value = null } = {}) {
+    const ret = {
+      status,
+      value
+    }
+    let trigger
+    const waittingPromise = new Promise((resolve, reject) => {
+      trigger = [resolve, reject]
+    }).then((res) => {
+      this._modules[name]['status'] = 'done'
+      delete ret.trigger
+      delete ret.waittingPromise
+      return res
+    }).catch(err => {
+      this._modules[name]['status'] = 'failed'
+      delete ret.trigger
+      delete ret.waittingPromise
+      throw err
+    })
+
+    ret.trigger = trigger
+    ret.waittingPromise = waittingPromise
+
+    this._modules[name] = ret
+
+    return ret
   }
 
   createRoute () {
