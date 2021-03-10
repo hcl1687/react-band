@@ -267,28 +267,41 @@ export default class RBCore {
   }
 
   async loadModule (path, name, config) {
-    if (config.set) {
-      // if the target module is in a module set.
-      // load the module set instead.
-      const setName = config.set
-      const ret = {}
-      await this.getModule(setName)
-      ret['default'] = this._packedModules[name]
-
-      return ret
-    }
-
     const ret = {}
-    try {
-      // load i18n
-      const i18nPromise = this.loadI18n(path, name)
-      // load theme
-      const themePromise = this.loadTheme(path, name)
-      // load module
-      const modulePromise = this.fetchModule(path)
 
-      const res = await Promise.all([modulePromise, i18nPromise, themePromise])
-      const moduleFactory = res[0]['default']
+    try {
+      let moduleFactory
+      if (config.set) {
+        // if the target module is in a module set.
+        // load the module set instead.
+        const setName = config.set
+        await this.getModule(setName)
+
+        const setModule = this._modules[setName].value
+        const { locale, theme } = this._options
+
+        // set i18n
+        const i18n = this._i18ns[setName][locale]
+        this._i18ns[name] = this._i18ns[name] || {}
+        this._i18ns[name][locale] = i18n[name]
+        // set theme
+        const themeObj = this._themes[setName][theme]
+        this._themes[name] = this._themes[name] || {}
+        this._themes[name][theme] = themeObj[name]
+
+        moduleFactory = setModule[name]
+      } else {
+        // load i18n
+        const i18nPromise = this.loadI18n(path, name)
+        // load theme
+        const themePromise = this.loadTheme(path, name)
+        // load module
+        const modulePromise = this.fetchModule(path)
+
+        const res = await Promise.all([modulePromise, i18nPromise, themePromise])
+        moduleFactory = res[0]['default']
+      }
+
       const RB_CONTEXT = this.getContext()
       this._modules[name].value = await moduleFactory(RB_CONTEXT)
 
@@ -330,30 +343,6 @@ export default class RBCore {
             i18n: decoI18n,
             theme: decoThemeObj
           }, RB_CONTEXT)(module)
-        }
-      }
-    } else if (config.type === 'set') {
-      // register real modules of the set module
-      const moduleNames = Object.keys(module)
-      for (let i = 0; i < moduleNames.length; i++) {
-        const moduleName = moduleNames[i]
-        const moduleFactory = module[moduleName]
-        const subModule = await moduleFactory(RB_CONTEXT)
-        if (!this._modules[moduleName]) {
-          this.initInnerModule({ name: moduleName, value: subModule })
-        } else {
-          this._modules[moduleName].value = subModule
-        }
-        this._i18ns[moduleName] = this._i18ns[moduleName] || {}
-        this._i18ns[moduleName][locale] = i18n[moduleName]
-        this._themes[moduleName] = this._themes[moduleName] || {}
-        this._themes[moduleName][theme] = themeObj[moduleName]
-        try {
-          await this.packModule(moduleName)
-          this._modules[moduleName].trigger[0]()
-        } catch (err) {
-          this._modules[moduleName].trigger[1]()
-          throw err
         }
       }
     }

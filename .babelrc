@@ -14,7 +14,7 @@
           }
         ]
       ],
-      "comments": false
+      "comments": true
     },
     "test": {
       "presets": [
@@ -30,7 +30,7 @@
           }
         ]
       ],
-      "comments": false
+      "comments": true
     },
     "production": {
       "presets": [
@@ -46,7 +46,7 @@
           }
         ]
       ],
-      "comments": false
+      "comments": true
     }
   }
 }
