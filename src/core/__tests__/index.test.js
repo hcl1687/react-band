@@ -287,8 +287,9 @@ describe('core/index', () => {
           }
         })
       })
+      rbInstance['initInnerModule']({ name: 'test' })
 
-      return rbInstance.loadModule('testPath', 'test').then(res => {
+      return rbInstance.loadModule('testPath', 'test', {}).then(res => {
         expect(res).toEqual({
           default: {}
         })
@@ -306,8 +307,8 @@ describe('core/index', () => {
         expect(rbInstance.fetchModule.mock.calls.length).toBe(1)
         expect(rbInstance.fetchModule.mock.calls[0][0]).toEqual('testPath')
         expect(typeof rbInstance.fetchModule.mock.results[0].value.then).toEqual('function')
-        expect(typeof rbInstance._modules['test']).toEqual('function')
-        const testFun = rbInstance._modules['test']
+        expect(typeof rbInstance._modules['test']).toEqual('object')
+        const testFun = rbInstance._modules['test'].value
         expect(testFun()).toEqual('en')
       })
     })
@@ -336,7 +337,10 @@ describe('core/index', () => {
         }
       }
       const rbInstance = RBCore.create()
-      rbInstance._modules['test'] = Test
+      rbInstance._modules['test'] = {
+        status: 'done',
+        value: Test
+      }
       rbInstance._i18ns['test'] = {}
       rbInstance._i18ns['test']['en'] = {
         test: 'Test'
@@ -603,6 +607,88 @@ describe('core/index', () => {
       const route = rbInstance.asyncRoute(config)
       expect(route.key).toEqual('home')
       expect(route.props.path).toEqual('/')
+    })
+  })
+
+  describe('check regex', () => {
+    it('checkModuleSetI18nJson', () => {
+      const rbInstance = RBCore.create()
+
+      const checkModuleSetI18nJson = rbInstance.checkModuleSetI18nJson
+      expect(checkModuleSetI18nJson('/modules/common/app/i18n/en.json')).toBe(true)
+      expect(checkModuleSetI18nJson('/modules/common/+moduleSet/modules/loading/i18n/en.json')).toBe(false)
+      expect(checkModuleSetI18nJson('/modules/common/+moduleSet/i18n/en.js')).toBe(false)
+      expect(checkModuleSetI18nJson('/modules/common/+moduleSet/config.js')).toBe(false)
+      expect(checkModuleSetI18nJson('/modules/common/+moduleSet/index.entry.js')).toBe(false)
+      expect(checkModuleSetI18nJson('/modules/common/+moduleSet/themes/default/index.js')).toBe(false)
+    })
+
+    it('checkModuleSetI18nJs', () => {
+      const rbInstance = RBCore.create()
+
+      const checkModuleSetI18nJs = rbInstance.checkModuleSetI18nJs
+      expect(checkModuleSetI18nJs('/modules/common/app/i18n/en.js')).toBe(true)
+      expect(checkModuleSetI18nJs('/modules/common/app/i18n/en.json')).toBe(false)
+      expect(checkModuleSetI18nJs('/modules/common/+moduleSet/modules/loading/i18n/en.js')).toBe(false)
+      expect(checkModuleSetI18nJs('/modules/common/+moduleSet/modules/loading/i18n/en.json')).toBe(false)
+      expect(checkModuleSetI18nJs('/modules/common/+moduleSet/i18n/en.js')).toBe(true)
+      expect(checkModuleSetI18nJs('/modules/common/+moduleSet/config.js')).toBe(false)
+      expect(checkModuleSetI18nJs('/modules/common/+moduleSet/index.entry.js')).toBe(false)
+      expect(checkModuleSetI18nJs('/modules/common/+moduleSet/themes/default/index.js')).toBe(false)
+    })
+
+    it('checkModuleSetLocalThemeCss', () => {
+      const rbInstance = RBCore.create()
+
+      const checkModuleSetLocalThemeCss = rbInstance.checkModuleSetLocalThemeCss
+      expect(checkModuleSetLocalThemeCss('/modules/common/app/themes/default/index.css')).toBe(true)
+      expect(checkModuleSetLocalThemeCss('/modules/common/app/themes/default/index.js')).toBe(false)
+      expect(checkModuleSetLocalThemeCss('/modules/common/app/themes/default/index.global.css')).toBe(false)
+      expect(checkModuleSetLocalThemeCss('/modules/common/+moduleSet/modules/loading/default/index.css')).toBe(false)
+      expect(checkModuleSetLocalThemeCss('/modules/common/+moduleSet/themes/default/index.css')).toBe(true)
+      expect(checkModuleSetLocalThemeCss('/modules/common/+moduleSet/config.js')).toBe(false)
+      expect(checkModuleSetLocalThemeCss('/modules/common/+moduleSet/index.entry.js')).toBe(false)
+      expect(checkModuleSetLocalThemeCss('/modules/common/+moduleSet/themes/default/index.js')).toBe(false)
+    })
+
+    it('checkModuleSetThemeJs', () => {
+      const rbInstance = RBCore.create()
+
+      const checkModuleSetThemeJs = rbInstance.checkModuleSetThemeJs
+      expect(checkModuleSetThemeJs('/modules/common/app/themes/default/index.css')).toBe(false)
+      expect(checkModuleSetThemeJs('/modules/common/app/themes/default/index.js')).toBe(true)
+      expect(checkModuleSetThemeJs('/modules/common/app/themes/default/index.global.css')).toBe(false)
+      expect(checkModuleSetThemeJs('/modules/common/+moduleSet/modules/loading/default/index.js')).toBe(false)
+      expect(checkModuleSetThemeJs('/modules/common/+moduleSet/themes/default/index.js')).toBe(true)
+      expect(checkModuleSetThemeJs('/modules/common/+moduleSet/config.js')).toBe(false)
+      expect(checkModuleSetThemeJs('/modules/common/+moduleSet/index.entry.js')).toBe(false)
+      expect(checkModuleSetThemeJs('/modules/common/+moduleSet/themes/default/index.css')).toBe(false)
+    })
+
+    it('checkModuleSetThemeGlobalCss', () => {
+      const rbInstance = RBCore.create()
+
+      const checkModuleSetThemeGlobalCss = rbInstance.checkModuleSetThemeGlobalCss
+      expect(checkModuleSetThemeGlobalCss('/modules/common/app/themes/default/index.css')).toBe(false)
+      expect(checkModuleSetThemeGlobalCss('/modules/common/app/themes/default/index.js')).toBe(false)
+      expect(checkModuleSetThemeGlobalCss('/modules/common/app/themes/default/index.global.css')).toBe(true)
+      expect(checkModuleSetThemeGlobalCss('/modules/common/+moduleSet/modules/loading/default/index.global.css')).toBe(false)
+      expect(checkModuleSetThemeGlobalCss('/modules/common/+moduleSet/themes/default/index.global.css')).toBe(true)
+      expect(checkModuleSetThemeGlobalCss('/modules/common/+moduleSet/themes/default/index.css')).toBe(false)
+    })
+
+    it('checkModuleSetEntry', () => {
+      const rbInstance = RBCore.create()
+
+      const checkModuleSetEntry = rbInstance.checkModuleSetEntry
+      expect(checkModuleSetEntry('/modules/common/app/index.entry.js')).toBe(true)
+      expect(checkModuleSetEntry('/modules/common/app/index.entry.jsx')).toBe(true)
+      expect(checkModuleSetEntry('/modules/common/+moduleSet/index.entry.js')).toBe(true)
+      expect(checkModuleSetEntry('/modules/common/+moduleSet/index.entry.jsx')).toBe(true)
+      expect(checkModuleSetEntry('/modules/common/+moduleSet/modules/loading/index.entry.js')).toBe(false)
+      expect(checkModuleSetEntry('/modules/common/+moduleSet/modules/loading/index.entry.jsx')).toBe(false)
+      expect(checkModuleSetEntry('/modules/common/+moduleSet/loading/index.entry.js')).toBe(false)
+      expect(checkModuleSetEntry('/modules/common/+moduleSet/loading/index.entry.jsx')).toBe(false)
     })
   })
 })
