@@ -215,7 +215,8 @@ describe('core/getConfig', () => {
       b: 2,
       category: 'common',
       key: './common/home',
-      name: 'home'
+      name: 'home',
+      type: 'component'
     })
   })
 

@@ -58,6 +58,10 @@ declare global {
       [propName: string]: IRBModule
     }
 
+    interface IRBInnerModulesMap {
+      [propName: string]: IRBInnerModule
+    }
+
     interface IRBI18n {
       [key: string]: string
     }
@@ -68,21 +72,29 @@ declare global {
 
     interface IRBI18nsMap {
       [moduleName: string]: {
-        [localeName: string]: IRBI18n
+        [localeName: string]: IRBI18n | IRBSetI18n
       }
+    }
+
+    interface IRBSetI18n {
+      [moduleName: string]: IRBI18n
     }
 
     interface IRBTheme {
       [key: string]: string
     }
 
+    interface IRBSetTheme {
+      [moduleName: string]: IRBTheme
+    }
+
     interface IRBThemeRaw {
-      default: IRBTheme
+      default: IRBTheme | IRBSetTheme
     }
 
     interface IRBThemesMap {
       [moduleName: string]: {
-        [themeName: string]: IRBTheme
+        [themeName: string]: IRBTheme | IRBSetTheme
       }
     }
 
@@ -119,6 +131,27 @@ declare global {
     }
 
     type IRBModule = IRBCompModule | IRBDecoModule | IRBObject
+
+    interface IRBInnerModule {
+      value: IRBModule
+      status: string
+      trigger?: [IRBResovle, IRBReject]
+      waittingPromise?: Promise<undefined>
+    }
+
+    interface IRBResovle {
+      (value?: any | PromiseLike<any>): void
+    }
+
+    interface IRBReject {
+      (reason?: any): void
+    }
+
+    interface IRBInnerModuleParams {
+      name: string
+      status?: string
+      value?: IRBInnerModule
+    }
 
     interface IRBModuleFactory {
       (RB_CONTEXT: IRBContext): IRBModule

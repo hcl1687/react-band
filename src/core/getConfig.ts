@@ -63,13 +63,22 @@ export default function getConfig (options: RB.IRBOptions): RB.IRBConfigMap {
       let ret: RB.IRBConfig
       if (CONFIGS[id]) {
         ret = CONFIGS[id](options)
+        if (ret && ret.type === undefined && key === id) {
+          ret.type = 'component'
+        }
+        // if current id's config object is the module set's config object and it's not the leaf config.
+        if (ret && ret.type === 'set' && key !== id) {
+          ret.set = ret.name
+        }
+        if (ret && ret.type !== 'set' && key !== id) {
+          parentKeys[id] = 1
+        }
       }
       // id !== key is parent, id === key is tail
       // parent config has lower priority
       config = id !== key ? Object.assign({}, ret, obj)
         : Object.assign({}, obj, ret)
       id = id.replace(`/${item}`, '')
-      parentKeys[id] = 1
       return config
     }, config)
 
