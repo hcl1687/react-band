@@ -1,6 +1,6 @@
 export default (config) => {
   return {
-    name: '+set2',
+    name: '+commonSet1',
     type: 'set'
   }
 }
