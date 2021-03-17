@@ -5,6 +5,7 @@ import authStore from './modules/stores/auth/index.entry'
 import breadcrumb from './modules/framework/breadcrumb/index.entry'
 import breadcrumbStore from './modules/stores/breadcrumb/index.entry'
 import header from './modules/framework/header/index.entry'
+import home from './modules/pages/home/index.entry'
 import layout from './modules/framework/layout/index.entry'
 import layoutStore from './modules/stores/layout/index.entry'
 import loading from './modules/framework/loading/index.entry'
@@ -31,6 +32,7 @@ export default () => {
     profile,
     lottie,
     moment,
+    home,
     authStore,
     breadcrumbStore,
     layoutStore,

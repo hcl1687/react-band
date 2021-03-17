@@ -1,5 +1,6 @@
 import breadcrumb from '../modules/framework/breadcrumb/i18n/en'
 import header from '../modules/framework/header/i18n/en'
+import home from '../modules/pages/home/i18n/en'
 import layout from '../modules/framework/layout/i18n/en'
 import loading from '../modules/framework/loading/i18n/en'
 import login from '../modules/framework/login/i18n/en'
@@ -13,5 +14,6 @@ export default {
   loading,
   login,
   menu,
-  profile
+  profile,
+  home
 }
