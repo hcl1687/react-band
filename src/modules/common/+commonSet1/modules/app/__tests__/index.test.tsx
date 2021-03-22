@@ -1,8 +1,8 @@
 import { render, shallow } from 'enzyme'
 import React from 'react'
-import appFactory from '../index.entry'
+import module from '../index.entry'
 
-const App = appFactory()
+const App = module.entry()
 
 describe('common/app', () => {
   it('should render correctly', () => {

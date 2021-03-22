@@ -1,9 +1,10 @@
 import PropTypes, { InferProps } from 'prop-types'
 import { mount, render } from 'enzyme'
 import React from 'react'
-import layoutDecoFactory from '../index.entry'
+import module from '../index.entry'
 import utils from '~/../tests/utils/mockUtils'
 
+const layoutDecoFactory = module.entry
 function Test () {
   return <div>test</div>
 }

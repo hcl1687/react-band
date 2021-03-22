@@ -1,9 +1,13 @@
 import antd from './modules/antd/components/index.entry'
 import antdProviderDeco from './modules/antd/decorators/provider/index.entry'
 
-export default (): RB.IRBModule => {
+const entry = (): RB.IRBModule => {
   return {
     antd,
     '@antdProvider': antdProviderDeco
   }
+}
+
+export default {
+  entry
 }

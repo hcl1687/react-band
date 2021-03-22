@@ -1,10 +1,11 @@
 import PropTypes, { InferProps } from 'prop-types'
 import React, { useState } from 'react'
 import { mount, render } from 'enzyme'
-import localStoreDecoFactory from '../index.entry'
+import module from '../index.entry'
 import tools from '~/../tests/utils/index'
 import utils from '~/../tests/utils/mockUtils'
 
+const localStoreDecoFactory = module.entry
 function Test (props: InferProps<typeof Test.propTypes>) {
   const { count, increase, decrease } = props
   const [msg, setMsg] = useState('')

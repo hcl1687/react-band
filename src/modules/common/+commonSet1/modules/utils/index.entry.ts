@@ -50,7 +50,7 @@ function getUrlParameter (url: string, name: string): string {
   return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '))
 }
 
-export default (): RB.IRBModule => {
+const entry = (): RB.IRBModule => {
   return {
     setStatic,
     setDisplayName,
@@ -59,4 +59,8 @@ export default (): RB.IRBModule => {
     promisify,
     getUrlParameter
   }
+}
+
+export default {
+  entry
 }

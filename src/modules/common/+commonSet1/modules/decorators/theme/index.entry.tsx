@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> => {
+const entry = async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
   return ({ theme }: RB.IRBModuleConfig) => (WrappedComponent: RB.IRBComponent) => {
@@ -14,4 +14,8 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> =
 
     return themeDeco
   }
+}
+
+export default {
+  entry
 }

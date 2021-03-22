@@ -1,8 +1,8 @@
 import { mount, shallow } from 'enzyme'
 import React from 'react'
-import loadingFactory from '../index.entry'
+import module from '../index.entry'
 
-const Loading = loadingFactory()
+const Loading = module.entry()
 
 describe('common/loading', () => {
   it('should render correctly', () => {

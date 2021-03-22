@@ -1,4 +1,4 @@
-export default (): RB.IRBModule => {
+const entry = (): RB.IRBModule => {
   const LOCALE = {
     'en-US': 'en-US',
     'es-MX': 'es-MX',
@@ -10,4 +10,8 @@ export default (): RB.IRBModule => {
   return {
     LOCALE
   }
+}
+
+export default {
+  entry
 }

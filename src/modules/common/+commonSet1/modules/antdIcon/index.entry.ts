@@ -1,5 +1,9 @@
 import * as antdIcon from '@ant-design/icons'
 
-export default (): RB.IRBModule => {
+const entry = (): RB.IRBModule => {
   return antdIcon
+}
+
+export default {
+  entry
 }

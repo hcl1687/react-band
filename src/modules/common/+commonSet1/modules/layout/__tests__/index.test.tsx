@@ -1,8 +1,8 @@
 import { render, shallow } from 'enzyme'
 import React from 'react'
-import layoutFactory from '../index.entry'
+import module from '../index.entry'
 
-const Layout = layoutFactory()
+const Layout = module.entry()
 
 describe('common/layout', () => {
   it('should render correctly', () => {
