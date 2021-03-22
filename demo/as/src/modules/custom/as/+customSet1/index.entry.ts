@@ -17,7 +17,7 @@ import multiView from './modules/components/multiView/index.entry'
 import profile from './modules/framework/profile/index.entry'
 import teacherStore from './modules/stores/teacher/index.entry'
 
-export default (): RB.IRBModule => {
+const entry = (): RB.IRBModule => {
   return {
     asConstants,
     asUtils,
@@ -38,4 +38,8 @@ export default (): RB.IRBModule => {
     layoutStore,
     teacherStore
   }
+}
+
+export default {
+  entry
 }

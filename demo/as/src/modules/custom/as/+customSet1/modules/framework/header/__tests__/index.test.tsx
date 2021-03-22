@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import headerFactory from '../index.entry'
+import module from '../index.entry'
 import { mount } from 'enzyme'
+
+const headerFactory = module.entry
 
 jest.mock('../factories/avatar', () => {
   return () => {

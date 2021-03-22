@@ -1,7 +1,8 @@
 import React from 'react'
-import layoutFactory from '../index.entry'
+import module from '../index.entry'
 import { mount } from 'enzyme'
 
+const layoutFactory = module.entry
 const RB_CONTEXT = {
   options: {},
   modules: {},

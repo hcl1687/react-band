@@ -1,4 +1,6 @@
-import asConstantsFactory from '../index.entry'
+import module from '../index.entry'
+
+const asConstantsFactory = module.entry
 
 describe('custom/as/asConstants', () => {
   it('should render correctly in development env', () => {

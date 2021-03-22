@@ -3,7 +3,7 @@ import React, { cloneElement, useEffect, useRef } from 'react'
 import classnames from 'classnames'
 import get from 'lodash/get'
 
-export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBComponent> => {
+const entry = async ({ getModule }: RB.IRBContext): Promise<RB.IRBComponent> => {
   const asUtils = await getModule('asUtils')
   const { getQueryParams } = asUtils as AsUtils.IUtils
 
@@ -78,4 +78,8 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBComponent> =>
   }
 
   return MultiView
+}
+
+export default {
+  entry
 }

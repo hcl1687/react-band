@@ -1,8 +1,10 @@
 import PropTypes, { InferProps } from 'prop-types'
 import React, { Component, forwardRef, useImperativeHandle, useRef } from 'react'
+import module from '../index.entry'
 import { mount } from 'enzyme'
-import profileFactory from '../index.entry'
 import tools from '~/../tests/utils/index'
+
+const profileFactory = module.entry
 
 function handleRef (WrappedComponent) {
   let propTypes

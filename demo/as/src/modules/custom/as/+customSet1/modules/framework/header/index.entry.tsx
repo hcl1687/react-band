@@ -2,10 +2,14 @@ import PropTypes, { InferProps } from 'prop-types'
 import React, { useState } from 'react'
 import avatarFactory from './factories/avatar'
 import classnames from 'classnames'
+import darkgray from './themes/darkgray/index.css'
+import defaultTheme from './themes/default/index.css'
+import en from './i18n/en.json'
 import queryString from 'query-string'
 import userFactory from './factories/user'
+import zhCN from './i18n/zh-CN.json'
 
-export default async (RB_CONTEXT: RB.IRBContext): Promise<RB.IRBComponent> => {
+const entry = async (RB_CONTEXT: RB.IRBContext): Promise<RB.IRBComponent> => {
   const { getModule, options } = RB_CONTEXT
   const antd = await getModule('antd') as ANTD.IANTD
   const antdIcon = await getModule('antdIcon')
@@ -231,4 +235,30 @@ export default async (RB_CONTEXT: RB.IRBContext): Promise<RB.IRBComponent> => {
   }
 
   return Header
+}
+
+const i18n = (RB_CONTEXT: RB.IRBContext): RB.IRBI18n => {
+  const { locale } = RB_CONTEXT.options
+  const i18ns = {
+    en,
+    'zh-CN': zhCN
+  }
+
+  return i18ns[locale]
+}
+
+const theme = (RB_CONTEXT: RB.IRBContext): RB.IRBTheme => {
+  const { theme } = RB_CONTEXT.options
+  const themes = {
+    default: defaultTheme,
+    darkgray
+  }
+
+  return themes[theme] || defaultTheme
+}
+
+export default {
+  entry,
+  i18n,
+  theme
 }

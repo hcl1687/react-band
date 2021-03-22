@@ -1,7 +1,8 @@
 import { mount, shallow } from 'enzyme'
 import React from 'react'
-import appFactory from '../index.entry'
+import module from '../index.entry'
 
+const appFactory = module.entry
 const App = appFactory()
 
 describe('custom/as/framework/app', () => {

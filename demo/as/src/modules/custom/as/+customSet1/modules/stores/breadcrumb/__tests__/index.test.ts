@@ -1,4 +1,6 @@
-import breadcrumbFactory from '../index.entry'
+import module from '../index.entry'
+
+const breadcrumbFactory = module.entry
 
 jest.mock('../actions', () => {
   return () => {

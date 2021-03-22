@@ -1,9 +1,10 @@
 import PropTypes, { InferProps } from 'prop-types'
 import React, { Component } from 'react'
-import assignmentDetailFactory from '../index.entry'
+import module from '../index.entry'
 import { mount } from 'enzyme'
 import tools from '~/../tests/utils'
 
+const assignmentDetailFactory = module.entry
 const fakeValues = {
   name: 'test',
   CreatedTime: {
