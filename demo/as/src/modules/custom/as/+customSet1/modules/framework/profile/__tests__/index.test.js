@@ -1,7 +1,7 @@
 import React, { Component, forwardRef, useImperativeHandle, useRef } from 'react'
 import PropTypes from 'prop-types'
-import { mount } from 'enzyme'
 import module from '../index.entry'
+import { mount } from 'enzyme'
 import tools from '~/../tests/utils/index'
 
 const profileFactory = module.entry

@@ -1,6 +1,6 @@
 import React from 'react'
-import { mount } from 'enzyme'
 import module from '../index.entry'
+import { mount } from 'enzyme'
 
 const multiViewFactory = module.entry
 
