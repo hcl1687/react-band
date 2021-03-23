@@ -107,7 +107,7 @@ react-band在modules目录下提供common和custom目录。其中，common目录
 
 ## 如何实现异步加载？
 
-一个模块通常包括js代码、样式和国际化资源。react-band通过webpack的dynamic import实现这三类文件的代码
+一个模块通常包括js代码、样式和国际化资源。react-band通过webpack的dynamic import实现代码
 分割，并利用React.lazy实现异步加载。
 
 # 项目结构
@@ -170,12 +170,12 @@ react-band中的模块是指：一个独立的代码和资源的文件集合，�
 react-band中的模块，通常包含配置文件（config.ts）、入口文件（index.entry.tsx）、主题文件（themes/）、国际化资源文件（i18n/）、单元测试文件（\_\_test\_\_/）等。
 
 ## 类型
-react-band中的模块有两种类型：组件型和装饰器型。通过在配置文件中设置type=component|decorator来指定模块的类型， 默认是component类型。下面展示的是react-band中i18n模块的配置文件。其中type字段设置为decorator。
+react-band中的模块有三种类型：组件型、装饰器型和集合型。通过在配置文件中设置type=component|decorator|set来指定模块的类型， 默认是component类型。下面展示的是react-band中i18n模块的配置文件。其中type字段设置为decorator。
 
 > ***约定：装饰器类型的模块，其名字必须以'@'开头***
 
 ```javascript
-// src/modules/common/i18n/config.ts
+// src/modules/common/+commonSet1/modules/decorators/i18n/config.js
 export default (): RB.IRBLeafConfig => {
   return {
     name: '@i18n',
@@ -185,6 +185,41 @@ export default (): RB.IRBLeafConfig => {
 ```
 
 装饰器模块用于装饰component类型的模块。通过在component类型模块的配置文件中设置decoratorsConfig和decorators字段，来指定需要应用的装饰器。在运行期，react-band负责加载相关模块并组装。
+
+下面展示的是react-band中+commonSet2模块的配置文件。其中type字段设置为set。
+
+> ***约定：集合类型的模块，其文件夹名字必须以'+'开头***
+
+```javascript
+// src/modules/common/+commonSet2/config.js
+export default (): RB.IRBLeafConfig => {
+  return {
+    name: '+commonSet2',
+    type: 'set'
+  }
+}
+```
+
+集合模块用于将多个模块合并成一个bundle文件。这样可以灵活的调整bundle文件的大小。react-band会忽略集合模块中所有子模块的index.entry.js文件，不会将其打包成独立的bundle文件。在集合模块的index.entry.js中，需要显式导入集合中各子模块的index.entry.js文件。通过这种方式，react-band将集合中的所有子模块资源都合并到一个bundle文件中。
+
+下面展示的是react-band中+commonSet2模块的index.entry.js文件。
+
+```javascript
+// src/modules/common/+commonSet2/index.entry.js
+import antd from './modules/antd/components/index.entry'
+import antdProviderDeco from './modules/antd/decorators/provider/index.entry'
+
+const entry = (): RB.IRBModule => {
+  return {
+    antd,
+    '@antdProvider': antdProviderDeco
+  }
+}
+
+export default {
+  entry
+}
+```
 
 ## 配置文件（config.ts）
 每个模块都必须要有一个config.ts文件。react-band在构建的时候，会遍历src/modules目录，搜集所有的config.ts文件中的配置信息并保存起来。在运行期，react-band通过这些配置信息，动态加载和组装各模块。
@@ -210,7 +245,7 @@ export default (): RB.IRBLeafConfig => {
 
 ```javascript
 // demo: as
-// src/modules/custom/as/pages/assignment/config.ts
+// src/modules/custom/as/+customSet2/modules/assignment/config.js
 export default (): RB.IRBLeafConfig => {
   return {
     name: 'assignment',
@@ -249,8 +284,12 @@ export default (): RB.IRBLeafConfig => {
 // src/modules/custom/basic/home/index.entry.tsx
 import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
+import darkgray from './themes/darkgray/index.css'
+import defaultTheme from './themes/default/index.css'
+import en from './i18n/en.json'
+import zhCN from './i18n/zh-CN.json'
 
-export default (): RB.IRBComponent => {
+const entry = (): RB.IRBComponent => {
   function Home (props: InferProps<typeof Home.propTypes>) {
     const handleClick = () => {
       const history = props.history as RB.IRBHistory
@@ -272,6 +311,32 @@ export default (): RB.IRBComponent => {
   }
 
   return Home
+}
+
+const i18n = (RB_CONTEXT: RB.IRBContext): RB.IRBI18n => {
+  const { locale } = RB_CONTEXT.options
+  const i18ns = {
+    en,
+    'zh-CN': zhCN
+  }
+
+  return i18ns[locale]
+}
+
+const theme = (RB_CONTEXT: RB.IRBContext): RB.IRBTheme => {
+  const { theme } = RB_CONTEXT.options
+  const themes = {
+    default: defaultTheme,
+    darkgray
+  }
+
+  return themes[theme] || defaultTheme
+}
+
+export default {
+  entry,
+  i18n,
+  theme
 }
 ```
 
@@ -298,17 +363,21 @@ import Module2 from '../module2/index.ts'
 ```javascript
 // react-band
 // src/modules/custom/module1/index.entry.ts
-export default async ({ getModule }) => {
+const entry = async ({ getModule }) => {
   const Module2 = await getModule('module2')
 
   return function Module1 {
     return <Module2 />
   }
 }
+
+export default {
+  entry
+}
 ```
 
 ## 主题文件（themes/）
-themes目录用于存放模块相关的样式文件。react-band支持多套主题动态切换。目录下必须有一个default文件夹，用于存放默认的主题文件。为了支持模块主题的按需加载，约定主题的入口文件为index.css或者index.global.css。react-band将根据这两个文件分割代码。react-band采用less-loader和css-loader加载样式文件，所以模块的样式文件支持less语法。react-band加载index.css的时候，采用css-loader的local模式。在加载index.global.css的时候，采用css-loader的global模式。
+themes目录用于存放模块相关的样式文件。react-band支持多套主题动态切换。目录下必须有一个default文件夹，用于存放默认的主题文件。约定主题的入口文件为index.css或者index.global.css。react-band采用less-loader和css-loader加载样式文件，所以模块的样式文件支持less语法。react-band加载index.css的时候，采用css-loader的local模式。在加载index.global.css的时候，采用css-loader的global模式。
 
 我们推荐使用局部作用域，所以通常只要创建index.css文件就行。使用局部作用域的话，我们需要使用@theme装饰器。引用@theme装饰器后，会向模块对象注入theme属性。如下所示：
 
@@ -343,8 +412,12 @@ export default (): RB.IRBLeafConfig => {
 // src/modules/custom/basic/home/index.entry.tsx
 import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
+import darkgray from './themes/darkgray/index.css'
+import defaultTheme from './themes/default/index.css'
+import en from './i18n/en.json'
+import zhCN from './i18n/zh-CN.json'
 
-export default (): RB.IRBComponent => {
+const entry = (): RB.IRBComponent => {
   function Home (props: InferProps<typeof Home.propTypes>) {
     const handleClick = () => {
       const history = props.history as RB.IRBHistory
@@ -367,12 +440,38 @@ export default (): RB.IRBComponent => {
 
   return Home
 }
+
+const i18n = (RB_CONTEXT: RB.IRBContext): RB.IRBI18n => {
+  const { locale } = RB_CONTEXT.options
+  const i18ns = {
+    en,
+    'zh-CN': zhCN
+  }
+
+  return i18ns[locale]
+}
+
+const theme = (RB_CONTEXT: RB.IRBContext): RB.IRBTheme => {
+  const { theme } = RB_CONTEXT.options
+  const themes = {
+    default: defaultTheme,
+    darkgray
+  }
+
+  return themes[theme] || defaultTheme
+}
+
+export default {
+  entry,
+  i18n,
+  theme
+}
 ```
 
 有的时候需要引用第三方库的样式文件，这个时候就要用到全局作用域。如下所示：
 
 ```css
-/* src/modules/common/antd/components/themes/default/index.global.css */
+/* src/modules/common/commonSet2/modules/antd/components/themes/default/index.global.css */
 @import "~antd/dist/antd.css";
 ```
 
@@ -408,8 +507,12 @@ export default (): RB.IRBLeafConfig => {
 // src/modules/custom/basic/home/index.entry.tsx
 import PropTypes, { InferProps } from 'prop-types'
 import React from 'react'
+import darkgray from './themes/darkgray/index.css'
+import defaultTheme from './themes/default/index.css'
+import en from './i18n/en.json'
+import zhCN from './i18n/zh-CN.json'
 
-export default (): RB.IRBComponent => {
+const entry = (): RB.IRBComponent => {
   function Home (props: InferProps<typeof Home.propTypes>) {
     const handleClick = () => {
       const history = props.history as RB.IRBHistory
@@ -431,6 +534,32 @@ export default (): RB.IRBComponent => {
   }
 
   return Home
+}
+
+const i18n = (RB_CONTEXT: RB.IRBContext): RB.IRBI18n => {
+  const { locale } = RB_CONTEXT.options
+  const i18ns = {
+    en,
+    'zh-CN': zhCN
+  }
+
+  return i18ns[locale]
+}
+
+const theme = (RB_CONTEXT: RB.IRBContext): RB.IRBTheme => {
+  const { theme } = RB_CONTEXT.options
+  const themes = {
+    default: defaultTheme,
+    darkgray
+  }
+
+  return themes[theme] || defaultTheme
+}
+
+export default {
+  entry,
+  i18n,
+  theme
 }
 ```
 
