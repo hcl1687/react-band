@@ -202,7 +202,7 @@ below is the configuration file of the i18n module in react-band. The type field
 > ***Convention: The name of the module of the decorator type must start with'@'***
 
 ```javascript
-// src/modules/common/+commonSet1/modules/decorators/i18n/config.js
+// src/modules/common/+commonSet1/modules/decorators/i18n/config.ts
 export default (): RB.IRBLeafConfig => {
   return {
     name: '@i18n',
@@ -220,7 +220,7 @@ Shown below is the configuration file of the +commonSet2 module in react-band. T
 > ***Convention: The name of the set module's folder must start with'+'***
 
 ```javascript
-// src/modules/common/+commonSet2/config.js
+// src/modules/common/+commonSet2/config.ts
 export default (): RB.IRBLeafConfig => {
   return {
     name: '+commonSet2',
@@ -229,12 +229,12 @@ export default (): RB.IRBLeafConfig => {
 }
 ```
 
-The set module is used to merge multiple modules into one bundle file. This allows us to flexibly adjust the size of a bundle file. react-band will ignore the index.entry.js files of all sub-modules in the set module and will not package them into a separate bundle file. In the index.entry.js of the set module, we need to explicitly import the index.entry.js file of each submodule. In this way, react-band merges all sub-modules in the set module into one bundle file.
+The set module is used to merge multiple modules into one bundle file. This allows us to flexibly adjust the size of a bundle file. react-band will ignore the index.entry.ts files of all sub-modules in the set module and will not package them into a separate bundle file. In the index.entry.ts of the set module, we need to explicitly import the index.entry.ts file of each submodule. In this way, react-band merges all sub-modules in the set module into one bundle file.
 
-Shown below is the index.entry.js file of the +commonSet2 module in react-band.
+Shown below is the index.entry.ts file of the +commonSet2 module in react-band.
 
 ```javascript
-// src/modules/common/+commonSet2/index.entry.js
+// src/modules/common/+commonSet2/index.entry.ts
 import antd from './modules/antd/components/index.entry'
 import antdProviderDeco from './modules/antd/decorators/provider/index.entry'
 

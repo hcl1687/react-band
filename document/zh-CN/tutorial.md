@@ -175,7 +175,7 @@ react-band中的模块有三种类型：组件型、装饰器型和集合型。�
 > ***约定：装饰器类型的模块，其名字必须以'@'开头***
 
 ```javascript
-// src/modules/common/+commonSet1/modules/decorators/i18n/config.js
+// src/modules/common/+commonSet1/modules/decorators/i18n/config.ts
 export default (): RB.IRBLeafConfig => {
   return {
     name: '@i18n',
@@ -191,7 +191,7 @@ export default (): RB.IRBLeafConfig => {
 > ***约定：集合类型的模块，其文件夹名字必须以'+'开头***
 
 ```javascript
-// src/modules/common/+commonSet2/config.js
+// src/modules/common/+commonSet2/config.ts
 export default (): RB.IRBLeafConfig => {
   return {
     name: '+commonSet2',
@@ -200,12 +200,12 @@ export default (): RB.IRBLeafConfig => {
 }
 ```
 
-集合模块用于将多个模块合并成一个bundle文件。这样可以灵活的调整bundle文件的大小。react-band会忽略集合模块中所有子模块的index.entry.js文件，不会将其打包成独立的bundle文件。在集合模块的index.entry.js中，需要显式导入集合中各子模块的index.entry.js文件。通过这种方式，react-band将集合中的所有子模块资源都合并到一个bundle文件中。
+集合模块用于将多个模块合并成一个bundle文件。这样可以灵活的调整bundle文件的大小。react-band会忽略集合模块中所有子模块的index.entry.ts文件，不会将其打包成独立的bundle文件。在集合模块的index.entry.ts中，需要显式导入集合中各子模块的index.entry.ts文件。通过这种方式，react-band将集合中的所有子模块资源都合并到一个bundle文件中。
 
-下面展示的是react-band中+commonSet2模块的index.entry.js文件。
+下面展示的是react-band中+commonSet2模块的index.entry.ts文件。
 
 ```javascript
-// src/modules/common/+commonSet2/index.entry.js
+// src/modules/common/+commonSet2/index.entry.ts
 import antd from './modules/antd/components/index.entry'
 import antdProviderDeco from './modules/antd/decorators/provider/index.entry'
 
@@ -245,7 +245,7 @@ export default (): RB.IRBLeafConfig => {
 
 ```javascript
 // demo: as
-// src/modules/custom/as/+customSet2/modules/assignment/config.js
+// src/modules/custom/as/+customSet2/modules/assignment/config.ts
 export default (): RB.IRBLeafConfig => {
   return {
     name: 'assignment',
