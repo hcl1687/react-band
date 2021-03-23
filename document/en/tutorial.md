@@ -125,7 +125,7 @@ Then copy the module directly to custom, and then customize it.
 ## How to implement asynchronous loading?
 
 A module usually includes js code, styles and internationalized resources. react-band implements code 
-splitting for these three types of files through webpack's dynamic import, and use React.lazy to achieve 
+splitting through webpack's dynamic import, and use React.lazy to achieve 
 asynchronous loading.
 
 # Project structure
@@ -195,14 +195,14 @@ css code, internationalized resources, etc.
 Modules in react-band usually include configuration files (config.js), entry files (index.entry.jsx), theme files (themes/), internationalized resource files (i18n/), unit test files (\_\_test\_\_/) etc.
 
 ## Type
-There are two types of modules in react-band: component and decorator. Specify the type of the module 
-by setting type=component|decorator in the configuration file. The default is the component type. Shown 
+There are three types of modules in react-band: component, decorator and set. Specify the type of the module 
+by setting type=component|decorator|set in the configuration file. The default is the component type. Shown 
 below is the configuration file of the i18n module in react-band. The type field is set to decorator.
 
 > ***Convention: The name of the module of the decorator type must start with'@'***
 
 ```javascript
-// src/modules/common/i18n/config.js
+// src/modules/common/+commonSet1/modules/decorators/i18n/config.js
 export default () => {
   return {
     name: '@i18n',
@@ -214,6 +214,41 @@ export default () => {
 The decorator type module is used to decorate the component type module. Specify the decorators to be 
 applied by setting the decoratorsConfig and decorators fields in the configuration file of the component 
 type module. During the runtime, react-band is responsible for loading related modules and assembling them.
+
+Shown below is the configuration file of the +commonSet2 module in react-band. The type field is set to set.
+
+> ***Convention: The name of the set module's folder must start with'+'***
+
+```javascript
+// src/modules/common/+commonSet2/config.js
+export default (config) => {
+  return {
+    name: '+commonSet2',
+    type: 'set'
+  }
+}
+```
+
+The set module is used to merge multiple modules into one bundle file. This allows us to flexibly adjust the size of a bundle file. react-band will ignore the index.entry.js files of all sub-modules in the set module and will not package them into a separate bundle file. In the index.entry.js of the set module, we need to explicitly import the index.entry.js file of each submodule. In this way, react-band merges all sub-modules in the set module into one bundle file.
+
+Shown below is the index.entry.js file of the +commonSet2 module in react-band.
+
+```javascript
+// src/modules/common/+commonSet2/index.entry.js
+import antd from './modules/antd/components/index.entry'
+import antdProviderDeco from './modules/antd/decorators/provider/index.entry'
+
+const entry = () => {
+  return {
+    antd,
+    '@antdProvider': antdProviderDeco
+  }
+}
+
+export default {
+  entry
+}
+```
 
 ## Configuration file (config.js)
 Each module must have a config.js file. When react-band is building, it will traverse the src/modules directory, 
@@ -241,18 +276,19 @@ export default (config) => {
 
 ```javascript
 // demo: as
-// src/modules/custom/as/test/config.js
+// src/modules/custom/as/+customSet2/modules/assignment/config.js
 export default (config) => {
   return {
-    name: 'demo/test',
+    name: 'assignment',
     route: {
-      path: '/test'
+      path: '/assignment'
     },
+    // auth: {},
     decoratorsConfig: {
       '@reduxStore': {
         assignmentStore: {
-          actions: ['getList'],
-          state: ['items', 'total']
+          actions: ['getAssignmentList'],
+          state: ['assignments', 'total']
         }
       }
     },
@@ -279,8 +315,12 @@ Each module must have an index.entry.jsx or index.entry.js file. react-band uses
 // src/modules/custom/basic/home/index.entry.jsx
 import PropTypes from 'prop-types'
 import React from 'react'
+import darkgray from './themes/darkgray/index.css'
+import defaultTheme from './themes/default/index.css'
+import en from './i18n/en.json'
+import zhCN from './i18n/zh-CN.json'
 
-export default (RB_CONTEXT) => {
+const entry = (RB_CONTEXT) => {
   function Home (props) {
     const handleClick = () => {
       const { history } = props
@@ -301,6 +341,32 @@ export default (RB_CONTEXT) => {
   }
 
   return Home
+}
+
+const i18n = (RB_CONTEXT) => {
+  const { locale } = RB_CONTEXT.options
+  const i18ns = {
+    en,
+    'zh-CN': zhCN
+  }
+
+  return i18ns[locale]
+}
+
+const theme = (RB_CONTEXT) => {
+  const { theme } = RB_CONTEXT.options
+  const themes = {
+    default: defaultTheme,
+    darkgray
+  }
+
+  return themes[theme] || defaultTheme
+}
+
+export default {
+  entry,
+  i18n,
+  theme
 }
 ```
 
@@ -330,20 +396,24 @@ import Module2 from '../module2/index.js'
 ```javascript
 // react-band
 // src/modules/custom/module1/index.entry.js
-export default async ({ getModule }) => {
+const entry = async ({ getModule }) => {
   const Module2 = await getModule('module2')
 
   return function Module1 {
     return <Module2 />
   }
 }
+
+export default {
+  entry
+}
 ```
 
 ## Theme file (themes/)
 The themes directory is used to store module-related style files. react-band supports dynamic switching 
 of multiple sets of themes. There must be a default folder in the directory to store the default theme files. 
-In order to support the on-demand loading of module themes, it is agreed that the entry file of the theme 
-is index.css or index.global.css. react-band will split the code based on these two files. react-band uses 
+It is agreed that the entry file of the theme 
+is index.css or index.global.css. react-band uses 
 less-loader and css-loader to load style files, so the module style files support less syntax. When react-band 
 loads index.css, it uses the local mode of css-loader. When loading index.global.css, the global mode of css-loader is adopted.
 
@@ -382,8 +452,12 @@ export default (config) => {
 // src/modules/custom/basic/home/index.entry.jsx
 import PropTypes from 'prop-types'
 import React from 'react'
+import darkgray from './themes/darkgray/index.css'
+import defaultTheme from './themes/default/index.css'
+import en from './i18n/en.json'
+import zhCN from './i18n/zh-CN.json'
 
-export default (RB_CONTEXT) => {
+const entry = (RB_CONTEXT) => {
   function Home (props) {
     const handleClick = () => {
       const { history } = props
@@ -405,13 +479,39 @@ export default (RB_CONTEXT) => {
 
   return Home
 }
+
+const i18n = (RB_CONTEXT) => {
+  const { locale } = RB_CONTEXT.options
+  const i18ns = {
+    en,
+    'zh-CN': zhCN
+  }
+
+  return i18ns[locale]
+}
+
+const theme = (RB_CONTEXT) => {
+  const { theme } = RB_CONTEXT.options
+  const themes = {
+    default: defaultTheme,
+    darkgray
+  }
+
+  return themes[theme] || defaultTheme
+}
+
+export default {
+  entry,
+  i18n,
+  theme
+}
 ```
 
 Sometimes you need to refer to the style file of a third-party library, this time you need to use the 
 global scope. As follows:
 
 ```css
-/* src/modules/common/antd/components/themes/default/index.global.css */
+/* src/modules/common/commonSet2/modules/antd/components/themes/default/index.global.css */
 @import "~antd/dist/antd.css";
 ```
 
@@ -451,8 +551,12 @@ export default (config) => {
 // src/modules/custom/basic/home/index.entry.jsx
 import PropTypes from 'prop-types'
 import React from 'react'
+import darkgray from './themes/darkgray/index.css'
+import defaultTheme from './themes/default/index.css'
+import en from './i18n/en.json'
+import zhCN from './i18n/zh-CN.json'
 
-export default (RB_CONTEXT) => {
+const entry = (RB_CONTEXT) => {
   function Home (props) {
     const handleClick = () => {
       const { history } = props
@@ -473,6 +577,32 @@ export default (RB_CONTEXT) => {
   }
 
   return Home
+}
+
+const i18n = (RB_CONTEXT) => {
+  const { locale } = RB_CONTEXT.options
+  const i18ns = {
+    en,
+    'zh-CN': zhCN
+  }
+
+  return i18ns[locale]
+}
+
+const theme = (RB_CONTEXT) => {
+  const { theme } = RB_CONTEXT.options
+  const themes = {
+    default: defaultTheme,
+    darkgray
+  }
+
+  return themes[theme] || defaultTheme
+}
+
+export default {
+  entry,
+  i18n,
+  theme
 }
 ```
 
