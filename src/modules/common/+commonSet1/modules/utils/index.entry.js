@@ -50,7 +50,7 @@ function getUrlParameter (url, name) {
   return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '))
 }
 
-export default () => {
+const entry = () => {
   return {
     setStatic,
     setDisplayName,
@@ -59,4 +59,8 @@ export default () => {
     promisify,
     getUrlParameter
   }
+}
+
+export default {
+  entry
 }

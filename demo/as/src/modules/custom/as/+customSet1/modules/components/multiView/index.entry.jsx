@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import get from 'lodash/get'
 
-export default async ({ getModule }) => {
+const entry = async ({ getModule }) => {
   const asUtils = await getModule('asUtils')
   const { getQueryParams } = asUtils
 
@@ -78,4 +78,8 @@ export default async ({ getModule }) => {
   }
 
   return MultiView
+}
+
+export default {
+  entry
 }

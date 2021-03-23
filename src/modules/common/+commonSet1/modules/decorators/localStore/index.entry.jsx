@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import get from 'lodash/get'
 import { handleActions } from 'redux-actions'
 
-export default async (RB_CONTEXT) => {
+const entry = async (RB_CONTEXT) => {
   const { getModule } = RB_CONTEXT
   const utils = await getModule('utils') || {}
   const { promisify, setDisplayName, wrapDisplayName } = utils
@@ -58,4 +58,8 @@ export default async (RB_CONTEXT) => {
 
     return localStoreDeco
   }
+}
+
+export default {
+  entry
 }

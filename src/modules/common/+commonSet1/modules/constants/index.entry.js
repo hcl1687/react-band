@@ -1,4 +1,4 @@
-export default () => {
+const entry = () => {
   const LOCALE = {
     'en-US': 'en-US',
     'es-MX': 'es-MX',
@@ -10,4 +10,8 @@ export default () => {
   return {
     LOCALE
   }
+}
+
+export default {
+  entry
 }

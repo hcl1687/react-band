@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import get from 'lodash/get'
 import getStore from '../getStore'
 
-export default async ({ getModule }) => {
+const entry = async ({ getModule }) => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
 
@@ -71,4 +71,8 @@ export default async ({ getModule }) => {
 
     return reduxStoreDeco
   }
+}
+
+export default {
+  entry
 }

@@ -2,7 +2,7 @@ import actionsFactory from './actions'
 import reducers from './reducers'
 import stateFactory from './state'
 
-export default async (RB_CONTEXT) => {
+const entry = async (RB_CONTEXT) => {
   const actions = await actionsFactory(RB_CONTEXT)
   const state = await stateFactory(RB_CONTEXT)
 
@@ -11,4 +11,8 @@ export default async (RB_CONTEXT) => {
     reducers,
     state
   }
+}
+
+export default {
+  entry
 }

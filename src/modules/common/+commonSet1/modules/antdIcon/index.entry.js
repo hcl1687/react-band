@@ -1,5 +1,9 @@
 import * as antdIcon from '@ant-design/icons'
 
-export default () => {
+const entry = () => {
   return antdIcon
+}
+
+export default {
+  entry
 }

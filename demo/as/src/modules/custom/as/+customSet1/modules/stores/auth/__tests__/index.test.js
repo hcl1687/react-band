@@ -1,5 +1,6 @@
-import authFactory from '../index.entry'
+import module from '../index.entry'
 
+const authFactory = module.entry
 jest.mock('../actions', () => {
   return () => {
     return {}

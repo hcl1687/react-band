@@ -1,4 +1,4 @@
-export default async ({ getModule }) => {
+const entry = async ({ getModule }) => {
   const asUtils = await getModule('asUtils')
   const { getRemoteComponent } = asUtils
 
@@ -13,4 +13,8 @@ export default async ({ getModule }) => {
 
   const lottie = await getRemoteComponent(componentInfo, {})
   return lottie
+}
+
+export default {
+  entry
 }

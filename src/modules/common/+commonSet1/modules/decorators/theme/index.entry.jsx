@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default async ({ getModule }) => {
+const entry = async ({ getModule }) => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
   return ({ theme }) => WrappedComponent => {
@@ -14,4 +14,8 @@ export default async ({ getModule }) => {
 
     return themeDeco
   }
+}
+
+export default {
+  entry
 }

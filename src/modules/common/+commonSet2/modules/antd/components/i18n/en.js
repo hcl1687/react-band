@@ -1,3 +1,3 @@
-import en from 'antd/es/locale/en_US'
+import en from 'antd/lib/locale/en_US'
 
 export default en

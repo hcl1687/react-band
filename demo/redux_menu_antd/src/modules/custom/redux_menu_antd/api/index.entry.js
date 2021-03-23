@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export default async ({ getModule }) => {
+const entry = async ({ getModule }) => {
   const constants = await getModule('contants')
   const { JSON_SERVER } = constants || {}
 
@@ -21,4 +21,8 @@ export default async ({ getModule }) => {
     addStudent,
     deleteStudent
   }
+}
+
+export default {
+  entry
 }

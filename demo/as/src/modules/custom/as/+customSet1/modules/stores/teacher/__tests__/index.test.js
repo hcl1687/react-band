@@ -1,5 +1,6 @@
-import teacherFactory from '../index.entry'
+import module from '../index.entry'
 
+const teacherFactory = module.entry
 jest.mock('../actions', () => {
   return () => {
     return {}

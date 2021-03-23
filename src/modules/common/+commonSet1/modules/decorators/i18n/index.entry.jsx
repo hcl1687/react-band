@@ -1,7 +1,7 @@
 import IntlMessageFormat from 'intl-messageformat'
 import React from 'react'
 
-export default async ({ getModule, options }) => {
+const entry = async ({ getModule, options }) => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
   const { locale } = options
@@ -24,4 +24,8 @@ export default async ({ getModule, options }) => {
 
     return i18nDeco
   }
+}
+
+export default {
+  entry
 }

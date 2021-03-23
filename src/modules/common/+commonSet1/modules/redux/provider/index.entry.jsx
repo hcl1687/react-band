@@ -2,7 +2,7 @@ import { Provider } from 'react-redux'
 import React from 'react'
 import getStore from '../getStore'
 
-export default async ({ getModule }) => {
+const entry = async ({ getModule }) => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
 
@@ -20,4 +20,8 @@ export default async ({ getModule }) => {
 
     return reduxProviderDeco
   }
+}
+
+export default {
+  entry
 }

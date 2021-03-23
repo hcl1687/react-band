@@ -1,7 +1,7 @@
 import React from 'react'
 import get from 'lodash/get'
 
-export default async ({ getModule }) => {
+const entry = async ({ getModule }) => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
 
@@ -22,4 +22,8 @@ export default async ({ getModule }) => {
 
     return layoutDeco
   }
+}
+
+export default {
+  entry
 }

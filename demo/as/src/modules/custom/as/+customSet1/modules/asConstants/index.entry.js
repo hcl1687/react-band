@@ -7,11 +7,15 @@ const ASSETS_PREFIX = {
   imageList: '/cudos/activity/images/'
 }
 
-export default (RB_CONTEXT) => {
+const entry = (RB_CONTEXT) => {
   const ENV = require(`./env/${process.env.RB_ENV}`)
   return {
     LOCAL_STORAGE_PREFIX,
     ASSETS_PREFIX,
     ENV
   }
+}
+
+export default {
+  entry
 }

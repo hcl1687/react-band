@@ -120,7 +120,7 @@ function setFakeNotifyHandler () {
   console.error('only functions that accept exactly two parameters: props and ref are support setNotifyHandler.')
 }
 
-export default async ({ getModule }) => {
+const entry = async ({ getModule }) => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
 
@@ -225,4 +225,8 @@ export function useNotice () {
   }
 
   return [getNotification, notify, setNotifyHandler]
+}
+
+export default {
+  entry
 }

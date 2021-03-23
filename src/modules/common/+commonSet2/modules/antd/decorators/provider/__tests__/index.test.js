@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { mount, render } from 'enzyme'
 import { ConfigContext } from 'antd/lib/config-provider'
-import providerDecoFactory from '../index.entry'
+import module from '../index.entry'
 import utils from '~/../tests/utils/mockUtils'
 
+const providerDecoFactory = module.entry
 const context = {
   getModule: async (key) => {
     if (key === 'utils') {

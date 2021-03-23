@@ -1,5 +1,6 @@
-import layoutFactory from '../index.entry'
+import module from '../index.entry'
 
+const layoutFactory = module.entry
 jest.mock('../actions', () => {
   return () => {
     return {}

@@ -1,8 +1,9 @@
 import React, { forwardRef, useImperativeHandle, useRef } from 'react'
 import PropTypes from 'prop-types'
-import menuFactory from '../index.entry'
+import module from '../index.entry'
 import { mount } from 'enzyme'
 
+const menuFactory = module.entry
 function handleRef (WrappedComponent) {
   let propTypes
   let defaultProps

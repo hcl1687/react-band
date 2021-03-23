@@ -1,7 +1,7 @@
 import getRemoteComponent from './getRemoteComponent'
 import getRequestProvider from './request'
 
-export default async (RB_CONTEXT) => {
+const entry = async (RB_CONTEXT) => {
   const { getModule } = RB_CONTEXT
   const asConstants = await getModule('asConstants')
   const { ENV, LOCAL_STORAGE_PREFIX } = asConstants
@@ -101,4 +101,8 @@ export default async (RB_CONTEXT) => {
     getRemoteComponent,
     getQueryParams
   }
+}
+
+export default {
+  entry
 }

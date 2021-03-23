@@ -32,134 +32,41 @@ describe('core/index', () => {
   describe('loadI18n', () => {
     it('fetch successful', () => {
       const rbInstance = RBCore.create()
-      rbInstance.fetchI18n = jest.fn((path, locale) => {
+      const factory = jest.fn((path, locale) => {
         return Promise.resolve({
-          default: {
-            a: 'test'
-          }
+          a: 'test'
         })
       })
+      const RB_CONTEXT = {
+        options: {
+          locale: 'en'
+        }
+      }
 
-      return rbInstance.loadI18n('testPath', 'test').then(i18n => {
+      return rbInstance.loadI18n('test', factory, RB_CONTEXT).then(i18n => {
         expect(i18n).toEqual({
-          default: {
-            a: 'test'
-          }
+          a: 'test'
         })
         expect(rbInstance._i18ns['test']['en']).toEqual({
           a: 'test'
         })
-        expect(rbInstance.fetchI18n.mock.calls.length).toBe(1)
-        expect(rbInstance.fetchI18n.mock.calls[0][0]).toEqual('testPath')
-        expect(rbInstance.fetchI18n.mock.calls[0][1]).toEqual('en')
-        expect(typeof rbInstance.fetchI18n.mock.results[0].value.then).toEqual('function')
       })
     })
 
     it('fetch failed', () => {
       const rbInstance = RBCore.create()
-      rbInstance.fetchI18n = jest.fn((path, locale) => {
+      const factory = jest.fn((path, locale) => {
         return Promise.reject(new Error(''))
       })
+      const RB_CONTEXT = {
+        options: {
+          locale: 'en'
+        }
+      }
 
-      return rbInstance.loadI18n('testPath', 'test').then(i18n => {
+      return rbInstance.loadI18n('test', factory, RB_CONTEXT).then(i18n => {
         expect(i18n).toEqual({})
         expect(rbInstance._i18ns['test']['en']).toEqual({})
-        expect(rbInstance.fetchI18n.mock.calls.length).toBe(1)
-        expect(rbInstance.fetchI18n.mock.calls[0][0]).toEqual('testPath')
-        expect(rbInstance.fetchI18n.mock.calls[0][1]).toEqual('en')
-        expect(typeof rbInstance.fetchI18n.mock.results[0].value.then).toEqual('function')
-      })
-    })
-  })
-
-  describe('fetchI18n', () => {
-    it('fetch json successful', () => {
-      const rbInstance = RBCore.create()
-      rbInstance.fetchI18nJSON = jest.fn((path, locale) => {
-        return Promise.resolve({
-          default: {
-            a: 'test'
-          }
-        })
-      })
-      return rbInstance.fetchI18n('testPath', 'en').then((i18n) => {
-        expect(i18n).toEqual({
-          default: {
-            a: 'test'
-          }
-        })
-        expect(rbInstance.fetchI18nJSON.mock.calls.length).toBe(1)
-        expect(rbInstance.fetchI18nJSON.mock.calls[0][0]).toEqual('testPath')
-        expect(rbInstance.fetchI18nJSON.mock.calls[0][1]).toEqual('en')
-        expect(typeof rbInstance.fetchI18nJSON.mock.results[0].value.then).toEqual('function')
-      })
-    })
-
-    it('fetch json failed', () => {
-      const rbInstance = RBCore.create()
-      rbInstance.fetchI18nJSON = jest.fn((path, locale) => {
-        return Promise.reject(new Error(''))
-      })
-      rbInstance.fetchI18nJS = jest.fn((path, locale) => {
-        return Promise.resolve({
-          default: {
-            a: 'test'
-          }
-        })
-      })
-      return rbInstance.fetchI18n('testPath', 'en').then((i18n) => {
-        expect(i18n).toEqual({
-          default: {
-            a: 'test'
-          }
-        })
-        expect(rbInstance.fetchI18nJSON.mock.calls.length).toBe(1)
-        expect(rbInstance.fetchI18nJSON.mock.calls[0][0]).toEqual('testPath')
-        expect(rbInstance.fetchI18nJSON.mock.calls[0][1]).toEqual('en')
-        expect(typeof rbInstance.fetchI18nJSON.mock.results[0].value.then).toEqual('function')
-        expect(rbInstance.fetchI18nJS.mock.calls.length).toBe(1)
-        expect(rbInstance.fetchI18nJS.mock.calls[0][0]).toEqual('testPath')
-        expect(rbInstance.fetchI18nJS.mock.calls[0][1]).toEqual('en')
-        expect(typeof rbInstance.fetchI18nJS.mock.results[0].value.then).toEqual('function')
-      })
-    })
-
-    it('fetch failed', () => {
-      const rbInstance = RBCore.create()
-      rbInstance.fetchI18nJSON = jest.fn((path, locale) => {
-        return Promise.reject(new Error(''))
-      })
-      rbInstance.fetchI18nJS = jest.fn((path, locale) => {
-        return Promise.reject(new Error(''))
-      })
-      return rbInstance.fetchI18n('testPath', 'en').catch(() => {
-        expect(rbInstance.fetchI18nJSON.mock.calls.length).toBe(1)
-        expect(rbInstance.fetchI18nJSON.mock.calls[0][0]).toEqual('testPath')
-        expect(rbInstance.fetchI18nJSON.mock.calls[0][1]).toEqual('en')
-        expect(typeof rbInstance.fetchI18nJSON.mock.results[0].value.then).toEqual('function')
-        expect(rbInstance.fetchI18nJS.mock.calls.length).toBe(1)
-        expect(rbInstance.fetchI18nJS.mock.calls[0][0]).toEqual('testPath')
-        expect(rbInstance.fetchI18nJS.mock.calls[0][1]).toEqual('en')
-        expect(typeof rbInstance.fetchI18nJS.mock.results[0].value.then).toEqual('function')
-      })
-    })
-  })
-
-  describe('fetchI18nJSON', () => {
-    it('fetch failed', () => {
-      const rbInstance = RBCore.create()
-      return rbInstance.fetchI18nJSON('testPath', 'en').catch(() => {
-        expect(1).toBe(1)
-      })
-    })
-  })
-
-  describe('fetchI18nJS', () => {
-    it('fetch failed', () => {
-      const rbInstance = RBCore.create()
-      return rbInstance.fetchI18nJS('testPath', 'en').catch(() => {
-        expect(1).toBe(1)
       })
     })
   })
@@ -167,100 +74,24 @@ describe('core/index', () => {
   describe('loadTheme', () => {
     it('fetch successful', () => {
       const rbInstance = RBCore.create()
-      rbInstance.fetchTheme = jest.fn((path, locale) => {
+      const factory = jest.fn((path, locale) => {
         return Promise.resolve({
-          default: {
-            a: 'test'
-          }
+          a: 'test'
         })
       })
+      const RB_CONTEXT = {
+        options: {
+          theme: 'default'
+        }
+      }
 
-      return rbInstance.loadTheme('testPath', 'test').then(i18n => {
-        expect(i18n).toEqual({
-          default: {
-            a: 'test'
-          }
+      return rbInstance.loadTheme('test', factory, RB_CONTEXT).then(themeObj => {
+        expect(themeObj).toEqual({
+          a: 'test'
         })
         expect(rbInstance._themes['test']['default']).toEqual({
           a: 'test'
         })
-        expect(rbInstance.fetchTheme.mock.calls.length).toBe(1)
-        expect(rbInstance.fetchTheme.mock.calls[0][0]).toEqual('testPath')
-        expect(rbInstance.fetchTheme.mock.calls[0][1]).toEqual('default')
-        expect(typeof rbInstance.fetchTheme.mock.results[0].value.then).toEqual('function')
-      })
-    })
-  })
-
-  describe('fetchTheme', () => {
-    it('fetch local successful', () => {
-      const rbInstance = RBCore.create()
-      rbInstance.fetchLocalTheme = jest.fn((path, locale) => {
-        return Promise.resolve({
-          default: {
-            a: 'test'
-          }
-        })
-      })
-      return rbInstance.fetchTheme('testPath', 'default').then((i18n) => {
-        expect(i18n).toEqual({
-          default: {
-            a: 'test'
-          }
-        })
-        expect(rbInstance.fetchLocalTheme.mock.calls.length).toBe(1)
-        expect(rbInstance.fetchLocalTheme.mock.calls[0][0]).toEqual('testPath')
-        expect(rbInstance.fetchLocalTheme.mock.calls[0][1]).toEqual('default')
-        expect(typeof rbInstance.fetchLocalTheme.mock.results[0].value.then).toEqual('function')
-      })
-    })
-
-    it('fetch local and global successful', () => {
-      const rbInstance = RBCore.create()
-      rbInstance.fetchLocalTheme = jest.fn((path, locale) => {
-        return Promise.resolve({
-          default: {
-            a: 'test'
-          }
-        })
-      })
-      rbInstance.fetchGlobalTheme = jest.fn((path, locale) => {
-        return Promise.resolve({})
-      })
-      return rbInstance.fetchTheme('testPath', 'default').then((i18n) => {
-        expect(i18n).toEqual({
-          default: {
-            a: 'test'
-          }
-        })
-        expect(rbInstance.fetchLocalTheme.mock.calls.length).toBe(1)
-        expect(rbInstance.fetchLocalTheme.mock.calls[0][0]).toEqual('testPath')
-        expect(rbInstance.fetchLocalTheme.mock.calls[0][1]).toEqual('default')
-        expect(typeof rbInstance.fetchLocalTheme.mock.results[0].value.then).toEqual('function')
-        expect(rbInstance.fetchGlobalTheme.mock.calls.length).toBe(1)
-        expect(rbInstance.fetchGlobalTheme.mock.calls[0][0]).toEqual('testPath')
-        expect(rbInstance.fetchGlobalTheme.mock.calls[0][1]).toEqual('default')
-        expect(typeof rbInstance.fetchGlobalTheme.mock.results[0].value.then).toEqual('function')
-      })
-    })
-  })
-
-  describe('fetchLocalTheme', () => {
-    it('fetch failed', () => {
-      const rbInstance = RBCore.create()
-      return rbInstance.fetchLocalTheme('testPath', 'default').then((res) => {
-        expect(res).toEqual({
-          default: {}
-        })
-      })
-    })
-  })
-
-  describe('fetchGlobalTheme', () => {
-    it('fetch failed', () => {
-      const rbInstance = RBCore.create()
-      return rbInstance.fetchGlobalTheme('testPath', 'default').then(() => {
-        expect(1).toBe(1)
       })
     })
   })
@@ -279,10 +110,12 @@ describe('core/index', () => {
       })
       rbInstance.fetchModule = jest.fn((path) => {
         return Promise.resolve({
-          default: (RB_CONTEXT) => {
-            const { options } = RB_CONTEXT
-            return function () {
-              return options.locale
+          default: {
+            entry: (RB_CONTEXT) => {
+              const { options } = RB_CONTEXT
+              return function () {
+                return options.locale
+              }
             }
           }
         })
@@ -294,12 +127,10 @@ describe('core/index', () => {
           default: {}
         })
         expect(rbInstance.loadI18n.mock.calls.length).toBe(1)
-        expect(rbInstance.loadI18n.mock.calls[0][0]).toEqual('testPath')
-        expect(rbInstance.loadI18n.mock.calls[0][1]).toEqual('test')
+        expect(rbInstance.loadI18n.mock.calls[0][0]).toEqual('test')
         expect(typeof rbInstance.loadI18n.mock.results[0].value.then).toEqual('function')
         expect(rbInstance.loadTheme.mock.calls.length).toBe(1)
-        expect(rbInstance.loadTheme.mock.calls[0][0]).toEqual('testPath')
-        expect(rbInstance.loadTheme.mock.calls[0][1]).toEqual('test')
+        expect(rbInstance.loadTheme.mock.calls[0][0]).toEqual('test')
         expect(typeof rbInstance.loadTheme.mock.results[0].value.then).toEqual('function')
         expect(rbInstance.packModule.mock.calls.length).toBe(1)
         expect(rbInstance.packModule.mock.calls[0][0]).toEqual('test')
@@ -309,7 +140,7 @@ describe('core/index', () => {
         expect(typeof rbInstance.fetchModule.mock.results[0].value.then).toEqual('function')
         expect(typeof rbInstance._modules['test']).toEqual('object')
         const testFun = rbInstance._modules['test'].value
-        expect(testFun()).toEqual('en')
+        expect(testFun).toMatchSnapshot()
       })
     })
   })
@@ -339,7 +170,9 @@ describe('core/index', () => {
       const rbInstance = RBCore.create()
       rbInstance._modules['test'] = {
         status: 'done',
-        value: Test
+        value: {
+          entry: () => Test
+        }
       }
       rbInstance._i18ns['test'] = {}
       rbInstance._i18ns['test']['en'] = {
@@ -385,7 +218,7 @@ describe('core/index', () => {
       rbInstance._modulesConfig['@i18n'] = {}
       rbInstance._modulesConfig['@theme'] = {}
 
-      return rbInstance.packModule('test').then(Comp => {
+      return rbInstance.packModule('test', Test).then(Comp => {
         const wrapper = mount(
           <Comp />
         )
@@ -611,72 +444,6 @@ describe('core/index', () => {
   })
 
   describe('check regex', () => {
-    it('checkModuleSetI18nJson', () => {
-      const rbInstance = RBCore.create()
-
-      const checkModuleSetI18nJson = rbInstance.checkModuleSetI18nJson
-      expect(checkModuleSetI18nJson('/modules/common/app/i18n/en.json')).toBe(true)
-      expect(checkModuleSetI18nJson('/modules/common/+moduleSet/modules/loading/i18n/en.json')).toBe(false)
-      expect(checkModuleSetI18nJson('/modules/common/+moduleSet/i18n/en.js')).toBe(false)
-      expect(checkModuleSetI18nJson('/modules/common/+moduleSet/config.js')).toBe(false)
-      expect(checkModuleSetI18nJson('/modules/common/+moduleSet/index.entry.js')).toBe(false)
-      expect(checkModuleSetI18nJson('/modules/common/+moduleSet/themes/default/index.js')).toBe(false)
-    })
-
-    it('checkModuleSetI18nJs', () => {
-      const rbInstance = RBCore.create()
-
-      const checkModuleSetI18nJs = rbInstance.checkModuleSetI18nJs
-      expect(checkModuleSetI18nJs('/modules/common/app/i18n/en.js')).toBe(true)
-      expect(checkModuleSetI18nJs('/modules/common/app/i18n/en.json')).toBe(false)
-      expect(checkModuleSetI18nJs('/modules/common/+moduleSet/modules/loading/i18n/en.js')).toBe(false)
-      expect(checkModuleSetI18nJs('/modules/common/+moduleSet/modules/loading/i18n/en.json')).toBe(false)
-      expect(checkModuleSetI18nJs('/modules/common/+moduleSet/i18n/en.js')).toBe(true)
-      expect(checkModuleSetI18nJs('/modules/common/+moduleSet/config.js')).toBe(false)
-      expect(checkModuleSetI18nJs('/modules/common/+moduleSet/index.entry.js')).toBe(false)
-      expect(checkModuleSetI18nJs('/modules/common/+moduleSet/themes/default/index.js')).toBe(false)
-    })
-
-    it('checkModuleSetLocalThemeCss', () => {
-      const rbInstance = RBCore.create()
-
-      const checkModuleSetLocalThemeCss = rbInstance.checkModuleSetLocalThemeCss
-      expect(checkModuleSetLocalThemeCss('/modules/common/app/themes/default/index.css')).toBe(true)
-      expect(checkModuleSetLocalThemeCss('/modules/common/app/themes/default/index.js')).toBe(false)
-      expect(checkModuleSetLocalThemeCss('/modules/common/app/themes/default/index.global.css')).toBe(false)
-      expect(checkModuleSetLocalThemeCss('/modules/common/+moduleSet/modules/loading/default/index.css')).toBe(false)
-      expect(checkModuleSetLocalThemeCss('/modules/common/+moduleSet/themes/default/index.css')).toBe(true)
-      expect(checkModuleSetLocalThemeCss('/modules/common/+moduleSet/config.js')).toBe(false)
-      expect(checkModuleSetLocalThemeCss('/modules/common/+moduleSet/index.entry.js')).toBe(false)
-      expect(checkModuleSetLocalThemeCss('/modules/common/+moduleSet/themes/default/index.js')).toBe(false)
-    })
-
-    it('checkModuleSetThemeJs', () => {
-      const rbInstance = RBCore.create()
-
-      const checkModuleSetThemeJs = rbInstance.checkModuleSetThemeJs
-      expect(checkModuleSetThemeJs('/modules/common/app/themes/default/index.css')).toBe(false)
-      expect(checkModuleSetThemeJs('/modules/common/app/themes/default/index.js')).toBe(true)
-      expect(checkModuleSetThemeJs('/modules/common/app/themes/default/index.global.css')).toBe(false)
-      expect(checkModuleSetThemeJs('/modules/common/+moduleSet/modules/loading/default/index.js')).toBe(false)
-      expect(checkModuleSetThemeJs('/modules/common/+moduleSet/themes/default/index.js')).toBe(true)
-      expect(checkModuleSetThemeJs('/modules/common/+moduleSet/config.js')).toBe(false)
-      expect(checkModuleSetThemeJs('/modules/common/+moduleSet/index.entry.js')).toBe(false)
-      expect(checkModuleSetThemeJs('/modules/common/+moduleSet/themes/default/index.css')).toBe(false)
-    })
-
-    it('checkModuleSetThemeGlobalCss', () => {
-      const rbInstance = RBCore.create()
-
-      const checkModuleSetThemeGlobalCss = rbInstance.checkModuleSetThemeGlobalCss
-      expect(checkModuleSetThemeGlobalCss('/modules/common/app/themes/default/index.css')).toBe(false)
-      expect(checkModuleSetThemeGlobalCss('/modules/common/app/themes/default/index.js')).toBe(false)
-      expect(checkModuleSetThemeGlobalCss('/modules/common/app/themes/default/index.global.css')).toBe(true)
-      expect(checkModuleSetThemeGlobalCss('/modules/common/+moduleSet/modules/loading/default/index.global.css')).toBe(false)
-      expect(checkModuleSetThemeGlobalCss('/modules/common/+moduleSet/themes/default/index.global.css')).toBe(true)
-      expect(checkModuleSetThemeGlobalCss('/modules/common/+moduleSet/themes/default/index.css')).toBe(false)
-    })
-
     it('checkModuleSetEntry', () => {
       const rbInstance = RBCore.create()
 

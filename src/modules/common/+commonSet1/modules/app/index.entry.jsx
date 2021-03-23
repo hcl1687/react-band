@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-export default () => {
+const entry = () => {
   function App (props) {
     const { children } = props
     return <div className='app'>{children}</div>
@@ -12,4 +12,8 @@ export default () => {
   }
 
   return App
+}
+
+export default {
+  entry
 }

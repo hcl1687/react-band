@@ -1,7 +1,8 @@
 import { render, shallow } from 'enzyme'
 import React from 'react'
-import notFoundFactory from '../index.entry'
+import module from '../index.entry'
 
+const notFoundFactory = module.entry
 const NotFound = notFoundFactory()
 
 describe('common/notFound', () => {

@@ -2,10 +2,14 @@ import actions from './actions'
 import reducers from './reducers'
 import state from './state'
 
-export default () => {
+const entry = () => {
   return {
     actions,
     reducers,
     state
   }
+}
+
+export default {
+  entry
 }

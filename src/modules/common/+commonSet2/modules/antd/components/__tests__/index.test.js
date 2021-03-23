@@ -1,5 +1,6 @@
-import antdFactory from '../index.entry'
+import module from '../index.entry'
 
+const antdFactory = module.entry
 const antd = antdFactory()
 
 describe('common/antd/comp', () => {

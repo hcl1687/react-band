@@ -1,4 +1,6 @@
-import assignmentFactory from '../index.entry'
+import module from '../index.entry'
+
+const assignmentFactory = module.entry
 
 jest.mock('../actions', () => {
   return () => {

@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { mount, render } from 'enzyme'
 import PropTypes from 'prop-types'
-import localStoreDecoFactory from '../index.entry'
+import module from '../index.entry'
 import tools from '~/../tests/utils/index'
 import utils from '~/../tests/utils/mockUtils'
 
+const localStoreDecoFactory = module.entry
 function Test (props) {
   const { count, increase, decrease } = props
   const [msg, setMsg] = useState('')

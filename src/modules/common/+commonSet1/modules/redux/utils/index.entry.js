@@ -1,7 +1,11 @@
 import getStore from '../getStore'
 
-export default () => {
+const entry = () => {
   return {
     getStore
   }
+}
+
+export default {
+  entry
 }

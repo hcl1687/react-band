@@ -1,9 +1,10 @@
 import { mount, render } from 'enzyme'
 import PropTypes from 'prop-types'
 import React from 'react'
-import themeDecoFactory from '../index.entry'
+import module from '../index.entry'
 import utils from '~/../tests/utils/mockUtils'
 
+const themeDecoFactory = module.entry
 const context = {
   getModule: async (key) => {
     if (key === 'utils') {

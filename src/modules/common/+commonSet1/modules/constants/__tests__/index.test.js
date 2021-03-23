@@ -1,5 +1,6 @@
-import constFactory from '../index.entry'
+import module from '../index.entry'
 
+const constFactory = module.entry
 const CONSTS = constFactory()
 
 describe('common/constants', () => {

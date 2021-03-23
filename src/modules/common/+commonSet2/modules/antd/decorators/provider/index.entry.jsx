@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { ConfigProvider } from 'antd'
 import get from 'lodash/get'
 
-export default async ({ getModule }) => {
+const entry = async ({ getModule }) => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
 
@@ -25,4 +25,8 @@ export default async ({ getModule }) => {
 
     return antdProviderDeco
   }
+}
+
+export default {
+  entry
 }

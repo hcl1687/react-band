@@ -17,7 +17,7 @@ import multiView from './modules/components/multiView/index.entry'
 import profile from './modules/framework/profile/index.entry'
 import teacherStore from './modules/stores/teacher/index.entry'
 
-export default () => {
+const entry = () => {
   return {
     asConstants,
     asUtils,
@@ -38,4 +38,8 @@ export default () => {
     layoutStore,
     teacherStore
   }
+}
+
+export default {
+  entry
 }

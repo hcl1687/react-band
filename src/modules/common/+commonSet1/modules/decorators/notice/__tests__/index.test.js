@@ -1,10 +1,11 @@
 import React, { Component, useEffect, useRef, useState } from 'react'
 import { mount, render } from 'enzyme'
 import PropTypes from 'prop-types'
-import noticeDecoFactory from '../index.entry'
+import module from '../index.entry'
 import tools from '~/../tests/utils/index'
 import utils from '~/../tests/utils/mockUtils'
 
+const noticeDecoFactory = module.entry
 const context = {
   getModule: async (key) => {
     if (key === 'utils') {
