@@ -124,7 +124,7 @@ function setFakeNotifyHandler () {
   console.error('only functions that accept exactly two parameters: props and ref are support setNotifyHandler.')
 }
 
-export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> => {
+const entry = async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
 
@@ -237,4 +237,8 @@ export function useNotice (): DecoNotice.INoticeUseNotice {
   }
 
   return [getNotification, notify, setNotifyHandler]
+}
+
+export default {
+  entry
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import get from 'lodash/get'
 
-export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> => {
+const entry = async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils
 
@@ -22,4 +22,8 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> =
 
     return layoutDeco
   }
+}
+
+export default {
+  entry
 }

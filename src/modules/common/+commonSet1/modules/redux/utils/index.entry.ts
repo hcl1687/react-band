@@ -1,7 +1,11 @@
 import getStore from '../getStore'
 
-export default (): RB.IRBModule => {
+const entry = (): RB.IRBModule => {
   return {
     getStore
   }
+}
+
+export default {
+  entry
 }

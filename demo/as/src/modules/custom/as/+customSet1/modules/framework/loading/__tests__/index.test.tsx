@@ -1,7 +1,9 @@
 import { mount, shallow } from 'enzyme'
 import React from 'react'
-import loadingFactory from '../index.entry'
+import module from '../index.entry'
 import tools from '~/../tests/utils/index'
+
+const loadingFactory = module.entry
 
 describe('common/loading', () => {
   it('should render correctly', async () => {

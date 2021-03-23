@@ -2,9 +2,9 @@ import { Provider } from 'react-redux'
 import React from 'react'
 import getStore from '../getStore'
 
-export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> => {
+const entry = async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> => {
   const utils = await getModule('utils') || {}
-  const { setDisplayName, wrapDisplayName } = utils
+  const { setDisplayName, wrapDisplayName } = utils as Utils.IUtils
 
   return () => async (WrappedComponent: RB.IRBComponent) => {
     const store: DecoRedux.IReduxStore = getStore()
@@ -20,4 +20,8 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBDecoModule> =
 
     return reduxProviderDeco
   }
+}
+
+export default {
+  entry
 }

@@ -117,7 +117,7 @@ declare global {
 
     interface IRBContext {
       options: IRBOptions
-      modules: IRBModulesMap
+      modules: IRBInnerModulesMap
       i18ns: IRBI18nsMap
       themes: IRBThemesMap
       packedModules: IRBModulesMap
@@ -133,7 +133,7 @@ declare global {
     type IRBModule = IRBCompModule | IRBDecoModule | IRBObject
 
     interface IRBInnerModule {
-      value: IRBModule
+      value: IRBModuleRaw|null
       status: string
       trigger?: [IRBResovle, IRBReject]
       waittingPromise?: Promise<undefined>
@@ -150,13 +150,27 @@ declare global {
     interface IRBInnerModuleParams {
       name: string
       status?: string
-      value?: IRBInnerModule
+      value?: IRBModuleRaw|null
     }
 
     interface IRBModuleFactory {
-      (RB_CONTEXT: IRBContext): IRBModule
+      (RB_CONTEXT: IRBContext): IRBModule|Promise<IRBModule>
+    }
+
+    interface IRBI18nFactory {
+      (RB_CONTEXT: IRBContext): IRBI18n|Promise<IRBI18n>
+    }
+
+    interface IRBThemeFactory {
+      (RB_CONTEXT: IRBContext): IRBTheme|Promise<IRBTheme>
     }
 
     type IRBHistory = History
+
+    interface IRBModuleRaw {
+      entry: IRBModuleFactory
+      i18n?: IRBI18nFactory
+      theme?: IRBThemeFactory
+    }
   }
 }

@@ -1,6 +1,8 @@
 import React from 'react'
+import module from '../index.entry'
 import { mount } from 'enzyme'
-import multiViewFactory from '../index.entry'
+
+const multiViewFactory = module.entry
 
 function getQueryParams (qs = '') {
   qs = qs.split('+').join(' ')

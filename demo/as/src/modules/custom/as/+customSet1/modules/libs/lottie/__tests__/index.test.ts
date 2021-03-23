@@ -1,5 +1,6 @@
-import lottieFactory from '../index.entry'
+import module from '../index.entry'
 
+const lottieFactory = module.entry
 const RB_CONTEXT = {
   options: {},
   modules: {},

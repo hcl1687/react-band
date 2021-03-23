@@ -15,7 +15,7 @@ import reduxUtils from './modules/redux/utils/index.entry'
 import themeDeco from './modules/decorators/theme/index.entry'
 import utils from './modules/utils/index.entry'
 
-export default (): RB.IRBModule => {
+const entry = (): RB.IRBModule => {
   return {
     antdIcon,
     app,
@@ -34,4 +34,8 @@ export default (): RB.IRBModule => {
     '@notice': noticeDeco,
     '@theme': themeDeco
   }
+}
+
+export default {
+  entry
 }

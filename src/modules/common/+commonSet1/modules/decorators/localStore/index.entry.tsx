@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import get from 'lodash/get'
 import { handleActions } from 'redux-actions'
 
-export default async (RB_CONTEXT: RB.IRBContext): Promise<RB.IRBDecoModule> => {
+const entry = async (RB_CONTEXT: RB.IRBContext): Promise<RB.IRBDecoModule> => {
   const { getModule } = RB_CONTEXT
   const utils = await getModule('utils') || {}
-  const { promisify, setDisplayName, wrapDisplayName } = utils
+  const { promisify, setDisplayName, wrapDisplayName } = utils as Utils.IUtils
 
   const decoModule = ({ decoratorsConfig }: RB.IRBModuleConfig) => (WrappedComponent: RB.IRBComponent) => {
     const localStoreFactory = get(decoratorsConfig, '@localStore') as DecoLocalStore.ILocalStoreFactory
@@ -60,4 +60,8 @@ export default async (RB_CONTEXT: RB.IRBContext): Promise<RB.IRBDecoModule> => {
   }
 
   return decoModule
+}
+
+export default {
+  entry
 }

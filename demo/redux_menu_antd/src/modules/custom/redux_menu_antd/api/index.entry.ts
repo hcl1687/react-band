@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBModule> => {
+const entry = async ({ getModule }: RB.IRBContext): Promise<RB.IRBModule> => {
   const constants = await getModule('contants')
   const { JSON_SERVER } = constants || {}
 
@@ -21,4 +21,8 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBModule> => {
     addStudent,
     deleteStudent
   }
+}
+
+export default {
+  entry
 }

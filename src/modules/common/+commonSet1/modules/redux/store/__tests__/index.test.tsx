@@ -3,10 +3,11 @@ import React, { Component } from 'react'
 import { mount, render } from 'enzyme'
 import { Provider } from 'react-redux'
 import getStore from '../../getStore'
-import storeDecoFactory from '../index.entry'
+import module from '../index.entry'
 import tools from '~/../tests/utils/index'
 import utils from '~/../tests/utils/mockUtils'
 
+const storeDecoFactory = module.entry
 const store: DecoRedux.IReduxStore = getStore()
 
 class Test extends Component<InferProps<typeof Test.propTypes>> {

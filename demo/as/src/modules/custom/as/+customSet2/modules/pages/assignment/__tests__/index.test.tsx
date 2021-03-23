@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import assignmentFactory from '../index.entry'
+import module from '../index.entry'
 import { mount } from 'enzyme'
 
+const assignmentFactory = module.entry
 const RB_CONTEXT: RB.IRBContext = {
   options: {},
   modules: {},

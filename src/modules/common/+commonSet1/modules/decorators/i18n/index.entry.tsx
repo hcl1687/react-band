@@ -1,7 +1,7 @@
 import IntlMessageFormat from 'intl-messageformat'
 import React from 'react'
 
-export default async ({ getModule, options }: RB.IRBContext): Promise<RB.IRBDecoModule> => {
+const entry = async ({ getModule, options }: RB.IRBContext): Promise<RB.IRBDecoModule> => {
   const utils = await getModule('utils') || {}
   const { setDisplayName, wrapDisplayName } = utils as Utils.IUtils
   const { locale } = options
@@ -24,4 +24,8 @@ export default async ({ getModule, options }: RB.IRBContext): Promise<RB.IRBDeco
 
     return i18nDeco
   }
+}
+
+export default {
+  entry
 }

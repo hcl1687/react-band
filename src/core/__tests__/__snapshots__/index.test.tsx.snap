@@ -3,7 +3,9 @@
 exports[`core/index loadModule process successful 1`] = `
 Object {
   "status": "done",
-  "value": [Function],
+  "value": Object {
+    "entry": [Function],
+  },
 }
 `;
 

@@ -1,4 +1,6 @@
-import asUtilsFactory from '../index.entry'
+import module from '../index.entry'
+
+const asUtilsFactory = module.entry
 
 const RB_CONTEXT: RB.IRBContext = {
   options: {},

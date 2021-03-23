@@ -1,6 +1,6 @@
-import antdIconFactory from '../index.entry'
+import module from '../index.entry'
 
-const antdIcon = antdIconFactory()
+const antdIcon = module.entry()
 
 describe('common/antdIcon', () => {
   it('should render correctly', () => {

@@ -1,6 +1,7 @@
 import React from 'react'
-import utilsFactory from '../index.entry'
+import module from '../index.entry'
 
+const utilsFactory = module.entry
 const utils = utilsFactory() as Utils.IUtils
 
 describe('common/utils', () => {

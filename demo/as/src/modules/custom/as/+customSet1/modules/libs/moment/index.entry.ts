@@ -1,4 +1,4 @@
-export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBModule> => {
+const entry = async ({ getModule }: RB.IRBContext): Promise<RB.IRBModule> => {
   const asUtils = await getModule('asUtils') as AsUtils.IUtils
   const { getRemoteComponent } = asUtils
 
@@ -13,4 +13,8 @@ export default async ({ getModule }: RB.IRBContext): Promise<RB.IRBModule> => {
 
   const moment = await getRemoteComponent(componentInfo, {})
   return moment
+}
+
+export default {
+  entry
 }

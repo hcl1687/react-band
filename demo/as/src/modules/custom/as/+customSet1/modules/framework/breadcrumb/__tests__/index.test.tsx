@@ -1,7 +1,8 @@
 import React from 'react'
-import breadcrumbFactory from '../index.entry'
+import module from '../index.entry'
 import { mount } from 'enzyme'
 
+const breadcrumbFactory = module.entry
 const mockHistoryPush = jest.fn()
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),

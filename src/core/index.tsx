@@ -53,210 +53,37 @@ export default class RBCore {
     }
   }
 
-  private loadI18n (path: string, name: string): Promise<RB.IRBI18nRaw | unknown> {
-    const { locale } = this._options
-    return this.fetchI18n(path, locale).then((i18n:RB.IRBI18nRaw) => {
+  private async loadI18n (name: string, factory: RB.IRBI18nFactory, RB_CONTEXT: RB.IRBContext): Promise<RB.IRBI18n> {
+    const { locale } = RB_CONTEXT.options
+    try {
+      let i18n = await factory(RB_CONTEXT)
+      i18n = i18n || {}
       this._i18ns[name] = this._i18ns[name] || {}
-      this._i18ns[name][locale] = i18n['default']
+      this._i18ns[name][locale] = i18n
       return i18n
-    }).catch(() => {
+    } catch {
       this._i18ns[name] = this._i18ns[name] || {}
       this._i18ns[name][locale] = {}
       return {}
-    })
-  }
-
-  // support json or js i18n file
-  private fetchI18n (path: string, locale: string): Promise<RB.IRBI18nRaw> {
-    path = path.replace(/^\.\//, '')
-    const moduleSetRegex = /[/\\]\+[^+]+$/
-    if (moduleSetRegex.test(path)) {
-      // it's module set, fetch js file
-      return this.fetchI18nJS(path, locale)
     }
-
-    return this.fetchI18nJSON(path, locale).catch(() => {
-      return this.fetchI18nJS(path, locale)
-    })
   }
 
-  private fetchI18nJSON (path: string, locale: string): Promise<RB.IRBI18nRaw> {
-    return import(
-      /* webpackExclude: /[/\\]\+[^+/\\]+[/\\]((?!i18n)[^+/\\])+[/\\]/ */
-      /* webpackInclude: /[/\\]i18n[/\\][^+/\\]+\.json$/ */
-      `~/modules/${path}/i18n/${locale}.json`
-    )
-  }
-
-  private fetchI18nJS (path: string, locale: string): Promise<RB.IRBI18nRaw> {
-    return import(
-      /* webpackExclude: /[/\\]\+[^+/\\]+[/\\]((?!i18n)[^+/\\])+[/\\]/ */
-      /* webpackInclude: /[/\\]i18n[/\\][^+/\\]+\.ts$/ */
-      `~/modules/${path}/i18n/${locale}.ts`
-    )
-  }
-
-  private checkModuleSetI18nJson (path: string) {
-    // +moduleSet/i18n/en.json will be bunndled
-    // +moduleSet/xxx/i18n/en.json will be skipped.
-    const excludeRegex = /[/\\]\+[^+/\\]+[/\\]((?!i18n)[^+/\\])+[/\\]/
-    const includeRegex = /[/\\]i18n[/\\][^+/\\]+\.json$/
-
-    if (!excludeRegex.test(path)) {
-      if (includeRegex.test(path)) {
-        return true
-      }
-    }
-
-    return false
-  }
-
-  private checkModuleSetI18nJs (path: string) {
-    // +moduleSet/i18n/en.ts will be bunndled
-    // +moduleSet/xxx/i18n/en.ts will be skipped.
-    const excludeRegex = /[/\\]\+[^+/\\]+[/\\]((?!i18n)[^+/\\])+[/\\]/
-    const includeRegex = /[/\\]i18n[/\\][^+/\\]+\.ts$/
-
-    if (!excludeRegex.test(path)) {
-      if (includeRegex.test(path)) {
-        return true
-      }
-    }
-
-    return false
-  }
-
-  private loadTheme (path: string, name: string): Promise<RB.IRBThemeRaw | unknown> {
-    const { theme } = this._options
-    return this.fetchTheme(path, theme).then((themeObj: RB.IRBThemeRaw) => {
+  private async loadTheme (name: string, factory: RB.IRBThemeFactory, RB_CONTEXT: RB.IRBContext): Promise<RB.IRBTheme> {
+    const { theme } = RB_CONTEXT.options
+    try {
+      let themeObj = await factory(RB_CONTEXT)
+      themeObj = themeObj || {}
       this._themes[name] = this._themes[name] || {}
-      this._themes[name][theme] = themeObj['default']
+      this._themes[name][theme] = themeObj
       return themeObj
-    })
-  }
-
-  private fetchTheme (path: string, theme: string): Promise<RB.IRBThemeRaw> {
-    path = path.replace(/^\.\//, '')
-    const moduleSetRegex = /[/\\]\+[^+]+$/
-
-    if (moduleSetRegex.test(path)) {
-      // it's module set, fetch js file
-      return Promise.all([
-        this.fetchModuleSetLocalTheme(path, theme),
-        this.fetchGlobalTheme(path, theme)
-      ]).then(res => {
-        return res && res[0]
-      })
-    }
-
-    return Promise.all([
-      this.fetchLocalTheme(path, theme),
-      this.fetchGlobalTheme(path, theme)
-    ]).then(res => {
-      return res && res[0]
-    })
-  }
-
-  private fetchLocalTheme (path: string, theme: string): Promise<RB.IRBThemeRaw> {
-    return this.fetchLocalThemeCss(path, theme).catch(() => {
-      return this.fetchLocalThemeCss(path, 'default').catch(() => {
-        const res = {}
-        res['default'] = {}
-        return res
-      })
-    })
-  }
-
-  private fetchGlobalTheme (path: string, theme: string): Promise<unknown> {
-    return this.fetchGlobalCss(path, theme).catch(() => {
-      return this.fetchGlobalCss(path, 'default').catch(() => {
-        return {}
-      })
-    })
-  }
-
-  private fetchModuleSetLocalTheme (path, theme) {
-    return this.fetchLocalThemeJs(path, theme).catch(() => {
-      return this.fetchLocalThemeJs(path, 'default').catch(() => {
-        const res = {}
-        res['default'] = {}
-        return res
-      })
-    })
-  }
-
-  private fetchLocalThemeCss (path, theme) {
-    return import(
-      /* webpackExclude: /[/\\]\+[^+/\\]+[/\\]((?!themes)[^+/\\])+[/\\]/ */
-      /* webpackInclude: /[/\\]themes[/\\][^+/\\]+[/\\]index\.css$/ */
-      `~/modules/${path}/themes/${theme}/index.css`
-    )
-  }
-
-  private fetchLocalThemeJs (path, theme) {
-    return import(
-      /* webpackExclude: /[/\\]\+[^+/\\]+[/\\]((?!themes)[^+/\\])+[/\\]/ */
-      /* webpackInclude: /[/\\]themes[/\\][^+/\\]+[/\\]index\.ts$/ */
-      `~/modules/${path}/themes/${theme}/index.ts`
-    )
-  }
-
-  private fetchGlobalCss (path, theme) {
-    return import(
-      /* webpackExclude: /[/\\]\+[^+/\\]+[/\\]((?!themes)[^+/\\])+[/\\]/ */
-      /* webpackInclude: /[/\\]themes[/\\][^+/\\]+[/\\]index\.global\.css$/ */
-      `~/modules/${path}/themes/${theme}/index.global.css`
-    ).catch(() => {
+    } catch {
+      this._themes[name] = this._themes[name] || {}
+      this._themes[name][theme] = {}
       return {}
-    })
-  }
-
-  private checkModuleSetLocalThemeCss (path) {
-    // +moduleSet/themes/default/index.css will be bunndled
-    // +moduleSet/xxx/themes/default/index.css will be skipped.
-    const excludeRegex = /[/\\]\+[^+/\\]+[/\\]((?!themes)[^+/\\])+[/\\]/
-    const includeRegex = /[/\\]themes[/\\][^+/\\]+[/\\]index\.css$/
-
-    if (!excludeRegex.test(path)) {
-      if (includeRegex.test(path)) {
-        return true
-      }
     }
-
-    return false
   }
 
-  private checkModuleSetThemeJs (path) {
-    // +moduleSet/themes/default/index.ts will be bunndled
-    // +moduleSet/xxx/themes/default/index.ts will be skipped.
-    const excludeRegex = /[/\\]\+[^+/\\]+[/\\]((?!themes)[^+/\\])+[/\\]/
-    const includeRegex = /[/\\]themes[/\\][^+/\\]+[/\\]index\.ts$/
-
-    if (!excludeRegex.test(path)) {
-      if (includeRegex.test(path)) {
-        return true
-      }
-    }
-
-    return false
-  }
-
-  private checkModuleSetThemeGlobalCss (path) {
-    // +moduleSet/themes/default/index.global.css will be bunndled
-    // +moduleSet/xxx/themes/default/index.global.css will be skipped.
-    const excludeRegex = /[/\\]\+[^+/\\]+[/\\]((?!themes)[^+/\\])+[/\\]/
-    const includeRegex = /[/\\]themes[/\\][^+/\\]+[/\\]index\.global\.css$/
-
-    if (!excludeRegex.test(path)) {
-      if (includeRegex.test(path)) {
-        return true
-      }
-    }
-
-    return false
-  }
-
-  private fetchModule (path) {
+  private async fetchModule (path: string): Promise<{ default: RB.IRBModuleRaw }> {
     path = path.replace(/^\.\//, '')
     return import(
       /* webpackExclude: /[/\\]\+[^+/\\]+[/\\][^+/\\]+[/\\]/ */
@@ -286,42 +113,38 @@ export default class RBCore {
     }
 
     try {
-      let moduleFactory: RB.IRBModuleFactory
+      let module: RB.IRBModuleRaw
       if (config.set) {
         // if the target module is in a module set.
         // load the module set instead.
         const setName = config.set
         await this.getModule(setName)
 
-        const setModule = this._modules[setName].value
-        const { locale, theme } = this._options
-
-        // set i18n
-        const i18n = this._i18ns[setName][locale] as RB.IRBSetI18n
-        this._i18ns[name] = this._i18ns[name] || {}
-        this._i18ns[name][locale] = i18n[name]
-        // set theme
-        const themeObj = this._themes[setName][theme] as RB.IRBSetTheme
-        this._themes[name] = this._themes[name] || {}
-        this._themes[name][theme] = themeObj[name]
-
-        moduleFactory = setModule[name]
+        const setModule = this._packedModules[setName]
+        module = setModule[name]
       } else {
-        // load i18n
-        const i18nPromise = this.loadI18n(path, name)
-        // load theme
-        const themePromise = this.loadTheme(path, name)
         // load module
-        const modulePromise = this.fetchModule(path)
-
-        const res = await Promise.all([modulePromise, i18nPromise, themePromise])
-        moduleFactory = res[0]['default']
+        const res = await this.fetchModule(path)
+        module = res['default']
       }
 
-      const RB_CONTEXT = this.getContext()
-      this._modules[name].value = await moduleFactory(RB_CONTEXT)
+      this._modules[name].value = module
 
-      ret['default'] = await this.packModule(name)
+      const entryFactory: RB.IRBModuleFactory = module.entry
+      const i18nFactory: RB.IRBI18nFactory = module.i18n
+      const themeFactory: RB.IRBThemeFactory = module.theme
+
+      const RB_CONTEXT = this.getContext()
+      // load entry
+      const entryPromise = entryFactory(RB_CONTEXT)
+      // load i18n
+      const i18nPromise = this.loadI18n(name, i18nFactory, RB_CONTEXT)
+      // load theme
+      const themePromise = this.loadTheme(name, themeFactory, RB_CONTEXT)
+      const res = await Promise.all([entryPromise, i18nPromise, themePromise])
+      const entry = res[0]
+
+      ret['default'] = await this.packModule(name, entry)
       this._modules[name].trigger[0]()
     } catch (err) {
       this._modules[name].trigger[1](err)
@@ -331,9 +154,8 @@ export default class RBCore {
     return ret
   }
 
-  private async packModule (name: string): Promise<RB.IRBModule> {
+  private async packModule (name: string, module: RB.IRBModule): Promise<RB.IRBModule> {
     const { locale, theme } = this._options
-    let module = this._modules[name].value
     const i18n: RB.IRBI18n = this._i18ns[name][locale] as RB.IRBI18n
     const themeObj: RB.IRBTheme = this._themes[name][theme] as RB.IRBTheme
     const RB_CONTEXT = this.getContext()

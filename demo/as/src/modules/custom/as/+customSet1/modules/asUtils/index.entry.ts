@@ -1,7 +1,7 @@
 import getRemoteComponent from './getRemoteComponent'
 import getRequestProvider from './request'
 
-export default async (RB_CONTEXT: RB.IRBContext): Promise<RB.IRBModule> => {
+const entry = async (RB_CONTEXT: RB.IRBContext): Promise<RB.IRBModule> => {
   const { getModule } = RB_CONTEXT
   const asConstants = await getModule('asConstants') as AsConstants.IConsts
   const { ENV, LOCAL_STORAGE_PREFIX } = asConstants
@@ -101,4 +101,8 @@ export default async (RB_CONTEXT: RB.IRBContext): Promise<RB.IRBModule> => {
     getRemoteComponent,
     getQueryParams
   } as AsUtils.IUtils
+}
+
+export default {
+  entry
 }

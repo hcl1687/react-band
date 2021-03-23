@@ -1,5 +1,6 @@
-import utilsFactory from '../index.entry'
+import module from '../index.entry'
 
+const utilsFactory = module.entry
 const utils = utilsFactory() as DecoRedux.IUtils
 
 describe('common/redux/utils', () => {
